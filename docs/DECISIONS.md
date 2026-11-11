@@ -281,3 +281,14 @@ Toutes les icônes utilisent SF Symbols.
 - **Palette sombre dérivée par moi** (le canvas n'a pas de dessin sombre) : fond `#12162B` → `#1A1630`, texte `#F2F3FA` / `#A9AEC6`, violet fort `#8E8CF7` (le `#5552E0` clair manquait de contraste), cartes en verre blanc à 8 % sur matériau sombre, ombres noires. Les valeurs sont à ajuster si tu as une maquette sombre.
 - Vérifié sur capture en mode sombre : Home, Calendar, Analytics, Profile, Notifications, feuille « New Task » et Log In.
 - Limites : le launch screen et le Splash gardent leur dégradé de marque dans les deux modes (voulu) ; les écrans Onboarding, Focus Session, Search et Edit Profile n'ont pas été vérifiés visuellement en mode sombre.
+
+### D-047 : Étape 20 : données locales SwiftData, fin du mock au runtime
+**Choix :**
+- **Stockage :** protocole `DataStore` (tâches, sessions de focus, notifications) ; `SwiftDataStore` en production (`@Model` `TaskRecord`, `FocusRecord`, `NotificationRecord`), `InMemoryStore` en test et en preview. Si la base ne s'ouvre pas, l'app retombe sur une base en mémoire (utilisable, sans sauvegarde). Une erreur d'écriture est journalisée sans bloquer l'écran.
+- **Premier lancement : app vide** (décision déjà prise). `MockData` ne sert plus qu'aux previews (`InMemoryStore.sample()`), au squelette de chargement et aux tests.
+- **Tout est calculé** (`LocalStats`) : *Tasks Done* = tâches faites dont l'échéance est aujourd'hui ; *Focus Time* = somme des sessions d'aujourd'hui ; *Day Streak* = jours consécutifs avec au moins une tâche faite (à son échéance, faute de date de complétion) ou une session de focus, la série d'hier restant vivante tant qu'aujourd'hui n'est pas fini ; *objectif* = part des tâches du jour faites (« Plan your day » / « Let's Go! » / « Keep Going! » / « Goal Reached! »). Analytics : tâches faites sur prévues par période, meilleure série, répartition par catégorie = durée des tâches FAITES.
+- **Notifications nées d'événements réels** : tâche cochée, objectif du jour atteint, session de focus, série qui s'allonge (≥ 2 jours). Décocher n'annonce rien. Le « rapport hebdomadaire » du mock n'est plus généré (pas d'événement réel derrière).
+- **États vides** : Home (« No tasks today » + bouton), Notifications, carte « Time by category » ; Calendar et Search avaient déjà les leurs.
+- **Les données restent sur l'appareil à la déconnexion** (un seul utilisateur local) ; une autre personne qui se connecte voit les mêmes tâches. À revoir si un vrai compte arrive.
+- Analytics relit le stockage à l'ouverture de l'onglet ; Home recalcule après chaque action.
+- Limite : la persistance entre deux lancements est testée sur la base SwiftData en mémoire (même code) ; le fichier sur disque n'a pas été relancé à la main depuis le CLI.

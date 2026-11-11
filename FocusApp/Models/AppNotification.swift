@@ -2,7 +2,8 @@ import Foundation
 
 // Le nom `Notification` est déjà pris par Foundation (comme `Task`, voir D-007) : d'où le préfixe `App`.
 struct AppNotification: Identifiable, Hashable {
-    enum Kind: Hashable {
+    // `String` comme type brut : c'est ce texte qu'on enregistre dans la base (SwiftData).
+    enum Kind: String, Hashable {
         case focusSession
         case streak
         case taskCompleted

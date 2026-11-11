@@ -10,8 +10,8 @@ final class AnalyticsViewModel {
     // ⚛️ voir CONCEPTS.md#binding : `period` est modifié par le contrôle segmenté (via `@Bindable` dans la vue).
     var period: AnalyticsPeriod = .week
 
-    private let data: AnalyticsData
-    private let focusByDay: [Date: TimeInterval]
+    private var data: AnalyticsData
+    private var focusByDay: [Date: TimeInterval]
     private let now: () -> Date
     private let calendar: Calendar
 
@@ -20,10 +20,18 @@ final class AnalyticsViewModel {
         self.now = now
         self.calendar = calendar
         // Un dictionnaire par jour : retrouver une journée est immédiat (≈ un `Map` indexé par date).
-        self.focusByDay = Dictionary(
-            data.history.map { (calendar.startOfDay(for: $0.date), $0.seconds) },
-            uniquingKeysWith: +
-        )
+        self.focusByDay = Self.index(data.history, calendar: calendar)
+    }
+
+    // Remplace les données (l'historique change quand on coche une tâche ou qu'on termine une session) : `RootView` l'appelle
+    // à l'ouverture de l'onglet. ⚛️ React : ≈ `queryClient.invalidateQueries` puis le re-render avec les nouvelles données.
+    func update(_ data: AnalyticsData) {
+        self.data = data
+        focusByDay = Self.index(data.history, calendar: calendar)
+    }
+
+    private static func index(_ history: [FocusDay], calendar: Calendar) -> [Date: TimeInterval] {
+        Dictionary(history.map { (calendar.startOfDay(for: $0.date), $0.seconds) }, uniquingKeysWith: +)
     }
 
     var summary: AnalyticsSummary { data.summaries[period] ?? .empty }

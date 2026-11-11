@@ -15,9 +15,10 @@ struct RootView: View {
     // ⚛️ voir CONCEPTS.md#state : les ViewModels sont créés et possédés ICI, à la racine, pour être partagés entre
     // plusieurs écrans. ≈ un store global / un contexte React placé tout en haut de l'arbre (D-033, D-035).
     @State private var viewModel: HomeViewModel
-    @State private var notificationsViewModel = NotificationsViewModel()
+    @State private var notificationsViewModel: NotificationsViewModel
     @State private var calendarViewModel = CalendarViewModel()
-    @State private var analyticsViewModel = AnalyticsViewModel()
+    // Analytics démarre vide et se remplit depuis le stockage à l'ouverture de l'onglet (voir `refreshAnalytics`).
+    @State private var analyticsViewModel = AnalyticsViewModel(data: AnalyticsData(history: [], summaries: [:]))
     // ⚛️ React : UNE seule feuille pour deux usages (créer / modifier) : l'état dit laquelle est ouverte, et `sheet(item:)`
     // la présente quand il n'est pas `nil` (≈ `<Modal visible={sheet !== null}>` avec les données de la feuille).
     @State private var taskSheet: TaskSheet?
@@ -33,14 +34,25 @@ struct RootView: View {
     // Profil modifié : `AppFlowView` l'enregistre dans la session ; `user` revient ensuite par ici (voir `onChange` plus bas).
     private let onUpdateProfile: (ProfileDraft) -> Void
     private let user: User?
+    // ⚛️ React : le stockage local (SwiftData en production, voir D-047) : tâches, historique de focus, notifications.
+    // Les `#Preview` passent `InMemoryStore.sample()` (données d'exemple) ; l'app, elle, démarre avec une base VIDE.
+    private let store: DataStore
 
     init(
-        provider: HomeDataProviding = MockHomeDataProvider(),
+        store: DataStore? = nil,
         user: User? = nil,
         onLogOut: @escaping () -> Void = {},
         onUpdateProfile: @escaping (ProfileDraft) -> Void = { _ in }
     ) {
-        _viewModel = State(initialValue: HomeViewModel(provider: provider))
+        // `nil` = données d'exemple (previews) ; l'app passe toujours son vrai stockage.
+        let store = store ?? InMemoryStore.sample()
+        let home = HomeViewModel(provider: LocalHomeDataProvider(store: store, user: user ?? MockData.user), store: store)
+        let notifications = NotificationsViewModel(store: store)
+        // Un événement de Home (tâche terminée, objectif atteint, session de focus) devient une vraie notification.
+        home.onEvent = { notifications.add($0) }
+        _viewModel = State(initialValue: home)
+        _notificationsViewModel = State(initialValue: notifications)
+        self.store = store
         self.user = user
         self.onLogOut = onLogOut
         self.onUpdateProfile = onUpdateProfile
@@ -86,6 +98,10 @@ struct RootView: View {
         .onChange(of: user) { _, newUser in
             if let newUser { viewModel.updateUser(newUser) }
         }
+        // Analytics lit le stockage à l'ouverture de l'onglet : les chiffres reflètent les dernières tâches et sessions.
+        .onChange(of: selectedTab) { _, tab in
+            if tab == .analytics { refreshAnalytics() }
+        }
         // Le mode d'apparence est appliqué à la racine par `AppFlowView` (réglage Profile > Appearance, D-046).
     }
 
@@ -104,6 +120,7 @@ struct RootView: View {
                 onFocusTime: { path.append(.focusSession) },
                 onGoalDetails: { select(.analytics) },
                 onSeeAll: { select(.calendar) },
+                onAddTask: { taskSheet = .create },
                 onEditTask: { taskSheet = .edit($0) }
             )
             .opacity(selectedTab == .home ? 1 : 0)
@@ -139,6 +156,12 @@ struct RootView: View {
 
     private func logOut() { onLogOut() }
 
+    private func refreshAnalytics() {
+        analyticsViewModel.update(
+            LocalStats.analytics(tasks: store.tasks(), sessions: store.focusSessions(), now: .now)
+        )
+    }
+
     @ViewBuilder
     private func destination(for route: AppRoute) -> some View {
         // ⚛️ React : `switch` exhaustif sur la route : ajouter un `case` à `AppRoute` fait signaler ici (et partout où
@@ -165,7 +188,7 @@ struct RootView: View {
                 task: viewModel.nextTask,
                 focusMinutes: focusMinutes,
                 baseFocusToday: viewModel.data?.stats.focusTime ?? 0,
-                onFocusLogged: { viewModel.addFocusTime($0) }
+                onFocusLogged: { viewModel.addFocusTime($0, taskTitle: viewModel.nextTask?.title) }
             )
         }
     }
@@ -192,5 +215,5 @@ private enum TaskSheet: Identifiable {
 // ⚛️ React : `#Preview` ≈ une story Storybook : Xcode affiche ce composant à part, sans lancer l'app.
 // Il est retiré du build de production.
 #Preview {
-    RootView(provider: MockHomeDataProvider(delay: .zero))
+    RootView(store: InMemoryStore.sample())
 }

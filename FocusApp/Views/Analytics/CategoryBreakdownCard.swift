@@ -10,6 +10,11 @@ struct CategoryBreakdownCard: View {
                 .font(.appHeadline)
                 .foregroundStyle(Color.textPrimary)
                 .accessibilityAddTraits(.isHeader)
+            if shares.isEmpty {
+                Text("Complete tasks to see where your time goes.")
+                    .font(.appBody)
+                    .foregroundStyle(Color.textSecondary)
+            }
             ForEach(shares) { share in
                 row(share)
             }

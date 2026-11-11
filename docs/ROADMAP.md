@@ -117,7 +117,7 @@ La ligne Appearance propose Light / Dark / System, persisté. Les tokens de coul
 - **Concepts :** couleurs adaptatives (`UIColor` dynamique), `@AppStorage` + `preferredColorScheme`, `colorScheme` de l'environnement, matériaux en mode sombre
 - **Fini quand :** les 14 écrans sont lisibles dans les deux modes (captures comparées) et le choix survit au relancement.
 
-## [ ] Étape 20 — Données locales (SwiftData) et fin du mock
+## [x] Étape 20 — Données locales (SwiftData) et fin du mock
 Tâches, historique de focus et notifications sont stockés sur l'appareil (**SwiftData**). Les statistiques (Tasks Done, Focus Time, Day Streak, objectif du jour, Analytics) sont **calculées** à partir de ces données ; les notifications naissent d'événements réels (tâche terminée, session de focus, objectif atteint). `MockData` ne sert plus qu'aux previews et aux tests.
 - **Concepts :** `@Model`, `ModelContainer` / `ModelContext`, un protocole de stockage (SwiftData en prod, mémoire en test), données calculées, états vides
 - **Fini quand :** les tâches survivent au relancement, une installation neuve démarre sans donnée avec des états vides soignés, et les agrégats sont testés.

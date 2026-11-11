@@ -18,8 +18,13 @@ struct AppFlowView: View {
 
     // ⚛️ React : le ViewModel est créé DANS l'`init` (et non en valeur par défaut) : `AuthViewModel` est isolé au thread
     // principal, et une valeur par défaut serait évaluée ailleurs. `nil` = « utilise la vraie persistance ».
-    init(auth: AuthViewModel? = nil) {
+    // ⚛️ React : le stockage local est créé UNE fois pour toute l'app (≈ ouvrir la base au démarrage) puis passé à `RootView`.
+    // Il survit aux déconnexions : les tâches restent sur l'appareil.
+    private let store: DataStore
+
+    init(auth: AuthViewModel? = nil, store: DataStore? = nil) {
         _auth = State(initialValue: auth ?? AuthViewModel())
+        self.store = store ?? SwiftDataStore.makeDefault()
     }
 
     var body: some View {
@@ -46,7 +51,7 @@ struct AppFlowView: View {
         // ⚛️ React : `.id(valeur)` ≈ `key={valeur}` sur un composant : quand la valeur change (autre session), SwiftUI
         // DÉTRUIT et recrée `RootView`, donc ses `@State` (ViewModels, onglet) repartent de zéro.
         RootView(
-            provider: MockHomeDataProvider(user: auth.currentUser),
+            store: store,
             user: auth.currentUser,
             onLogOut: {
                 auth.logOut()

@@ -15,6 +15,7 @@ struct HomeView: View {
     let onFocusTime: () -> Void
     let onGoalDetails: () -> Void
     let onSeeAll: () -> Void
+    let onAddTask: () -> Void
     let onEditTask: (TaskItem) -> Void
 
     // La tâche dont l'utilisateur a demandé la suppression : tant qu'il n'a pas confirmé, rien n'est supprimé.
@@ -168,10 +169,22 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 SectionHeaderView(title: "My Tasks", actionTitle: "See All", onAction: onSeeAll)
 
+                let todayTasks = data.tasks(on: viewModel.currentDate)
+                if todayTasks.isEmpty {
+                    // Premier lancement ou journée vide : on invite à créer une tâche au lieu de laisser un blanc.
+                    EmptyStateView(
+                        systemImage: "checklist",
+                        title: "No tasks today",
+                        message: "Plan your day by adding your first task.",
+                        actionTitle: "Add a task",
+                        action: onAddTask
+                    )
+                    .glassCard(cornerRadius: Radius.stat, hasShadow: false)
+                }
                 VStack(spacing: Spacing.s) {
                     // ⚛️ React : `ForEach` ≈ `tasks.map(task => <Row key={task.id} />)` : grâce à `Identifiable`,
                     // pas besoin de préciser la clé.
-                    ForEach(data.tasks(on: viewModel.currentDate)) { task in
+                    ForEach(todayTasks) { task in
                         TaskRowView(
                             task: task,
                             // ⚛️ React : une closure passée en prop ≈ `onPress={() => toggle(task)}`. La vue envoie une
@@ -199,6 +212,7 @@ struct HomeView: View {
         onFocusTime: {},
         onGoalDetails: {},
         onSeeAll: {},
+        onAddTask: {},
         onEditTask: { _ in }
     )
 }

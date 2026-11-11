@@ -14,6 +14,8 @@ final class NotificationsViewModel {
     }
 
     private(set) var notifications: [AppNotification]
+    // Avec un stockage, chaque changement est écrit sur l'appareil (les notifications survivent au relancement).
+    private let store: DataStore?
     private let now: () -> Date
 
     // ⚛️ voir CONCEPTS.md#protocol : l'heure est injectable pour tester les libellés et les groupes.
@@ -21,7 +23,21 @@ final class NotificationsViewModel {
     // asynchrone à simuler pour l'instant.
     init(notifications: [AppNotification] = MockData.notifications, now: @escaping () -> Date = { .now }) {
         self.notifications = notifications
+        self.store = nil
         self.now = now
+    }
+
+    // Version de l'app : les notifications viennent du stockage local (vide au premier lancement).
+    init(store: DataStore, now: @escaping () -> Date = { .now }) {
+        self.notifications = store.notifications()
+        self.store = store
+        self.now = now
+    }
+
+    // Ajoute une notification née d'un événement réel (tâche terminée, session de focus…).
+    func add(_ notification: AppNotification) {
+        notifications.insert(notification, at: 0)
+        store?.save(notification)
     }
 
     var unreadCount: Int { notifications.filter { !$0.isRead }.count }
@@ -44,11 +60,13 @@ final class NotificationsViewModel {
     func markAsRead(_ notification: AppNotification) {
         guard let index = notifications.firstIndex(where: { $0.id == notification.id }) else { return }
         notifications[index].isRead = true
+        store?.save(notifications[index])
     }
 
     func markAllAsRead() {
-        for index in notifications.indices {
+        for index in notifications.indices where !notifications[index].isRead {
             notifications[index].isRead = true
+            store?.save(notifications[index])
         }
     }
 }

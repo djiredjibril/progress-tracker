@@ -567,3 +567,21 @@ Format d'une entrée :
 - **React/RN :** `'light' | 'dark' | 'system'` dans `AsyncStorage`
 - **Différence clé :** on stocke le `rawValue` (une chaîne) et on le reconvertit avec une valeur de repli : un réglage illisible ne casse jamais l'app. Le `Picker` met à jour ce `String`, et `AppFlowView` le relit pour l'appliquer à toute l'app.
 - **Vu à :** étape 19, `Models/AppearanceMode.swift`, `Views/Profile/ProfileView.swift`
+
+### swiftdata · SwiftData : `@Model`, `ModelContainer`, `ModelContext`
+- **Swift :** `@Model final class TaskRecord { … }` décrit une table ; `ModelContainer(for: TaskRecord.self)` ouvre la base (un fichier SQLite) ; `container.mainContext.insert(...)`, `.fetch(FetchDescriptor<TaskRecord>(predicate: #Predicate { $0.id == id }))`, `.delete(...)`, `.save()`
+- **React/RN :** une entité Prisma / WatermelonDB / `expo-sqlite` avec son ORM ; le container ≈ la connexion, le contexte ≈ une transaction
+- **Différence clé :** pas de SQL ni de migration pour un premier schéma, et les prédicats `#Predicate` sont du Swift vérifié à la compilation. Les `@Model` sont des CLASSES : on les garde dans la couche de stockage et on expose des `struct` (`TaskItem`) au reste de l'app, qui ne connaît donc pas SwiftData. Les enums se stockent par leur `rawValue` (texte).
+- **Vu à :** étape 20, `Services/SwiftDataStore.swift`
+
+### storage-protocol · Un protocole de stockage (`DataStore`) avec deux implémentations
+- **Swift :** `protocol DataStore { func tasks() -> [TaskItem]; func save(_:) … }` ; `SwiftDataStore` (prod) et `InMemoryStore` (tests, previews)
+- **React/RN :** le pattern *repository* ; en test on remplace AsyncStorage / la base par un faux
+- **Différence clé :** les mêmes tests tournent sur les DEUX implémentations (`DataStoreTests`) : la version mémoire sert de référence. `@MainActor` sur le protocole : le contexte SwiftData principal ne doit être touché que depuis le thread principal. Conséquence : une valeur par défaut `= InMemoryStore.sample()` n'est pas permise dans un `init` (évaluée hors du thread principal) ; on prend un optionnel et on construit dans le corps.
+- **Vu à :** étape 20, `Services/DataStore.swift`
+
+### derived-data · Les statistiques sont calculées, jamais stockées
+- **Swift :** `enum LocalStats { static func stats(tasks:sessions:now:) … }` : fonctions pures
+- **React/RN :** des *selectors* (Reselect) plutôt qu'un état dérivé dupliqué dans `useState`
+- **Différence clé :** on stocke les FAITS (une tâche, une session de focus) et on recalcule le total, la série, l'objectif et les graphiques. Rien ne peut se désynchroniser, et les tests se limitent à des tableaux et une date injectée.
+- **Vu à :** étape 20, `Models/LocalStats.swift`

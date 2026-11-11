@@ -23,6 +23,14 @@ struct NotificationsView: View {
                 ForEach(viewModel.groups()) { group in
                     section(group)
                 }
+                if viewModel.notifications.isEmpty {
+                    EmptyStateView(
+                        systemImage: "bell",
+                        title: "You're all caught up",
+                        message: "Finish a task or a focus session and it will show up here."
+                    )
+                    .padding(.top, Spacing.section)
+                }
             }
             .padding(.horizontal, Spacing.screen)
             .padding(.bottom, Spacing.section)
