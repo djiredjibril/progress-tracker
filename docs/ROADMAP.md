@@ -61,7 +61,7 @@ Tokens mis à jour (D-029), puis `TaskItem` étendu (catégorie, priorité, dur�
 - **Concepts :** `NavigationStack`, `navigationDestination`, `@Environment(\.dismiss)`, sections groupées
 - **Fini quand :** chaque lien du prototype mène au bon écran et « Mark all as read » met à jour l'état (testé).
 
-## [ ] Étape 10 — Focus Session
+## [x] Étape 10 — Focus Session
 Minuteur 25:00 avec anneau de progression, pause / reset / skip, « Session 2 of 4 ». Logique testable : horloge injectée, machine à états.
 - **Concepts :** `trim(from:to:)`, `Task.sleep` annulable, machine à états (`enum`), `monospacedDigit`
 - **Fini quand :** le minuteur décompte, se met en pause et se réinitialise, et les transitions d'état sont testées.

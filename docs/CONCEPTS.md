@@ -405,3 +405,33 @@ Format d'une entrée :
 - **React/RN :** `textTransform: 'uppercase'`, `letterSpacing`, `lineHeight`, et un texte qui grandit avec son contenu
 - **Différence clé :** `fixedSize` empêche un texte multiligne d'être tronqué ou compressé par son parent : la hauteur suit le contenu.
 - **Vu à :** étape 9, `Views/Notifications/NotificationRowView.swift`, `NotificationsView.swift`
+
+### state-machine · Machine à états et horloge injectée
+- **Swift :** `enum Phase { case focus, rest }`, `enum RunState { case idle, running, paused, finished }`, `init(now: @escaping () -> Date = { .now })`
+- **React/RN :** `useReducer` avec des états nommés ; `jest.useFakeTimers()`
+- **Différence clé :** deux `enum` indépendants (quelle phase, et si ça tourne) remplacent des booléens `isBreak` / `isPaused` incohérents. Le temps restant se déduit de l'horloge (`endDate - now`), pas d'un compteur décrémenté : un tick en retard ou l'arrière-plan ne faussent rien. En test, on avance `now` à la main et on appelle `tick()`, sans attendre.
+- **Vu à :** étape 10, `ViewModels/FocusSessionViewModel.swift`, `FocusAppTests/FocusSessionViewModelTests.swift`
+
+### task-id · `.task(id:)` et `Task.sleep` annulable
+- **Swift :** `.task(id: viewModel.runState) { while !Task.isCancelled { try? await Task.sleep(for: .milliseconds(500)); viewModel.tick() } }`
+- **React/RN :** `useEffect(() => { const id = setInterval(tick, 500); return () => clearInterval(id) }, [runState])`
+- **Différence clé :** le bloc redémarre quand `id` change et l'ancien est annulé automatiquement ; `Task.sleep` s'interrompt à l'annulation, donc pas de fuite quand on quitte l'écran. `.onDisappear` joue le rôle du cleanup au démontage.
+- **Vu à :** étape 10, `Views/Focus/FocusSessionView.swift`
+
+### trim-ring · `Circle().trim(from:to:)` et `monospacedDigit`
+- **Swift :** `Circle().trim(from: 0, to: progress).stroke(gradient, style: StrokeStyle(lineWidth: 16, lineCap: .round)).rotationEffect(.degrees(-90))`, `Font.system(size: 56, weight: .bold).monospacedDigit()`
+- **React/RN :** `strokeDasharray` / `strokeDashoffset` d'un `<Circle>` SVG ; `fontVariant: ['tabular-nums']`
+- **Différence clé :** `trim` ne dessine qu'une fraction du cercle et est animable, donc l'arc avance de façon fluide sans `Animated.Value`. Le cercle démarre à 3 h : on le tourne de -90°. Des chiffres de même largeur évitent que le minuteur « tremble ».
+- **Vu à :** étape 10, `Views/Focus/FocusRingView.swift`, `DesignSystem/Typography.swift`
+
+### viewbuilder-prop · Composant à contenu (`@ViewBuilder` + générique)
+- **Swift :** `struct FocusRingView<Center: View>: View { @ViewBuilder let center: () -> Center }`
+- **React/RN :** une prop `children` / un render prop
+- **Différence clé :** l'appelant place n'importe quelle vue au centre, et le compilateur garde son type exact (pas de `any View` coûteux).
+- **Vu à :** étape 10, `Views/Focus/FocusRingView.swift`
+
+### symbol-effect · `contentTransition(.symbolEffect(.replace))` et `.numericText(countsDown:)`
+- **Swift :** `Image(systemName: isRunning ? "pause.fill" : "play.fill").contentTransition(.symbolEffect(.replace))`
+- **React/RN :** pas d'équivalent direct (animer deux icônes à la main)
+- **Différence clé :** le symbole se transforme au lieu de sauter, et les chiffres défilent dans le bon sens pour un compte à rebours.
+- **Vu à :** étape 10, `Views/Focus/RoundControlButton.swift`, `FocusSessionView.swift`

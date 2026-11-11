@@ -83,4 +83,13 @@ extension Color {
     static let notificationUnreadFill = Color.white.opacity(0.75)
     static let notificationUnreadStroke = Color.white.opacity(0.90)
     static let notificationReadFill = Color.white.opacity(0.50)
+
+    // MARK: - Minuteur et catégories
+
+    static let ringTrack = Color.appPrimary.opacity(0.15)
+    static let ringGradientStart = Color(hex: 0xA58DF0)
+    static let categoryWork = Color.appPrimaryStrong
+    static let categoryHealth = Color.statStreakDark
+    static let categoryLearning = Color.ringGradientStart
+    static let categoryPersonal = Color.statFocusDark
 }

@@ -47,6 +47,11 @@ enum Size {
     static let primaryButton: CGFloat = 56
     static let segmentHeight: CGFloat = 38
     static let notificationIcon: CGFloat = 40
+    static let focusRing: CGFloat = 264     // anneau du minuteur
+    static let ringStroke: CGFloat = 16
+    static let controlSecondary: CGFloat = 56
+    static let controlPrimary: CGFloat = 84
+    static let sessionDot: CGFloat = 10
 }
 
 // Ombres (voir DESIGN_SYSTEM.md > Ombres)
@@ -59,4 +64,6 @@ enum Shadow {
     static let fabY: CGFloat = 8
     static let segmentRadius: CGFloat = 5   // pastille sélectionnée d'un contrôle segmenté
     static let segmentY: CGFloat = 4
+    static let controlRadius: CGFloat = 20  // bouton principal du minuteur
+    static let controlY: CGFloat = 12
 }

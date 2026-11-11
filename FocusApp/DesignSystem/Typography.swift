@@ -40,4 +40,12 @@ extension Font {
     // Lignes riches (notifications)
     static let appRowTitle = Font.system(size: 15, weight: .semibold)
     static let appCaption = Font.system(size: 12, weight: .regular)
+
+    // Minuteur
+    // ⚛️ React : `monospacedDigit()` ≈ `fontVariant: ['tabular-nums']` : tous les chiffres ont la même largeur, donc
+    // « 14:59 » → « 14:58 » ne fait pas trembler le texte à chaque seconde.
+    static let appTimer = Font.system(size: 56, weight: .bold).monospacedDigit()
+    static let appInfoValue = Font.system(size: 16, weight: .bold)
+    static let appControlIcon = Font.system(size: 22, weight: .medium)
+    static let appControlPrimaryIcon = Font.system(size: 30, weight: .bold)
 }

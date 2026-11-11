@@ -185,3 +185,13 @@ Toutes les icônes utilisent SF Symbols.
 - `.glassCard` accepte un voile, un liseré et une option d'ombre : une notification lue est plus discrète (voile 50 %, pas d'ombre).
 - `PlaceholderScreen` prend un titre et une icône (et un bouton retour optionnel) ; `PlaceholderScreen(tab:)` reste disponible.
 - Nom du modèle : `AppNotification` (`Notification` est pris par Foundation, voir D-007).
+
+### D-036 : Étape 10 : Focus Session
+**Choix :**
+- Technique Pomodoro : 4 sessions de 25 min, pauses de 5 min (`FocusSessionConfig`). La pause démarre toute seule ; le focus suivant attend l'appui sur ▶︎. À la fin de la 4e session, l'état passe à « Complete ».
+- `FocusSessionViewModel` ne dépend que d'une horloge injectée : `tick()` recalcule le temps restant depuis `endDate`. La vue le déclenche toutes les 500 ms par `.task(id:)`, qui n'est actif que pendant « running ».
+- Le temps de focus réalisé (session terminée, « skip » en focus avec le temps écoulé, ou départ de l'écran) est remonté par `onFocusLogged` et ajouté à « Focus Time » de Home (`HomeViewModel.addFocusTime`). Un « reset » n'enregistre rien.
+- La tâche affichée est la prochaine non terminée (`HomeViewModel.nextTask`) ; la pastille de catégorie utilise `TaskCategory.tint` (`DesignSystem/CategoryStyle.swift`).
+- « Next break : 5 min » est la durée de la prochaine pause (le canvas ne dit pas si c'est un décompte) ; pendant la pause, la carte devient « Next focus : 25 min ».
+- Le bouton ⋯ (réglages de session) est une action mock. L'écran provisoire `PlaceholderScreen` perd son bouton retour, devenu inutile.
+- Non fait : une notification « Focus session complete » à la fin d'une session (elle existe dans le mock des notifications).

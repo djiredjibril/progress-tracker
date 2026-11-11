@@ -39,3 +39,13 @@ extension Date {
         return formatted(.dateTime.weekday(.abbreviated).locale(Locale(identifier: "en_US")))
     }
 }
+
+extension TimeInterval {
+    // « 6h 24m », « 45m », « 0m » : durée courte pour les statistiques de focus.
+    var shortDurationLabel: String {
+        let totalMinutes = Int(self) / 60
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        return hours > 0 ? "\(hours)h \(minutes)m" : "\(minutes)m"
+    }
+}

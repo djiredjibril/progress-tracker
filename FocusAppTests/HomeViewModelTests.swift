@@ -75,6 +75,28 @@ struct HomeViewModelTests {
         #expect(viewModel.data == nil)
     }
 
+    // MARK: - focus
+
+    @Test func nextTaskIsTheFirstNotCompletedOne() async {
+        let viewModel = makeViewModel()
+        #expect(viewModel.nextTask == nil)          // rien de chargé
+
+        await viewModel.load()
+        #expect(viewModel.nextTask?.title == "Workout")      // « Design » est déjà coché
+    }
+
+    @Test func addFocusTimeIncreasesTheTotal() async throws {
+        let viewModel = makeViewModel()
+        await viewModel.load()
+        let before = try #require(viewModel.data).stats.focusTime
+
+        viewModel.addFocusTime(25 * 60)
+        #expect(viewModel.data?.stats.focusTime == before + 25 * 60)
+
+        viewModel.addFocusTime(-10)                 // une valeur négative est ignorée
+        #expect(viewModel.data?.stats.focusTime == before + 25 * 60)
+    }
+
     // MARK: - greeting
 
     // ⚛️ React : ≈ `test.each([[8, '…'], …])` de Jest : un test exécuté pour chaque jeu d'arguments.

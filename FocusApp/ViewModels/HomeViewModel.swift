@@ -81,6 +81,16 @@ final class HomeViewModel {
         data = current
     }
 
+    // La prochaine tâche à faire (les tâches sont triées par échéance) : c'est celle que propose la session de focus.
+    var nextTask: TaskItem? { data?.tasks.first { !$0.isCompleted } }
+
+    // Ajoute du temps de focus réalisé (par `FocusSessionViewModel`) au total affiché sur Home.
+    func addFocusTime(_ seconds: TimeInterval) {
+        guard var current = data, seconds > 0 else { return }
+        current.stats.focusTime += seconds
+        data = current
+    }
+
     // ⚛️ React : le `_` signifie « pas de label à l'appel » : `toggle(task)` et non `toggle(task: task)`.
     func toggle(_ task: TaskItem) {
         guard var current = data,

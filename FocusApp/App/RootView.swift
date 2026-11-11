@@ -95,8 +95,12 @@ struct RootView: View {
                 }
             )
         case .focusSession:
-            PlaceholderScreen(title: "Focus Session", systemImage: "timer", showsBackButton: true)
-                .toolbar(.hidden, for: .navigationBar)
+            // La tâche proposée est la prochaine à faire ; le temps de focus réalisé s'ajoute au total de Home.
+            FocusSessionView(
+                task: viewModel.nextTask,
+                baseFocusToday: viewModel.data?.stats.focusTime ?? 0,
+                onFocusLogged: { viewModel.addFocusTime($0) }
+            )
         }
     }
 

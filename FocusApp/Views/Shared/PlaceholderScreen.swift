@@ -1,24 +1,19 @@
 import SwiftUI
 
-// Écran provisoire : les onglets autres que Home (D-016) et les écrans empilés pas encore faits (Focus Session).
+// Écran provisoire des onglets pas encore faits (D-016).
 struct PlaceholderScreen: View {
     let title: String
     let systemImage: String
-    // Pour un écran EMPILÉ (pas un onglet) : on affiche un bouton retour, car la barre de navigation système est masquée.
-    var showsBackButton = false
-
-    @Environment(\.dismiss) private var dismiss
 
     // ⚛️ React : un second `init` ≈ une « factory » : `PlaceholderScreen(tab: .calendar)` déduit le titre et l'icône
-    // de l'onglet. Les appelants existants n'ont pas changé.
+    // de l'onglet.
     init(tab: AppTab) {
         self.init(title: tab.title, systemImage: tab.systemImage)
     }
 
-    init(title: String, systemImage: String, showsBackButton: Bool = false) {
+    init(title: String, systemImage: String) {
         self.title = title
         self.systemImage = systemImage
-        self.showsBackButton = showsBackButton
     }
 
     var body: some View {
@@ -37,12 +32,6 @@ struct PlaceholderScreen: View {
         // Une seule phrase pour VoiceOver : « Calendar, Coming soon ».
         .accessibilityElement(children: .combine)
         .background { AppBackground() }
-        .overlay(alignment: .topLeading) {
-            if showsBackButton {
-                CircleIconButton(systemName: "chevron.left", accessibilityLabel: "Back") { dismiss() }
-                    .padding(Spacing.screen)
-            }
-        }
     }
 }
 
