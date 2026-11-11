@@ -266,3 +266,10 @@ Toutes les icônes utilisent SF Symbols.
 - `TaskSearch.results(for:in:)` (pure, testée) : chaque mot saisi doit se retrouver dans le titre OU la catégorie (ET entre les mots), sans tenir compte de la casse ni des accents ; résultats triés par échéance. La recherche porte sur **toutes** les tâches, pas seulement celles du jour.
 - Un toucher sur un résultat revient à la racine, sélectionne ce jour dans Calendar (`CalendarViewModel.select`) et ouvre l'onglet.
 - Limites : pas d'historique de recherches, pas de surlignage du texte trouvé, pas de recherche dans les notifications.
+
+### D-045 : Étape 18 : modifier le profil
+**Choix :**
+- Le bouton ✎ de Profile ouvre la feuille « Edit Profile » : photo (`PhotosPicker`, avec « Change photo » et « Remove »), prénom, e-mail. Le formulaire est un `ProfileDraft` (testé) : prénom non vide, e-mail valide, et « Save Changes » reste désactivé tant que rien n'a changé (la casse et les espaces seuls ne comptent pas).
+- `AuthViewModel.updateProfile` met à jour la session ET les réglages persistés. La photo est réduite (600 px max), enregistrée en JPEG dans Application Support/Avatars (`AvatarStore`), et l'ancienne photo est supprimée du disque quand elle est remplacée, retirée ou à la déconnexion. Si l'image choisie est illisible, la photo actuelle est conservée.
+- `User` gagne `avatarURL` ; `AvatarImage` affiche la photo locale ou l'avatar par défaut sur Home et Profile. Home reçoit le nouvel utilisateur par `HomeViewModel.updateUser` sans recréer l'app : `RootView` n'est recréée (`.id(appID)`) qu'à une connexion ou une déconnexion, ce qui change l'ancien `.id(email)`.
+- Le changement d'e-mail n'est pas « vérifié » (authentification fictive, D-032).

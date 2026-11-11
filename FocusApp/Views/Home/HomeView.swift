@@ -123,6 +123,7 @@ struct HomeView: View {
                 greeting: viewModel.greeting,
                 firstName: data.user.firstName,
                 avatarName: data.user.avatarName,
+                avatarURL: data.user.avatarURL,
                 hasUnreadNotifications: hasUnreadNotifications,
                 onSearch: onSearch,
                 onNotifications: onNotifications

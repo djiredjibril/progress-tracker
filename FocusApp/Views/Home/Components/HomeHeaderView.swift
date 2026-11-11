@@ -4,6 +4,7 @@ struct HomeHeaderView: View {
     let greeting: String
     let firstName: String
     let avatarName: String
+    var avatarURL: URL? = nil
     let hasUnreadNotifications: Bool
     let onSearch: () -> Void
     let onNotifications: () -> Void
@@ -61,8 +62,7 @@ struct HomeHeaderView: View {
     private var avatar: some View {
         // ⚛️ React : `Image("Avatar")` charge un asset du catalogue par son nom ≈ `<Image source={require('./avatar.png')} />`.
         // `resizable()` est obligatoire pour que l'image puisse être redimensionnée (sinon elle garde sa taille native).
-        Image(avatarName)
-            .resizable()
+        AvatarImage(assetName: avatarName, url: avatarURL)
             // ⚛️ React : `scaledToFill` ≈ `resizeMode="cover"` (`scaledToFit` ≈ `contain`).
             .scaledToFill()
             .frame(width: Size.avatar, height: Size.avatar)

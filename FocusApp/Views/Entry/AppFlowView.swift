@@ -9,6 +9,9 @@ struct AppFlowView: View {
 
     @State private var auth: AuthViewModel
     @State private var step: Step = .splash
+    // Identité de l'app connectée : elle change à CHAQUE connexion / déconnexion (donc l'app repart de zéro), mais pas quand
+    // le profil est modifié.
+    @State private var appID = UUID()
 
     // ⚛️ React : le ViewModel est créé DANS l'`init` (et non en valeur par défaut) : `AuthViewModel` est isolé au thread
     // principal, et une valeur par défaut serait évaluée ailleurs. `nil` = « utilise la vraie persistance ».
@@ -35,16 +38,20 @@ struct AppFlowView: View {
     // MARK: - L'app connectée
 
     private var mainApp: some View {
-        // ⚛️ React : `.id(valeur)` ≈ `key={valeur}` sur un composant : quand la valeur change (autre utilisateur), SwiftUI
+        // ⚛️ React : `.id(valeur)` ≈ `key={valeur}` sur un composant : quand la valeur change (autre session), SwiftUI
         // DÉTRUIT et recrée `RootView`, donc ses `@State` (ViewModels, onglet) repartent de zéro.
         RootView(
-            provider: MockHomeDataProvider(user: auth.session?.user),
+            provider: MockHomeDataProvider(user: auth.currentUser),
+            user: auth.currentUser,
             onLogOut: {
                 auth.logOut()
                 step = .logIn
-            }
+            },
+            onUpdateProfile: { auth.updateProfile($0) }
         )
-        .id(auth.session?.email)
+        .id(appID)
+        // Nouvelle connexion ou déconnexion : nouvelle identité, donc `RootView` est recréée.
+        .onChange(of: auth.isLoggedIn) { appID = UUID() }
     }
 
     // MARK: - Le parcours d'entrée

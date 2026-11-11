@@ -107,7 +107,7 @@ Le bouton loupe de Home ouvre un écran de recherche : champ avec focus automati
 - **Concepts :** `.searchable` ou champ maison, filtrage insensible à la casse et aux accents, `localizedStandardContains`, route `NavigationStack`
 - **Fini quand :** taper filtre les tâches de tous les jours, et le moteur de recherche est testé.
 
-## [ ] Étape 18 — Modifier le profil
+## [x] Étape 18 — Modifier le profil
 Le bouton ✎ ouvre une feuille : prénom et e-mail (validés), avatar choisi dans la photothèque. Le résultat est persisté et visible sur Home, Profile et partout où le prénom apparaît.
 - **Concepts :** `PhotosPicker`, mise à jour d'une session persistée, validation d'un formulaire réutilisée
 - **Fini quand :** changer le prénom change « Hello, … » immédiatement et après un relancement.

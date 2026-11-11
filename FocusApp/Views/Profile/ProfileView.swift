@@ -6,6 +6,7 @@ struct ProfileView: View {
     let stats: UserStats
     // Branché à l'étape 14 (flux d'entrée) : pour l'instant l'écran de connexion n'existe pas encore.
     let onLogOut: () -> Void
+    let onSaveProfile: (ProfileDraft) -> Void
 
     // ⚛️ React : `@AppStorage` ≈ un `useState` PERSISTÉ dans `AsyncStorage` : la valeur est relue au lancement, et
     // toute vue qui utilise la même clé (ici aussi `RootView`) se met à jour quand elle change. `$notificationsEnabled`
@@ -15,6 +16,7 @@ struct ProfileView: View {
     @AppStorage(SettingsKey.focusMinutes) private var focusMinutes = SettingsOptions.defaultFocusMinutes
 
     @State private var isConfirmingLogOut = false
+    @State private var isEditingProfile = false
 
     var body: some View {
         ScrollView {
@@ -31,6 +33,9 @@ struct ProfileView: View {
         }
         .scrollIndicators(.hidden)
         .background { AppBackground() }
+        .sheet(isPresented: $isEditingProfile) {
+            EditProfileView(user: user, onSave: onSaveProfile)
+        }
         // ⚛️ React : `confirmationDialog` ≈ `Alert.alert(title, message, [{ text, style: 'destructive' }, { style: 'cancel' }])`.
         // Sur iPhone c'est une feuille d'actions qui monte du bas ; l'action `.destructive` est en rouge.
         .confirmationDialog("Log out of FocusApp?", isPresented: $isConfirmingLogOut, titleVisibility: .visible) {
@@ -48,15 +53,13 @@ struct ProfileView: View {
                 .foregroundStyle(Color.textPrimary)
                 .accessibilityAddTraits(.isHeader)
             Spacer()
-            // Action mock : l'édition du profil n'est pas dans le périmètre.
-            CircleIconButton(systemName: "pencil", accessibilityLabel: "Edit profile") {}
+            CircleIconButton(systemName: "pencil", accessibilityLabel: "Edit profile") { isEditingProfile = true }
         }
     }
 
     private var identity: some View {
         VStack(spacing: Spacing.xs) {
-            Image(user.avatarName)
-                .resizable()
+            AvatarImage(assetName: user.avatarName, url: user.avatarURL)
                 .scaledToFill()
                 .frame(width: Size.profileAvatar, height: Size.profileAvatar)
                 .clipShape(Circle())
@@ -203,5 +206,5 @@ struct ProfileView: View {
 }
 
 #Preview {
-    ProfileView(user: MockData.user, stats: MockData.stats, onLogOut: {})
+    ProfileView(user: MockData.user, stats: MockData.stats, onLogOut: {}, onSaveProfile: { _ in })
 }

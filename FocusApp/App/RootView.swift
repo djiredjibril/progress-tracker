@@ -30,10 +30,20 @@ struct RootView: View {
     // `_viewModel = State(initialValue:)` initialise le `@State` depuis un paramètre.
     // `onLogOut` : appelée par « Log out » (Profile) ; c'est `AppFlowView` qui déconnecte et change d'écran.
     private let onLogOut: () -> Void
+    // Profil modifié : `AppFlowView` l'enregistre dans la session ; `user` revient ensuite par ici (voir `onChange` plus bas).
+    private let onUpdateProfile: (ProfileDraft) -> Void
+    private let user: User?
 
-    init(provider: HomeDataProviding = MockHomeDataProvider(), onLogOut: @escaping () -> Void = {}) {
+    init(
+        provider: HomeDataProviding = MockHomeDataProvider(),
+        user: User? = nil,
+        onLogOut: @escaping () -> Void = {},
+        onUpdateProfile: @escaping (ProfileDraft) -> Void = { _ in }
+    ) {
         _viewModel = State(initialValue: HomeViewModel(provider: provider))
+        self.user = user
         self.onLogOut = onLogOut
+        self.onUpdateProfile = onUpdateProfile
     }
 
     // ⚛️ React : `body` ≈ le `return (...)` du composant. SwiftUI le rappelle quand l'état change.
@@ -70,6 +80,11 @@ struct RootView: View {
                     withAnimation(.snappy) { viewModel.updateTask(updated) }
                 }
             }
+        }
+        // ⚛️ React : ≈ `useEffect(() => setUser(user), [user])` : quand le profil est modifié, `AppFlowView` renvoie le nouvel
+        // utilisateur ; on met à jour celui que Home et Profile affichent, SANS recréer l'app (les tâches sont conservées).
+        .onChange(of: user) { _, newUser in
+            if let newUser { viewModel.updateUser(newUser) }
         }
         // ⚛️ React : ≈ `userInterfaceStyle: 'light'` d'Expo : on ignore le mode sombre du téléphone (D-014).
         // Posé à la racine, il s'applique à toute l'app.
@@ -116,9 +131,9 @@ struct RootView: View {
     @ViewBuilder
     private var profile: some View {
         if let data = viewModel.data {
-            ProfileView(user: data.user, stats: data.stats, onLogOut: logOut)
+            ProfileView(user: data.user, stats: data.stats, onLogOut: logOut, onSaveProfile: onUpdateProfile)
         } else {
-            ProfileView(user: MockData.user, stats: MockData.stats, onLogOut: logOut)
+            ProfileView(user: MockData.user, stats: MockData.stats, onLogOut: logOut, onSaveProfile: onUpdateProfile)
                 .redacted(reason: .placeholder)
                 .allowsHitTesting(false)
         }

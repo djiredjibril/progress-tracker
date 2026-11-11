@@ -4,6 +4,7 @@ import Foundation
 struct AuthSession: Equatable {
     var firstName: String
     var email: String
+    var avatarFileName: String? = nil      // photo de profil (fichier dans `AvatarStore`), `nil` = avatar par défaut
 
     // Au login, on ne connaît que l'e-mail : « alex@example.com » donne « Alex », « marie.curie@x.fr » donne « Marie ».
     static func firstName(fromEmail email: String) -> String {

@@ -81,6 +81,11 @@ final class HomeViewModel {
         data = current
     }
 
+    // Met à jour l'utilisateur affiché (après une modification du profil) sans toucher au reste des données.
+    func updateUser(_ user: User) {
+        data?.user = user
+    }
+
     // Remplace une tâche (même `id`) par sa version modifiée, puis garde la liste triée par échéance.
     func updateTask(_ task: TaskItem) {
         guard var current = data, let index = current.tasks.firstIndex(where: { $0.id == task.id }) else { return }

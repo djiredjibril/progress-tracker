@@ -543,3 +543,15 @@ Format d'une entrée :
 - **React/RN :** `useMemo(() => tasks.filter(…), [query, tasks])` ; `autoFocus` sur un `<TextInput>`
 - **Différence clé :** la saisie est un état local et les résultats en sont DÉRIVÉS (jamais stockés, donc jamais périmés). La logique de filtrage vit hors de la vue : elle se teste sans interface. `localizedStandardContains` ignore la casse et les accents et suit la langue de l'appareil (« RÉUNION » trouve « reunion »).
 - **Vu à :** étape 17, `Models/TaskSearch.swift`, `Views/Search/SearchView.swift`
+
+### photos-picker · `PhotosPicker` et fichiers locaux
+- **Swift :** `PhotosPicker(selection: $pickedItem, matching: .images) { label }`, `.onChange(of: pickedItem) { Task { data = try? await item.loadTransferable(type: Data.self) } }`, `AvatarStore` (écrit un JPEG dans Application Support)
+- **React/RN :** `expo-image-picker` (`launchImageLibraryAsync`) + `expo-file-system`
+- **Différence clé :** pas d'autorisation à demander : le sélecteur système tourne dans un autre processus et ne donne accès qu'à la photo CHOISIE. `PhotosPickerItem` est un « ticket » dont on charge les données de façon asynchrone. On ne stocke dans les réglages que le NOM du fichier, et le dossier est injectable pour les tests.
+- **Vu à :** étape 18, `Views/Profile/EditProfileView.swift`, `Services/AvatarStore.swift`
+
+### up-propagation · Remonter une modification puis la redescendre
+- **Swift :** `onUpdateProfile: (ProfileDraft) -> Void` jusqu'à `AppFlowView`, qui met à jour la session ; `RootView(user:)` reçoit le nouvel utilisateur et `.onChange(of: user) { viewModel.updateUser($0) }`
+- **React/RN :** un callback `onSave` qui remonte à un store, puis un `useEffect` qui resynchronise l'état local
+- **Différence clé :** la session persistée est la source de vérité ; Home et Profile la reçoivent sans que l'app soit recréée (`.id(appID)` ne change qu'à la connexion / déconnexion), donc les tâches ne sont pas perdues. `AvatarImage` choisit la photo locale ou l'avatar par défaut.
+- **Vu à :** étape 18, `App/RootView.swift`, `Views/Entry/AppFlowView.swift`, `Views/Shared/AvatarImage.swift`
