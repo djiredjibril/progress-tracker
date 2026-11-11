@@ -6,6 +6,7 @@ import SwiftUI
 enum Spacing {
     static let screen: CGFloat = 20
     static let section: CGFloat = 24
+    static let l: CGFloat = 16          // padding horizontal d'un champ de formulaire
     static let m: CGFloat = 12
     static let s: CGFloat = 8
     static let xs: CGFloat = 4
@@ -18,10 +19,14 @@ enum Radius {
     static let task: CGFloat = 20
     static let tabBar: CGFloat = 28
     static let tabItem: CGFloat = 20    // pastille de l'onglet actif
+    static let field: CGFloat = 16      // champs de formulaire
+    static let button: CGFloat = 18     // bouton principal
+    static let segment: CGFloat = 12    // pastille d'un contrôle segmenté
+    static let sheet: CGFloat = 32      // coins hauts d'une feuille
 }
 
 enum Size {
-    static let avatar: CGFloat = 120
+    static let avatar: CGFloat = 112        // 120 dans la maquette, 112 dans le canvas (D-031)
     static let circleButton: CGFloat = 44
     static let statIcon: CGFloat = 36
     static let checkbox: CGFloat = 26
@@ -35,6 +40,11 @@ enum Size {
     static let menuButton: CGFloat = 32     // zone du menu ⋮ d'une tâche
     static let fabRaise: CGFloat = 20       // de combien le bouton + dépasse de la tab bar
     static let eyebrowIcon: CGFloat = 22    // disque blanc derrière la cible de « Today's Goal »
+    static let fabRing: CGFloat = 4         // liseré du bouton + (couleur du fond)
+    static let field: CGFloat = 52          // hauteur d'un champ de formulaire
+    static let chip: CGFloat = 40           // hauteur d'une pastille de choix
+    static let primaryButton: CGFloat = 56
+    static let segmentHeight: CGFloat = 38
 }
 
 // Ombres (voir DESIGN_SYSTEM.md > Ombres)
@@ -43,6 +53,8 @@ enum Shadow {
     static let cardY: CGFloat = 8
     static let goalRadius: CGFloat = 24     // carte objectif
     static let goalY: CGFloat = 12
-    static let fabRadius: CGFloat = 16      // bouton +
+    static let fabRadius: CGFloat = 16      // bouton + et bouton principal
     static let fabY: CGFloat = 8
+    static let segmentRadius: CGFloat = 5   // pastille sélectionnée d'un contrôle segmenté
+    static let segmentY: CGFloat = 4
 }

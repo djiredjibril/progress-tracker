@@ -333,3 +333,39 @@ Format d'une entrée :
 - **React/RN :** `accessibilityRole="header"`, `accessibilityLabel`
 - **Différence clé :** on décide ce que VoiceOver lit : un label par ligne de tâche (titre + échéance) plutôt que trois éléments, pas de « waving hand » après le prénom, et « See All My Tasks » plutôt que « See All » seul.
 - **Vu à :** étape 7, `HomeHeaderView.swift`, `SectionHeaderView.swift`, `TaskRowView.swift`, `GoalCardView.swift`
+
+### sheet · `.sheet`, `presentationDetents`, `@Environment(\.dismiss)`
+- **Swift :** `.sheet(isPresented: $isAddingTask) { NewTaskView { … } }`, `.presentationDetents([.large])`, `@Environment(\.dismiss) var dismiss`
+- **React/RN :** `<Modal visible={isAddingTask}>` ou un bottom sheet, avec `onClose` en prop
+- **Différence clé :** SwiftUI remet le booléen à faux tout seul quand on ferme la feuille (le `$` est un binding en lecture ET écriture). `dismiss()` ferme la feuille courante sans qu'on reçoive de callback. Hauteur, poignée, coins et fond se règlent par des modifiers posés sur le CONTENU de la feuille.
+- **Vu à :** étape 8, `App/RootView.swift`, `Views/Home/NewTaskView.swift`
+
+### focus-state · `@FocusState`, `TextField` et `Binding` sur une propriété
+- **Swift :** `@FocusState private var isTitleFocused: Bool`, `TextField("", text: $draft.title).focused($isTitleFocused)`
+- **React/RN :** un `ref` sur le `TextInput` + `ref.focus()` / `onFocus`, et `value` + `onChangeText`
+- **Différence clé :** `$draft.title` est un `Binding` sur UNE propriété de la struct : la saisie l'écrit et tout changement du modèle met le champ à jour. `@FocusState` dit quel champ a le focus et permet de le changer par code.
+- **Vu à :** étape 8, `Views/Home/NewTaskView.swift`
+
+### form-controls · `DatePicker`, `Menu` + `Picker`, `Toggle`
+- **Swift :** `DatePicker("Time", selection: $draft.time, displayedComponents: .hourAndMinute)`, `Menu { Picker(…) { … .tag(minutes) } }`, `Toggle(…, isOn: $draft.remindsBeforeStart)`
+- **React/RN :** `datetimepicker`, `<select>`, `<Switch value onValueChange>`
+- **Différence clé :** ces contrôles natifs se branchent par `Binding`, sans handler. `.labelsHidden()` retire le libellé visible mais VoiceOver le lit toujours. Le format de l'heure suit la locale du téléphone.
+- **Vu à :** étape 8, `Views/Home/NewTaskView.swift`
+
+### button-style · `ButtonStyle` et `@Environment(\.isEnabled)`
+- **Swift :** `struct PrimaryButtonStyle: ButtonStyle { func makeBody(configuration:) … }` + `extension ButtonStyle where Self == PrimaryButtonStyle { static var primary … }` → `.buttonStyle(.primary)`
+- **React/RN :** un composant `<PrimaryButton>`, mais ici le bouton reste un vrai `Button`
+- **Différence clé :** `configuration.label` est le contenu et `configuration.isPressed` l'état d'appui. `isEnabled` se lit dans l'environnement : `.disabled(…)` pâlit le bouton sans prop supplémentaire.
+- **Vu à :** étape 8, `Views/Shared/PrimaryButtonStyle.swift`
+
+### generics · Composant générique (`PillSegmentedControl<Option>`)
+- **Swift :** `struct PillSegmentedControl<Option: Hashable>: View { @Binding var selection: Option; let options: [Option]; let title: (Option) -> String }`
+- **React/RN :** `function SegmentedControl<T>({ value, options, label })` en TypeScript
+- **Différence clé :** le même composant sert pour une priorité, une période… et le compilateur vérifie les types. `title: \.title` passe un key path comme fonction.
+- **Vu à :** étape 8, `Views/Shared/PillSegmentedControl.swift`
+
+### lifting-state · Remonter l'état (ViewModel possédé par `RootView`)
+- **Swift :** `@State private var viewModel` dans `RootView`, passé à `HomeView(viewModel:)` en simple `let`
+- **React/RN :** « lifting state up » : déplacer l'état dans le parent commun, ou dans un contexte/store global
+- **Différence clé :** une classe `@Observable` reçue en `let` suffit : la vue suit les propriétés qu'elle lit, sans `Binding` ni `useContext`.
+- **Vu à :** étape 8, `App/RootView.swift`, `Views/Home/HomeView.swift`

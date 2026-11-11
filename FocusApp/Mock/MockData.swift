@@ -11,9 +11,12 @@ enum MockData {
     static let goal = DailyGoal(title: "Keep Going!", progress: 0.7)
 
     static let tasks: [TaskItem] = [
-        TaskItem(title: "Design new UI screens", dueDate: today(at: 10), isCompleted: true),
-        TaskItem(title: "Workout", dueDate: today(at: 18)),
-        TaskItem(title: "Read a book", dueDate: today(at: 20))
+        TaskItem(title: "Design new UI screens", dueDate: today(at: 10), isCompleted: true,
+                 category: .work, durationMinutes: 90),
+        TaskItem(title: "Workout", dueDate: today(at: 18),
+                 category: .health, durationMinutes: 60),
+        TaskItem(title: "Read a book", dueDate: today(at: 20),
+                 category: .learning, durationMinutes: 30)
     ]
 
     static let homeData = HomeData(user: user, stats: stats, goal: goal, tasks: tasks)

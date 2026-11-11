@@ -157,3 +157,15 @@ Toutes les icônes utilisent SF Symbols.
 ### D-032 : Swift Charts autorisé, authentification fictive
 **Choix :** Analytics utilise **Swift Charts**, framework natif d'Apple : D-011 (zéro dépendance tierce) reste respecté. Log In / Sign Up passent par un protocole `AuthProviding` avec une implémentation mock, sans backend ; l'état « connecté » est persisté localement.
 **Pourquoi :** Swift Charts est dans le SDK. L'authentification réelle sort du périmètre d'apprentissage.
+
+### D-033 : Étape 8 : ViewModel remonté dans `RootView`, feuille « New Task »
+**Choix :**
+- `RootView` possède le `HomeViewModel` (`@State`) et le passe à `HomeView(viewModel:)`. Cela remplace D-020 (« HomeView crée son ViewModel »). Le bouton + de la tab bar, qui vit dans `RootView`, doit ajouter des tâches à l'état affiché par Home, et Calendar et Analytics partageront ces tâches.
+- `NewTaskDraft` (struct pure, testée) porte l'état du formulaire, la validation (titre non vide après `trim`) et la combinaison jour + heure. La feuille ne connaît pas le ViewModel : elle remonte une `TaskItem` par `onCreate`, et `HomeViewModel.addTask` l'insère en gardant la liste triée par échéance (sans toucher à `tasksDone`).
+- `TaskItem` gagne `category`, `priority`, `durationMinutes` et `reminderMinutes` (tous avec valeur par défaut). Nouveaux enums `TaskCategory` et `TaskPriority`.
+- « Pick a date » ouvre une seconde feuille (calendrier graphique, détent moyen). L'heure utilise le `DatePicker` compact natif : sa pastille grise et son format (24 h selon la locale du téléphone) diffèrent du canvas, qui affiche « 6:00 PM » en texte simple.
+- Pas de focus automatique sur le titre à l'ouverture (le clavier masquerait le formulaire) : le focus se fait au toucher.
+- Composants partagés ajoutés : `PrimaryButtonStyle` (`.buttonStyle(.primary)`) et `PillSegmentedControl` (réutilisé par Analytics à l'étape 12).
+- **D-029 appliqué :** `textSecondary` assombri, `appPrimaryStrong` pour l'onglet actif, onglets inactifs en `textSecondary`, dégradé du bouton + terminé en `appPrimaryStrong`. `DESIGN_SYSTEM.md` mis à jour.
+- **D-031 tranché :** avatar à 112 pt (valeur du canvas) et liseré de 4 pt autour du bouton + (`Size.fabRing`).
+- **Mock :** Home garde ses 3 tâches. Le « Team stand-up » de 13:00 que montre Calendar sera ajouté à l'étape 11, avec la décision sur ce que Home affiche alors.

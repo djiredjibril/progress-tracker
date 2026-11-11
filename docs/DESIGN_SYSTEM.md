@@ -11,7 +11,7 @@ Implémentation dans `FocusApp/DesignSystem/`, sous forme d'extensions `Color` e
 | `appPrimary` | `#6C6CF5` | Accent : checkbox cochée, bouton +, onglet actif, point de notification |
 | `appPrimaryLight` | `#8E8CF7` | Haut du dégradé du bouton + |
 | `textPrimary` | `#0F1328` | Titres (« Hello, Alex », valeurs des stats, titres des tâches) |
-| `textSecondary` | `#6B7088` | Sous-titres, labels, horaires, « See All » |
+| `textSecondary` | `#5F6479` | Sous-titres, labels, horaires, « See All » (assombri depuis `#6B7088`, D-029) |
 | `textTertiary` | `#9A9EB2` | Onglets inactifs, icônes ⋮, cercles des tâches non cochées |
 | `backgroundTop` | `#E6ECFB` | Haut du fond de l'écran |
 | `backgroundBottom` | `#F3F1FC` | Bas du fond de l'écran |
@@ -73,7 +73,7 @@ Utilise `Font.system(size:weight:)`. Le Dynamic Type est une amélioration bonus
 | `Radius.stat` | 22 | Cartes de stats |
 | `Radius.task` | 20 | Lignes de tâches |
 | `Radius.tabBar` | 28 | Fond de la tab bar |
-| `Size.avatar` | 120 | Diamètre de l'avatar |
+| `Size.avatar` | 112 | Diamètre de l'avatar (120 dans la maquette, 112 dans le canvas, D-031) |
 | `Size.circleButton` | 44 | Boutons recherche et notification |
 | `Size.statIcon` | 36 | Puce d'icône des stats |
 | `Size.checkbox` | 26 | Cercle de la tâche |
@@ -119,3 +119,29 @@ Utilise `Font.system(size:weight:)`. Le Dynamic Type est une amélioration bonus
 - **My Tasks** : en-tête de section avec « See All › » à droite. Les lignes contiennent, de gauche à droite : cercle, titre + horaire, menu ⋮. Une tâche cochée a un cercle plein `appPrimary` avec un checkmark. Le titre n'est **pas** barré.
 - **Tab bar** : une capsule claire flottante (verre) avec 4 onglets et un bouton + circulaire en dégradé au centre, qui dépasse vers le haut. L'onglet actif est affiché en `appPrimary` avec une pastille de fond claire derrière l'icône.
 - **Défilement** : le contenu défile dans un `ScrollView` et la tab bar reste fixe en bas. Prévoir une marge basse pour que la dernière tâche ne soit pas masquée.
+
+## Ajouts de la phase 2 (source : canvas Claude Design, D-029)
+
+### Couleurs
+
+| Token | Valeur | Usage |
+|---|---|---|
+| `appPrimaryStrong` | `#5552E0` | Onglet actif, liens, pastille de date sélectionnée, dégradé du bouton + (fin) |
+| `appPrimaryDeep` | `#3F3BC0` | Texte d'une pastille de catégorie sélectionnée |
+| `buttonGradientStart` / `buttonGradientEnd` | `#6D6BEE` → `#4F4BD8` | Bouton principal (`.buttonStyle(.primary)`) |
+| `buttonShadow` | `appPrimaryStrong` à 35 % | Ombre du bouton principal |
+| `destructive` | `#B4322A` | « Log out », actions de suppression |
+| `textPlaceholder` | `#6E7389` | Placeholder des champs |
+| `sheetTop` / `sheetBottom` | `#F7F6FE` → `#F1F0FC` | Fond d'une feuille |
+| `fieldFill` / `fieldBorder` / `focusRing` | blanc / `textPrimary` à 10 % / `appPrimary` à 12 % | Champs de formulaire (halo violet au focus) |
+| `segmentTrack` / `closeFill` / `selectedChipFill` | `textPrimary` à 5 % / 6 % / `appPrimary` à 12 % | Piste d'un contrôle segmenté, bouton ✕, pastille cerclée |
+
+Onglets inactifs : `textSecondary` (et non `textTertiary`, trop pâle pour 4.5:1). Pastille de l'onglet actif : `appPrimary` à 14 %.
+
+### Typographie
+
+`appFieldLabel` 13 semibold, `appFieldText` 16 regular, `appChip` 14 semibold (pastille sélectionnée, les autres utilisent `appLink`), `appButton` 16 bold, `appSheetTitle` 18 bold.
+
+### Espacements, rayons et tailles
+
+`Spacing.l` 16 (padding horizontal d'un champ). `Radius.field` 16, `Radius.button` 18, `Radius.segment` 12, `Radius.sheet` 32. `Size.field` 52, `Size.chip` 40, `Size.primaryButton` 56, `Size.segmentHeight` 38, `Size.fabRing` 4 (liseré de la couleur du fond autour du bouton +).

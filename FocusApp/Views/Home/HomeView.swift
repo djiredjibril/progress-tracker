@@ -2,17 +2,10 @@ import SwiftUI
 
 // Écran d'accueil : il lit l'état du ViewModel et assemble les composants présentationnels.
 struct HomeView: View {
-    // ⚛️ React : `@State` ≈ `useState`, mais pour un objet @Observable entier : la vue en est propriétaire
-    // et le conserve entre les rendus (comme un `useRef`/`useState` initialisé une fois). Sans `@State`,
-    // le ViewModel serait recréé à chaque rendu. Pas besoin de setter : on modifie ses propriétés.
-    @State private var viewModel: HomeViewModel
-
-    // ⚛️ React : on passe un *provider* plutôt que le ViewModel pour que les `#Preview` puissent injecter
-    // un service instantané. `_viewModel = State(initialValue:)` initialise le `@State` depuis un paramètre
-    // (≈ `useState(() => new ViewModel(provider))`).
-    init(provider: HomeDataProviding = MockHomeDataProvider()) {
-        _viewModel = State(initialValue: HomeViewModel(provider: provider))
-    }
+    // ⚛️ React : le ViewModel est maintenant reçu en PROP : c'est `RootView` qui le possède (voir D-033). C'est
+    // « remonter l'état » (lifting state up) : le bouton + de la tab bar et l'écran Home doivent partager les mêmes
+    // tâches. Un simple `let` suffit : la classe est @Observable, la vue suit les propriétés qu'elle lit.
+    let viewModel: HomeViewModel
 
     var body: some View {
         // ⚛️ React : `ScrollView` ≈ `<ScrollView>` RN. `VStack` ≈ `<View>` avec `flexDirection: 'column'`
@@ -155,5 +148,5 @@ struct HomeView: View {
 
 #Preview {
     // Service instantané : la preview affiche directement les données chargées.
-    HomeView(provider: MockHomeDataProvider(delay: .zero))
+    HomeView(viewModel: HomeViewModel(provider: MockHomeDataProvider(delay: .zero)))
 }

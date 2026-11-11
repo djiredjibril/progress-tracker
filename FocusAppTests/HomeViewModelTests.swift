@@ -52,6 +52,29 @@ struct HomeViewModelTests {
         #expect(afterUncheck.stats.tasksDone == initialDone)
     }
 
+    // MARK: - addTask()
+
+    @Test func addTaskInsertsSortedByDueDateWithoutChangingTasksDone() async throws {
+        let viewModel = makeViewModel()
+        await viewModel.load()
+        let initial = try #require(viewModel.data)
+
+        // 15:00 : entre « Design » (10:00) et « Workout » (18:00) dans les données mock.
+        let afternoon = Self.date(atHour: 15)
+        viewModel.addTask(TaskItem(title: "Review PRs", dueDate: afternoon))
+
+        let updated = try #require(viewModel.data)
+        #expect(updated.tasks.count == initial.tasks.count + 1)
+        #expect(updated.tasks.map(\.title) == ["Design new UI screens", "Review PRs", "Workout", "Read a book"])
+        #expect(updated.stats.tasksDone == initial.stats.tasksDone)
+    }
+
+    @Test func addTaskIsIgnoredBeforeDataIsLoaded() {
+        let viewModel = makeViewModel()
+        viewModel.addTask(TaskItem(title: "Too early", dueDate: .now))
+        #expect(viewModel.data == nil)
+    }
+
     // MARK: - greeting
 
     // ⚛️ React : ≈ `test.each([[8, '…'], …])` de Jest : un test exécuté pour chaque jeu d'arguments.

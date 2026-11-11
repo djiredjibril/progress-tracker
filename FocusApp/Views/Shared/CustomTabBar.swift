@@ -46,7 +46,9 @@ struct CustomTabBar: View {
                 Text(tab.title)
                     .font(.appTabLabel)
             }
-            .foregroundStyle(isSelected ? Color.appPrimary : Color.textTertiary)
+            // Violet fort pour l'onglet actif, `textSecondary` (et non `textTertiary`, trop pâle) pour les autres :
+            // les deux passent le contraste 4.5:1 du canvas (D-029).
+            .foregroundStyle(isSelected ? Color.appPrimaryStrong : Color.textSecondary)
             .padding(.vertical, Spacing.s)
             .frame(maxWidth: .infinity)
             .background {
@@ -74,12 +76,14 @@ struct CustomTabBar: View {
                 .background(
                     Circle().fill(
                         LinearGradient(
-                            colors: [Color.appPrimaryLight, Color.appPrimary],
+                            colors: [Color.appPrimaryLight, Color.appPrimaryStrong],
                             startPoint: .top,
                             endPoint: .bottom
                         )
                     )
                 )
+                // Liseré de la couleur du fond : le bouton « découpe » visuellement la barre (D-031).
+                .overlay(Circle().strokeBorder(Color.backgroundBottom, lineWidth: Size.fabRing))
                 .shadow(color: Color.fabShadow, radius: Shadow.fabRadius, y: Shadow.fabY)
         }
         .buttonStyle(.plain)

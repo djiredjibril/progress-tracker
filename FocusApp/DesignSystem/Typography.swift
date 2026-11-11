@@ -29,4 +29,11 @@ extension Font {
     static let appTabIcon = Font.system(size: 20, weight: .medium)      // icône d'un onglet
     static let appFabIcon = Font.system(size: 26, weight: .semibold)    // + du bouton central
     static let appEyebrowIcon = Font.system(size: 12, weight: .bold)    // cible de « Today's Goal »
+
+    // Formulaires
+    static let appFieldLabel = Font.system(size: 13, weight: .semibold)
+    static let appFieldText = Font.system(size: 16, weight: .regular)
+    static let appChip = Font.system(size: 14, weight: .semibold)       // pastille sélectionnée
+    static let appButton = Font.system(size: 16, weight: .bold)
+    static let appSheetTitle = Font.system(size: 18, weight: .bold)
 }

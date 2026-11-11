@@ -21,12 +21,20 @@ extension Color {
     // Elle se lit `Color.appPrimary`. `let` = constante (comme `const`), `var` = modifiable.
     static let appPrimary = Color(hex: 0x6C6CF5)
     static let appPrimaryLight = Color(hex: 0x8E8CF7)
+    // Variantes plus foncées du canvas (contraste 4.5:1, D-029) : onglet actif, liens, bouton principal.
+    static let appPrimaryStrong = Color(hex: 0x5552E0)
+    static let appPrimaryDeep = Color(hex: 0x3F3BC0)        // texte d'une pastille sélectionnée
+    static let buttonGradientStart = Color(hex: 0x6D6BEE)
+    static let buttonGradientEnd = Color(hex: 0x4F4BD8)
+    static let buttonShadow = Color.appPrimaryStrong.opacity(0.35)
+    static let destructive = Color(hex: 0xB4322A)           // « Log out », actions de suppression
 
     // MARK: - Texte
 
     static let textPrimary = Color(hex: 0x0F1328)
-    static let textSecondary = Color(hex: 0x6B7088)
+    static let textSecondary = Color(hex: 0x5F6479)         // assombri depuis #6B7088 (D-029)
     static let textTertiary = Color(hex: 0x9A9EB2)
+    static let textPlaceholder = Color(hex: 0x6E7389)
 
     // MARK: - Fond
 
@@ -41,8 +49,8 @@ extension Color {
     static let textOnAccentSecondary = Color.white.opacity(0.85)    // sous-titre de la carte objectif
     static let progressTrack = Color.white.opacity(0.30)            // piste de la barre de progression
     static let goalShadow = Color.goalGradientStart.opacity(0.30)
-    static let fabShadow = Color.appPrimary.opacity(0.40)           // ombre du bouton +
-    static let tabPill = Color.appPrimary.opacity(0.12)             // pastille de l'onglet actif
+    static let fabShadow = Color.appPrimaryStrong.opacity(0.40)     // ombre du bouton +
+    static let tabPill = Color.appPrimary.opacity(0.14)             // pastille de l'onglet actif
 
     // MARK: - Carte objectif (dégradé du bas-gauche vers le haut-droite)
 
@@ -58,4 +66,15 @@ extension Color {
     static let statFocusDark = Color(hex: 0x6E95F0)
     static let statStreakLight = Color(hex: 0xF9DDD7)
     static let statStreakDark = Color(hex: 0xF2846F)
+
+    // MARK: - Formulaires et feuilles
+
+    static let sheetTop = Color(hex: 0xF7F6FE)
+    static let sheetBottom = Color(hex: 0xF1F0FC)
+    static let fieldFill = Color.white
+    static let fieldBorder = Color.textPrimary.opacity(0.10)
+    static let focusRing = Color.appPrimary.opacity(0.12)
+    static let segmentTrack = Color.textPrimary.opacity(0.05)
+    static let closeFill = Color.textPrimary.opacity(0.06)
+    static let selectedChipFill = Color.appPrimary.opacity(0.12)
 }

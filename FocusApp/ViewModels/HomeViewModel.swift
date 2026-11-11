@@ -72,6 +72,15 @@ final class HomeViewModel {
         }
     }
 
+    // Ajoute une tâche créée par le formulaire et garde la liste triée par échéance. Sans données chargées, il n'y a
+    // rien à mettre à jour : on ignore. Une nouvelle tâche n'est pas cochée, donc `tasksDone` ne change pas.
+    func addTask(_ task: TaskItem) {
+        guard var current = data else { return }
+        current.tasks.append(task)
+        current.tasks.sort { $0.dueDate < $1.dueDate }
+        data = current
+    }
+
     // ⚛️ React : le `_` signifie « pas de label à l'appel » : `toggle(task)` et non `toggle(task: task)`.
     func toggle(_ task: TaskItem) {
         guard var current = data,

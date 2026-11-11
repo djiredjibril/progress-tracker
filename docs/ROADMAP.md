@@ -51,7 +51,7 @@ Comparaison fine avec la maquette, animations d'apparition, états de chargement
 
 Source de design : https://claude.ai/artifact/RDVEnKPgzbb23GAKCTAMwg (14 écrans, 390×844). Décisions associées : D-028 à D-032. Même méthode qu'en phase 1 : une étape à la fois, pause pour validation, commit à la fin de chaque étape.
 
-## [ ] Étape 8 — Alignement sur le design + feuille « New Task »
+## [x] Étape 8 — Alignement sur le design + feuille « New Task »
 Tokens mis à jour (D-029), puis `TaskItem` étendu (catégorie, priorité, durée, rappel), `addTask` dans le ViewModel, et la feuille « New Task » ouverte par le bouton +.
 - **Concepts :** `.sheet`, `@FocusState`, validation de formulaire, `Picker`, `Toggle`, `DatePicker`, `presentationDetents`
 - **Fini quand :** le bouton + ouvre la feuille, « Create Task » est désactivé tant que le titre est vide, et la nouvelle tâche apparaît dans « My Tasks » (testé).
