@@ -73,5 +73,25 @@ Toutes les icônes utilisent SF Symbols.
 **Choix :** l'app s'appelle `FocusApp`, avec le bundle id `com.example.focusapp`. Le développeur pourra les changer dans `project.yml`.
 
 ### D-018 · Simulateur de référence et outils installés
-**Choix :** `iPhone 17` comme simulateur pour build, tests et captures. `xcodegen` et `xcbeautify` installés via Homebrew (avec l'accord du développeur).
+**Choix :** `iPhone 17 Pro` comme simulateur pour build, tests et captures. `xcodegen` et `xcbeautify` installés via Homebrew (avec l'accord du développeur).
 **Pourquoi :** modèle récent, non « Plus/Max », aux proportions proches de la maquette (SETUP.md §6).
+
+### D-019 · Tokens de police préfixés `app`
+**Choix :** `Font.appGreeting`, `appLargeTitle`, `appBody`, `appStatValue`, etc. (au lieu de `greetingSmall`, `largeTitle`, `body`…).
+**Pourquoi :** `Font.body` et `Font.largeTitle` existent déjà dans SwiftUI. Les redéfinir sous le même nom créerait une ambiguïté à l'usage. Les couleurs gardent les noms de `DESIGN_SYSTEM.md` (aucun conflit).
+
+### D-020 · `HomeView` reçoit un provider, pas un ViewModel
+**Choix :** `HomeView(provider: HomeDataProviding = MockHomeDataProvider())` crée son `@State HomeViewModel` dans son `init`.
+**Pourquoi :** les `#Preview` peuvent injecter un service sans délai (`delay: .zero`), tout en gardant le ViewModel détenu par la vue (`ARCHITECTURE.md`).
+
+### D-021 · Périmètre de l'étape 1
+**Choix :** `GlassCard.swift` est repoussé à l'étape 3 (là où `.glassCard()` est introduit, selon la roadmap). `Date+Formatting.swift` est fait dès l'étape 1, car la vue brute affiche déjà « Today, 10:00 AM ». La bascule `.preferredColorScheme(.light)` (D-014) est faite à l'étape 2 avec le fond d'écran.
+**Aussi :** `ARCHITECTURE.md` laisse le choix entre `data: HomeData?` et des propriétés séparées. J'ai retenu `data: HomeData?`.
+
+### D-022 · Étape 2 : choix de mise en page
+**Choix :**
+- Le fond est un composant `Views/Shared/AppBackground.swift` (absent de l'arborescence d'`ARCHITECTURE.md`), appliqué par `HomeView` via `.background`.
+- Tokens ajoutés : `Size.badge` (8), `Size.blob` (320), `Size.blobBlur` (80) et `Font.appIconButton` (18 medium).
+- Le sous-titre du header utilise un saut de ligne explicite pour reproduire la coupe en 2 lignes de la maquette.
+- Le point de notification est piloté par `hasUnreadNotifications`, fixé à `true` dans `HomeView` : le modèle `User` n'a pas ce champ.
+- Les boutons ronds n'ont ni matériau ni ombre pour l'instant : l'effet verre arrive avec `.glassCard()` à l'étape 3.

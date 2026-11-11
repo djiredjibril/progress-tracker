@@ -6,9 +6,11 @@ struct RootView: View {
     // ⚛️ React : `body` ≈ le `return (...)` du composant. SwiftUI le rappelle quand l'état change.
     // `some View` = « un type de vue précis, que le compilateur déduit » (≈ `JSX.Element`, mais vérifié statiquement).
     var body: some View {
-        // ⚛️ React : `Text` ≈ `<Text>` de React Native. Pas de JSX : on appelle des initialiseurs,
-        // et on enchaîne des *modifiers* (`.font`, `.padding`…) à la place des props de style.
-        Text("FocusApp")
+        // Étape 1 : on affiche l'écran brut. Il deviendra le conteneur de la tab bar à l'étape 6.
+        HomeView()
+            // ⚛️ React : ≈ `userInterfaceStyle: 'light'` d'Expo : on ignore le mode sombre du téléphone (D-014).
+            // Posé à la racine, il s'applique à toute l'app.
+            .preferredColorScheme(.light)
     }
 }
 

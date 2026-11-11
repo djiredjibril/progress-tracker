@@ -1,0 +1,52 @@
+import SwiftUI
+
+// ⚛️ React : une `extension` ajoute des membres à un type existant (ici le `Color` d'Apple) sans le modifier.
+// Proche d'une augmentation de module TypeScript, ou d'un `theme` branché sur un objet qu'on ne possède pas.
+extension Color {
+    // ⚛️ React : un `init` est un constructeur. `opacity: Double = 1` ≈ un paramètre par défaut (`opacity = 1`).
+    // Différence : les noms d'arguments (`hex:`, `opacity:`) sont obligatoires à l'appel, comme un objet de props.
+    init(hex: UInt32, opacity: Double = 1) {
+        self.init(
+            .sRGB,
+            red: Double((hex >> 16) & 0xFF) / 255,
+            green: Double((hex >> 8) & 0xFF) / 255,
+            blue: Double(hex & 0xFF) / 255,
+            opacity: opacity
+        )
+    }
+
+    // MARK: - Accent
+
+    // ⚛️ React : `static let` ≈ une constante exportée d'un fichier de thème (`export const colors = { … }`).
+    // Elle se lit `Color.appPrimary`. `let` = constante (comme `const`), `var` = modifiable.
+    static let appPrimary = Color(hex: 0x6C6CF5)
+    static let appPrimaryLight = Color(hex: 0x8E8CF7)
+
+    // MARK: - Texte
+
+    static let textPrimary = Color(hex: 0x0F1328)
+    static let textSecondary = Color(hex: 0x6B7088)
+    static let textTertiary = Color(hex: 0x9A9EB2)
+
+    // MARK: - Fond
+
+    static let backgroundTop = Color(hex: 0xE6ECFB)
+    static let backgroundBottom = Color(hex: 0xF3F1FC)
+    static let glassFill = Color.white.opacity(0.55)
+    static let glassStroke = Color.white.opacity(0.70)
+
+    // MARK: - Carte objectif (dégradé du bas-gauche vers le haut-droite)
+
+    static let goalGradientStart = Color(hex: 0x5A6FE4)
+    static let goalGradientMid = Color(hex: 0x7F84F2)
+    static let goalGradientEnd = Color(hex: 0xB59DF4)
+
+    // MARK: - Puces d'icônes des stats (clair → foncé)
+
+    static let statTasksLight = Color(hex: 0xD6CCFA)
+    static let statTasksDark = Color(hex: 0xA493F2)
+    static let statFocusLight = Color(hex: 0xA9C1FA)
+    static let statFocusDark = Color(hex: 0x6E95F0)
+    static let statStreakLight = Color(hex: 0xF9DDD7)
+    static let statStreakDark = Color(hex: 0xF2846F)
+}

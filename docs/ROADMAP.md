@@ -9,13 +9,13 @@ Suivre `SETUP.md` : vérifier les outils, créer `project.yml`, `.gitignore`, `A
 - **Concepts :** `@main`, protocole `App`, `Scene`, `WindowGroup`, protocole `View`, `body`, `some View`, `#Preview`, `import Testing`
 - **Fini quand :** l'app se lance dans le simulateur et affiche « FocusApp », et `xcodebuild test` passe.
 
-## [ ] Étape 1 — Fondations : design system, modèles, service, ViewModel, tests
+## [x] Étape 1 — Fondations : design system, modèles, service, ViewModel, tests
 Fichiers de `DesignSystem/`, `Models/`, `Mock/`, `Services/`, `ViewModels/`, `Utilities/`, ainsi que `HomeViewModelTests`.
 `HomeView` affiche pour l'instant une version brute (textes empilés) pour prouver que les données circulent, avec un `ProgressView()` pendant le chargement.
 - **Concepts :** `struct` vs `class` (types valeur et référence), `let` / `var`, `Identifiable`, computed properties, `enum` comme namespace, enums avec valeurs associées (`LoadState`), `protocol`, injection de dépendance via `init`, `async` / `await`, `.task {}`, `@Observable`, `@MainActor`, `@State` qui détient un objet, extensions (`Color`, `Font`), `#expect`
 - **Fini quand :** les données mock s'affichent après le chargement simulé, et les 4 groupes de tests d'`ARCHITECTURE.md` passent.
 
-## [ ] Étape 2 — Header
+## [x] Étape 2 — Header
 Fond d'écran (dégradé + taches floues), `CircleIconButton` (recherche, notification avec point), salutation, titre + 👋, sous-titre, avatar.
 - **Concepts :** `VStack` / `HStack` / `ZStack`, `Spacer`, `alignment`, `padding`, `frame`, `clipShape`, `overlay` vs `background`, ordre des modifiers, `Image(systemName:)`, `Image("Asset")`, `Button`, `.accessibilityLabel`
 - **Fini quand :** le header ressemble à la maquette sur la capture.
