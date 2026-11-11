@@ -144,7 +144,7 @@ struct HomeView: View {
 
             // ⚛️ React : `ForEach` ≈ `tasks.map(task => <Row key={task.id} />)` : grâce à `Identifiable`,
             // pas besoin de préciser la clé.
-            ForEach(data.tasks) { task in
+            ForEach(data.tasks(on: viewModel.currentDate)) { task in
                 TaskRowView(
                     task: task,
                     // ⚛️ React : une closure passée en prop ≈ `onPress={() => toggle(task)}`. La vue envoie une

@@ -49,3 +49,29 @@ extension TimeInterval {
         return hours > 0 ? "\(hours)h \(minutes)m" : "\(minutes)m"
     }
 }
+
+extension Date {
+    // « 10:00 » et « AM » séparés (colonne des heures du planning). On normalise l'espace insécable fine qu'iOS insère
+    // avant AM/PM pour pouvoir couper proprement.
+    func clockParts() -> (time: String, period: String) {
+        let text = formatted(.dateTime.hour().minute().locale(Locale(identifier: "en_US")))
+            .replacingOccurrences(of: "\u{202F}", with: " ")
+        let pieces = text.split(separator: " ", maxSplits: 1).map(String.init)
+        return (pieces.first ?? text, pieces.count > 1 ? pieces[1] : "")
+    }
+
+    // « 3:20 PM »
+    var clockLabel: String {
+        let parts = clockParts()
+        return parts.period.isEmpty ? parts.time : "\(parts.time) \(parts.period)"
+    }
+
+    // « 10:00 – 11:30 AM », ou « 11:30 AM – 12:30 PM » quand la période change.
+    func timeRangeLabel(to end: Date) -> String {
+        let start = clockParts()
+        let stop = end.clockParts()
+        return start.period == stop.period
+            ? "\(start.time) – \(stop.time) \(stop.period)"
+            : "\(start.time) \(start.period) – \(stop.time) \(stop.period)"
+    }
+}

@@ -29,7 +29,7 @@ struct HomeViewModelTests {
 
         #expect(viewModel.state == .loaded)
         #expect(viewModel.data?.user.firstName == "Alex")
-        #expect(viewModel.data?.tasks.count == 3)
+        #expect(viewModel.data?.tasks(on: .now).count == 3)       // Home n'affiche que les tâches du jour
     }
 
     // MARK: - toggle()
@@ -65,7 +65,8 @@ struct HomeViewModelTests {
 
         let updated = try #require(viewModel.data)
         #expect(updated.tasks.count == initial.tasks.count + 1)
-        #expect(updated.tasks.map(\.title) == ["Design new UI screens", "Review PRs", "Workout", "Read a book"])
+        #expect(updated.tasks(on: .now).map(\.title) == ["Design new UI screens", "Review PRs", "Workout", "Read a book"])
+        #expect(updated.tasks == updated.tasks.sorted { $0.dueDate < $1.dueDate })
         #expect(updated.stats.tasksDone == initial.stats.tasksDone)
     }
 

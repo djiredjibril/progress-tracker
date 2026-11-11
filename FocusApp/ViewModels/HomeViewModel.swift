@@ -82,7 +82,16 @@ final class HomeViewModel {
     }
 
     // La prochaine tâche à faire (les tâches sont triées par échéance) : c'est celle que propose la session de focus.
-    var nextTask: TaskItem? { data?.tasks.first { !$0.isCompleted } }
+    // Les tâches passées et non faites sont ignorées : on propose la prochaine, aujourd'hui ou plus tard.
+    var nextTask: TaskItem? {
+        let startOfToday = Calendar.current.startOfDay(for: now())
+        return data?.tasks
+            .sorted { $0.dueDate < $1.dueDate }
+            .first { !$0.isCompleted && $0.dueDate >= startOfToday }
+    }
+
+    // « Maintenant » (injectable pour les tests) : Home s'en sert pour ne montrer que les tâches du jour.
+    var currentDate: Date { now() }
 
     // Ajoute du temps de focus réalisé (par `FocusSessionViewModel`) au total affiché sur Home.
     func addFocusTime(_ seconds: TimeInterval) {

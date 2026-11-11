@@ -40,6 +40,8 @@ extension Font {
     // Lignes riches (notifications)
     static let appRowTitle = Font.system(size: 15, weight: .semibold)
     static let appCaption = Font.system(size: 12, weight: .regular)
+    static let appHeadline = Font.system(size: 17, weight: .semibold)   // mois, numéro de jour
+    static let appTag = Font.system(size: 11, weight: .semibold)        // pastille de catégorie
 
     // Minuteur
     // ⚛️ React : `monospacedDigit()` ≈ `fontVariant: ['tabular-nums']` : tous les chiffres ont la même largeur, donc

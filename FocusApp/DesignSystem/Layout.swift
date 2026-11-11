@@ -20,6 +20,8 @@ enum Radius {
     static let task: CGFloat = 20
     static let tabBar: CGFloat = 28
     static let tabItem: CGFloat = 20    // pastille de l'onglet actif
+    static let day: CGFloat = 16        // jour sélectionné du bandeau de semaine
+    static let tag: CGFloat = 10        // pastille de catégorie
     static let field: CGFloat = 16      // champs de formulaire
     static let button: CGFloat = 18     // bouton principal
     static let segment: CGFloat = 12    // pastille d'un contrôle segmenté
@@ -47,6 +49,9 @@ enum Size {
     static let primaryButton: CGFloat = 56
     static let segmentHeight: CGFloat = 38
     static let notificationIcon: CGFloat = 40
+    static let dayDot: CGFloat = 5          // point « il y a des tâches ce jour-là »
+    static let timeColumn: CGFloat = 52     // colonne des heures du planning
+    static let nowLine: CGFloat = 2
     static let focusRing: CGFloat = 264     // anneau du minuteur
     static let ringStroke: CGFloat = 16
     static let controlSecondary: CGFloat = 56

@@ -19,7 +19,26 @@ enum MockData {
                  category: .learning, durationMinutes: 30)
     ]
 
-    static let homeData = HomeData(user: user, stats: stats, goal: goal, tasks: tasks)
+    // Quelques tâches sur d'autres jours de la semaine courante (lundi à dimanche), pour que les points du bandeau de
+    // Calendar aient un sens. Celles qui tombent aujourd'hui sont écartées : Home ne doit montrer que les 3 du jour.
+    static let weekTasks: [TaskItem] = [
+        TaskItem(title: "Plan the week", dueDate: inThisWeek(day: 0, hour: 9), isCompleted: true,
+                 category: .work, durationMinutes: 30),
+        TaskItem(title: "Dentist appointment", dueDate: inThisWeek(day: 1, hour: 15),
+                 category: .personal, durationMinutes: 60),
+        TaskItem(title: "Prepare the presentation", dueDate: inThisWeek(day: 3, hour: 9, minute: 30),
+                 category: .work, durationMinutes: 90),
+        TaskItem(title: "Grocery shopping", dueDate: inThisWeek(day: 5, hour: 10),
+                 category: .personal, durationMinutes: 45)
+    ].filter { !Calendar.current.isDateInToday($0.dueDate) }
+
+    // Toutes les tâches, triées par échéance.
+    static let homeData = HomeData(
+        user: user,
+        stats: stats,
+        goal: goal,
+        tasks: (tasks + weekTasks).sorted { $0.dueDate < $1.dueDate }
+    )
 
     // Notifications : les dates sont relatives à « maintenant » pour que les libellés (« Just now », « 2h ago »…)
     // et les groupes « Today / Earlier » restent cohérents quel que soit le moment du lancement.
@@ -45,6 +64,14 @@ enum MockData {
                             date: twoDaysAgo, isRead: true)
         ]
     }()
+
+    // `day` : 0 = lundi de la semaine courante, 6 = dimanche.
+    private static func inThisWeek(day: Int, hour: Int, minute: Int = 0) -> Date {
+        let calendar = Calendar.mondayFirst
+        let start = calendar.dateInterval(of: .weekOfYear, for: .now)?.start ?? .now
+        let date = calendar.date(byAdding: .day, value: day, to: start) ?? start
+        return calendar.date(bySettingHour: hour, minute: minute, second: 0, of: date) ?? date
+    }
 
     // Les dates sont relatives à « aujourd'hui » pour que l'écran affiche toujours « Today, … ».
     private static func today(at hour: Int) -> Date {

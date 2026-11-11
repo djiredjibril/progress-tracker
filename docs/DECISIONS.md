@@ -195,3 +195,12 @@ Toutes les icônes utilisent SF Symbols.
 - « Next break : 5 min » est la durée de la prochaine pause (le canvas ne dit pas si c'est un décompte) ; pendant la pause, la carte devient « Next focus : 25 min ».
 - Le bouton ⋯ (réglages de session) est une action mock. L'écran provisoire `PlaceholderScreen` perd son bouton retour, devenu inutile.
 - Non fait : une notification « Focus session complete » à la fin d'une session (elle existe dans le mock des notifications).
+
+### D-037 : Étape 11 : Calendar et tâches sur plusieurs jours
+**Choix :**
+- La semaine commence le **lundi** (`Calendar.mondayFirst`), comme dans le canvas. Les flèches changent de semaine en gardant le même jour de la semaine ; « Today » revient à aujourd'hui. Le mois affiché est celui du jour sélectionné.
+- Le jour sélectionné a un titre qui s'adapte (« Today's / Tomorrow's / Yesterday's Schedule », sinon « Thu, Nov 12 ») et un résumé « 3 tasks · 1 done ». Le repère « maintenant » est un `ScheduleItem` inséré entre les tâches passées et à venir, seulement quand le jour sélectionné est aujourd'hui. Un jour sans tâche affiche un état vide.
+- `CalendarViewModel` ne garde que l'état d'affichage (jour sélectionné, semaine). Les tâches restent dans `HomeViewModel` (source unique) et sont passées à la vue ; elles sont donc partagées avec Home et la feuille « New Task ».
+- **Home n'affiche plus que les tâches du jour** (`HomeData.tasks(on:)`). Le mock gagne 4 tâches sur d'autres jours de la semaine (lundi, mardi, jeudi, samedi) pour les points du bandeau ; celles qui tombent aujourd'hui sont écartées. `nextTask` ignore les tâches passées non faites.
+- **Écarts avec le canvas :** le « Team stand-up » de 13:00 n'est pas dans le mock : le canvas montre 3 tâches sur Home et 4 sur Calendar, et on privilégie des données cohérentes (le planning affiche « 3 tasks »). Il peut être ajouté par la feuille « New Task ». Le canvas colore deux tâches Work en violet et en bleu ; ici la couleur suit la **catégorie** (Work violet, Health corail, Learning blanc, Personal bleu). Les indicateurs d'état du planning sont en lecture seule, comme dans le canvas : on coche depuis Home.
+- Les libellés horaires séparent heure et période (`Date.clockParts`) et normalisent l'espace insécable fine d'iOS avant AM/PM.

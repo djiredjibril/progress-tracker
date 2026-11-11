@@ -37,3 +37,8 @@ struct TaskItem: Identifiable, Hashable {
         self.reminderMinutes = reminderMinutes
     }
 }
+
+extension TaskItem {
+    // Fin prévue de la tâche : échéance + durée.
+    var endDate: Date { dueDate.addingTimeInterval(TimeInterval(durationMinutes) * 60) }
+}

@@ -66,7 +66,7 @@ Minuteur 25:00 avec anneau de progression, pause / reset / skip, « Session 2 of
 - **Concepts :** `trim(from:to:)`, `Task.sleep` annulable, machine à états (`enum`), `monospacedDigit`
 - **Fini quand :** le minuteur décompte, se met en pause et se réinitialise, et les transitions d'état sont testées.
 
-## [ ] Étape 11 — Calendar
+## [x] Étape 11 — Calendar
 Titre + « Today », navigation de semaine, bandeau des 7 jours (jour sélectionné, points), liste horaire avec pastilles de catégorie et ligne « maintenant ».
 - **Concepts :** `Calendar` / `DateComponents`, `LazyVGrid`, sélection par `@State`, `Date.FormatStyle`
 - **Fini quand :** changer de jour met à jour la liste, et le calcul de semaine est testé.

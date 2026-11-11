@@ -435,3 +435,21 @@ Format d'une entrée :
 - **React/RN :** pas d'équivalent direct (animer deux icônes à la main)
 - **Différence clé :** le symbole se transforme au lieu de sauter, et les chiffres défilent dans le bon sens pour un compte à rebours.
 - **Vu à :** étape 10, `Views/Focus/RoundControlButton.swift`, `FocusSessionView.swift`
+
+### calendar-api · `Calendar`, `dateInterval(of:)`, `DateComponents`
+- **Swift :** `calendar.dateInterval(of: .weekOfYear, for: date)`, `calendar.date(byAdding: .day, value: 7, to: date)`, `calendar.isDate(a, inSameDayAs: b)`, `var c = Calendar.current; c.firstWeekday = 2`
+- **React/RN :** `date-fns` : `startOfWeek(d, { weekStartsOn: 1 })`, `addDays`, `isSameDay`
+- **Différence clé :** tout passe par un `Calendar` qui connaît fuseau, locale et premier jour de semaine : on ne fait jamais `date + 86400`. On l'injecte (`calendar:`) pour des tests déterministes, et `Calendar.mondayFirst` fixe le lundi une fois pour toute l'app.
+- **Vu à :** étape 11, `Utilities/Calendar+App.swift`, `ViewModels/CalendarViewModel.swift`
+
+### enum-in-foreach · Union affichée dans un `ForEach` (`ScheduleItem`)
+- **Swift :** `enum ScheduleItem: Identifiable { case task(TaskItem), now(Date) }` puis `ForEach(items) { item in switch item { case .task(let t): … case .now(let d): … } }`
+- **React/RN :** `items.map(i => i.type === 'task' ? <Row/> : <NowLine/>)` sur une union discriminée
+- **Différence clé :** le `switch` est exhaustif : ajouter un cas oblige à le traiter partout. Le repère « maintenant » devient un élément de la liste, inséré par la logique (testée) et non par la vue.
+- **Vu à :** étape 11, `ViewModels/CalendarViewModel.swift`, `Views/Calendar/CalendarView.swift`
+
+### date-id-self · `ForEach(days, id: \.self)` et pastille partagée
+- **Swift :** `ForEach(days, id: \.self) { day in … }`, `.matchedGeometryEffect(id: "selectedDay", in: namespace)`
+- **React/RN :** `key={day}` ; animer une pastille qui glisse (Reanimated / `onLayout`)
+- **Différence clé :** une `Date` est `Hashable`, donc elle sert de clé sans `Identifiable`. La pastille du jour sélectionné glisse d'un jour à l'autre (même `id` dans le même namespace, voir CONCEPTS.md#matched-geometry).
+- **Vu à :** étape 11, `Views/Calendar/Components/WeekStripView.swift`
