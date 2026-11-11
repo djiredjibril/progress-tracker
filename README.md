@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/readme/icon.png" alt="Icône Progress Tracker" width="96" />
+<img src="docs/readme/icon.png" alt="Icône Progress Tracker" width="120" />
 
 # Progress Tracker
 
