@@ -1,4 +1,4 @@
-name: FocusApp
+name: ProgressTracker
 options:
   bundleIdPrefix: com.example          # à remplacer par le préfixe du développeur
   deploymentTarget:
@@ -13,14 +13,14 @@ settings:
     CURRENT_PROJECT_VERSION: "1"
 
 targets:
-  FocusApp:
+  ProgressTracker:
     type: application
     platform: iOS
     sources:
-      - path: FocusApp
+      - path: ProgressTracker
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.focusapp
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.progresstracker
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: "Progress Tracker"
         INFOPLIST_KEY_UILaunchStoryboardName: LaunchScreen
@@ -32,23 +32,23 @@ targets:
         ENABLE_PREVIEWS: YES
         CODE_SIGN_STYLE: Automatic
 
-  FocusAppTests:
+  ProgressTrackerTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: FocusAppTests
+      - path: ProgressTrackerTests
     dependencies:
-      - target: FocusApp
+      - target: ProgressTracker
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
 
 schemes:
-  FocusApp:
+  ProgressTracker:
     build:
       targets:
-        FocusApp: all
-        FocusAppTests: [test]
+        ProgressTracker: all
+        ProgressTrackerTests: [test]
     test:
       targets:
-        - FocusAppTests
+        - ProgressTrackerTests

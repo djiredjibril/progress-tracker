@@ -5,9 +5,9 @@ Une étape à la fois. À la fin de chaque étape : build sans warning, tests ve
 ---
 
 ## [x] Étape 0 — Setup
-Suivre `SETUP.md` : vérifier les outils, créer `project.yml`, `.gitignore`, `App/FocusApp.swift`, `App/RootView.swift` et `FocusAppTests/SmokeTests.swift`, puis générer et compiler.
+Suivre `SETUP.md` : vérifier les outils, créer `project.yml`, `.gitignore`, `App/ProgressTracker.swift`, `App/RootView.swift` et `ProgressTrackerTests/SmokeTests.swift`, puis générer et compiler.
 - **Concepts :** `@main`, protocole `App`, `Scene`, `WindowGroup`, protocole `View`, `body`, `some View`, `#Preview`, `import Testing`
-- **Fini quand :** l'app se lance dans le simulateur et affiche « FocusApp », et `xcodebuild test` passe.
+- **Fini quand :** l'app se lance dans le simulateur et affiche « Progress Tracker », et `xcodebuild test` passe.
 
 ## [x] Étape 1 — Fondations : design system, modèles, service, ViewModel, tests
 Fichiers de `DesignSystem/`, `Models/`, `Mock/`, `Services/`, `ViewModels/`, `Utilities/`, ainsi que `HomeViewModelTests`.
@@ -47,7 +47,7 @@ Comparaison fine avec la maquette, animations d'apparition, états de chargement
 
 ---
 
-# Phase 2 : les autres écrans (source : canvas Claude Design « FocusApp — Écrans »)
+# Phase 2 : les autres écrans (source : canvas Claude Design « Écrans »)
 
 Source de design : https://claude.ai/artifact/RDVEnKPgzbb23GAKCTAMwg (14 écrans, 390×844). Décisions associées : D-028 à D-032. Même méthode qu'en phase 1 : une étape à la fois, pause pour validation, commit à la fin de chaque étape.
 

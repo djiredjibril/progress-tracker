@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import FocusApp
+@testable import ProgressTracker
 
 // Le ViewModel branché sur un stockage : tout est écrit, et les chiffres sont recalculés depuis les données.
 @MainActor

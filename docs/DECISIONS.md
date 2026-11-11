@@ -70,7 +70,7 @@ Toutes les icônes utilisent SF Symbols.
 **Pourquoi :** le bouton central surélevé n'est pas faisable proprement avec `TabView`. Les onglets autres que Home affichent un écran placeholder.
 
 ### D-017 · Nom provisoire
-**Choix :** l'app s'appelle `FocusApp`, avec le bundle id `com.example.focusapp`. Le développeur pourra les changer dans `project.yml`.
+**Choix :** l'app s'appelle « Progress Tracker » (target, module et dossier `ProgressTracker`), avec le bundle id `com.example.progresstracker`. Le développeur pourra les changer dans `project.yml`.
 
 ### D-018 · Simulateur de référence et outils installés
 **Choix :** `iPhone 17 Pro` comme simulateur pour build, tests et captures. `xcodegen` et `xcbeautify` installés via Homebrew (avec l'accord du développeur).
@@ -139,7 +139,7 @@ Toutes les icônes utilisent SF Symbols.
 - Écarts connus restants : la barre de progression est un peu plus fine que sur la maquette (`Size.progressBar` = 8), et la maquette est en perspective, donc comparée aux proportions et non au pixel.
 
 ### D-028 : Phase 2 : source de design et découpage
-**Choix :** les écrans restants viennent du canvas Claude Design « FocusApp — Écrans » (https://claude.ai/artifact/RDVEnKPgzbb23GAKCTAMwg) : 14 écrans (Splash, Onboarding 1 à 3, Log In, Sign Up, Home, Calendar, Analytics, Profile, New Task, Focus Session, Notifications, App Icon). La phase 2 de `ROADMAP.md` (étapes 8 à 15) les implémente, une étape à la fois.
+**Choix :** les écrans restants viennent du canvas Claude Design « Écrans » (https://claude.ai/artifact/RDVEnKPgzbb23GAKCTAMwg) : 14 écrans (Splash, Onboarding 1 à 3, Log In, Sign Up, Home, Calendar, Analytics, Profile, New Task, Focus Session, Notifications, App Icon). La phase 2 de `ROADMAP.md` (étapes 8 à 15) les implémente, une étape à la fois.
 **Pourquoi :** le design a été fait après la phase 1 et va au-delà de l'écran d'accueil. Le canvas est la référence visuelle tant qu'il ne contredit pas une décision déjà prise.
 
 ### D-029 : Tokens assombris du canvas appliqués partout
@@ -295,3 +295,6 @@ Toutes les icônes utilisent SF Symbols.
 
 ### D-048 : Étape 21 : « Replay introduction »
 **Choix :** première ligne du groupe Support de Profile ; elle ouvre `OnboardingView` en `fullScreenCover`. Les trois sorties (Skip, Get Started, « I already have an account ») ferment simplement la couverture : l'utilisateur est déjà connecté, donc aucune ne mène à Sign Up / Log In. La session et `hasSeenOnboarding` ne sont pas modifiés.
+
+### D-049 : Renommage en « Progress Tracker »
+**Choix :** l'app s'appelle partout **Progress Tracker** : nom affiché sous l'icône, Splash, dialogues, README. Les noms techniques suivent : target, module et dossiers `ProgressTracker` / `ProgressTrackerTests`, projet `ProgressTracker.xcodeproj`, point d'entrée `ProgressTrackerApp`, bundle id `com.example.progresstracker`. Le changement de bundle id fait de l'app une NOUVELLE installation : les réglages et les données de l'ancienne (`com.example.focusapp`) ne sont pas repris.

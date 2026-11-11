@@ -17,34 +17,34 @@ Format d'une entrée :
 <!-- Les entrées sont ajoutées ci-dessous, dans l'ordre d'apparition. -->
 
 ### main · `@main` (point d'entrée)
-- **Swift :** `@main struct FocusApp: App { … }`
+- **Swift :** `@main struct ProgressTrackerApp: App { … }`
 - **React/RN :** `AppRegistry.registerComponent(...)` ou `index.js` qui monte le composant racine
 - **Différence clé :** c'est un attribut du compilateur sur un type, pas un appel de fonction. Un seul `@main` par application.
-- **Vu à :** étape 0, `FocusApp/App/FocusApp.swift`
+- **Vu à :** étape 0, `ProgressTracker/App/ProgressTracker.swift`
 
 ### app-protocol · Protocole `App`, `Scene`, `WindowGroup`
-- **Swift :** `struct FocusApp: App { var body: some Scene { WindowGroup { RootView() } } }`
+- **Swift :** `struct ProgressTrackerApp: App { var body: some Scene { WindowGroup { RootView() } } }`
 - **React/RN :** `<NavigationContainer>` ou `root.render(<App />)`
 - **Différence clé :** `App` est un *protocole* (≈ interface TypeScript) qui impose une propriété `body`. `Scene` représente une fenêtre de l'app, concept sans équivalent RN. `WindowGroup` crée la fenêtre principale et y monte la vue racine.
-- **Vu à :** étape 0, `FocusApp/App/FocusApp.swift`
+- **Vu à :** étape 0, `ProgressTracker/App/ProgressTracker.swift`
 
 ### view · Protocole `View`, `body`, `some View`
 - **Swift :** `struct RootView: View { var body: some View { Text("…") } }`
 - **React/RN :** un composant fonction qui `return (<Text>…</Text>)`
 - **Différence clé :** une vue est une `struct` (type valeur léger, recréé à chaque rendu), pas une fonction. `body` est une propriété calculée que SwiftUI rappelle quand l'état change. `some View` signifie « un type de vue précis déduit par le compilateur », vérifié statiquement (≈ `JSX.Element`, en plus strict). Pas de JSX : on enchaîne des *modifiers*.
-- **Vu à :** étape 0, `FocusApp/App/RootView.swift`
+- **Vu à :** étape 0, `ProgressTracker/App/RootView.swift`
 
 ### preview · `#Preview`
 - **Swift :** `#Preview { RootView() }`
 - **React/RN :** une story Storybook
 - **Différence clé :** le rendu s'affiche dans le canevas d'Xcode, sans lancer l'app. Le code est exclu du build de production.
-- **Vu à :** étape 0, `FocusApp/App/RootView.swift`
+- **Vu à :** étape 0, `ProgressTracker/App/RootView.swift`
 
 ### swift-testing · Swift Testing (`@Test`, `#expect`)
 - **Swift :** `@Test func ok() { #expect(1 + 1 == 2) }`
 - **React/RN :** Jest/Vitest : `test("…", () => { expect(…).toBe(…) })`
 - **Différence clé :** `@Test` remplace le préfixe `test` de XCTest. `#expect` est une macro qui affiche les valeurs des deux côtés en cas d'échec, sans matchers à apprendre. Fourni par le SDK, rien à installer.
-- **Vu à :** étape 0, `FocusAppTests/SmokeTests.swift`
+- **Vu à :** étape 0, `ProgressTrackerTests/SmokeTests.swift`
 
 ### extension · `extension` (Color, Font, Date)
 - **Swift :** `extension Color { static let appPrimary = Color(hex: 0x6C6CF5) }`
@@ -116,7 +116,7 @@ Format d'une entrée :
 - **Swift :** `@MainActor final class HomeViewModel`
 - **React/RN :** pas d'équivalent (JS n'a qu'un thread)
 - **Différence clé :** le compilateur garantit que l'état de l'écran n'est touché que depuis le thread principal. Les tests qui l'utilisent sont aussi `@MainActor`.
-- **Vu à :** étape 1, `ViewModels/HomeViewModel.swift`, `FocusAppTests/HomeViewModelTests.swift`
+- **Vu à :** étape 1, `ViewModels/HomeViewModel.swift`, `ProgressTrackerTests/HomeViewModelTests.swift`
 
 ### state · `@State` qui détient un objet
 - **Swift :** `@State private var viewModel: HomeViewModel`
@@ -146,7 +146,7 @@ Format d'une entrée :
 - **Swift :** `@Test(arguments: [(8, "Good Morning"), …]) func greeting(hour:expected:)`, `try #require(x)`
 - **React/RN :** `test.each([[8, '…'], …])` ; un `expect(x).toBeDefined()` qui interrompt le test
 - **Différence clé :** `#require` déballe un optionnel ou arrête le test proprement. `@testable import` donne accès aux éléments internes du module testé.
-- **Vu à :** étape 1, `FocusAppTests/HomeViewModelTests.swift`
+- **Vu à :** étape 1, `ProgressTrackerTests/HomeViewModelTests.swift`
 
 ### stacks · `VStack` / `HStack` / `ZStack`, `Spacer`, `alignment`
 - **Swift :** `HStack(alignment: .top, spacing: Spacing.m) { … Spacer() … }`
@@ -410,7 +410,7 @@ Format d'une entrée :
 - **Swift :** `enum Phase { case focus, rest }`, `enum RunState { case idle, running, paused, finished }`, `init(now: @escaping () -> Date = { .now })`
 - **React/RN :** `useReducer` avec des états nommés ; `jest.useFakeTimers()`
 - **Différence clé :** deux `enum` indépendants (quelle phase, et si ça tourne) remplacent des booléens `isBreak` / `isPaused` incohérents. Le temps restant se déduit de l'horloge (`endDate - now`), pas d'un compteur décrémenté : un tick en retard ou l'arrière-plan ne faussent rien. En test, on avance `now` à la main et on appelle `tick()`, sans attendre.
-- **Vu à :** étape 10, `ViewModels/FocusSessionViewModel.swift`, `FocusAppTests/FocusSessionViewModelTests.swift`
+- **Vu à :** étape 10, `ViewModels/FocusSessionViewModel.swift`, `ProgressTrackerTests/FocusSessionViewModelTests.swift`
 
 ### task-id · `.task(id:)` et `Task.sleep` annulable
 - **Swift :** `.task(id: viewModel.runState) { while !Task.isCancelled { try? await Task.sleep(for: .milliseconds(500)); viewModel.tick() } }`
@@ -479,7 +479,7 @@ Format d'une entrée :
 - **Vu à :** étape 13, `Views/Profile/ProfileView.swift`, `App/RootView.swift`, `Models/SettingsOptions.swift`
 
 ### confirmation-dialog · `confirmationDialog`
-- **Swift :** `.confirmationDialog("Log out of FocusApp?", isPresented: $flag, titleVisibility: .visible) { Button("Log out", role: .destructive) { … }; Button("Cancel", role: .cancel) {} }`
+- **Swift :** `.confirmationDialog("Log out of Progress Tracker?", isPresented: $flag, titleVisibility: .visible) { Button("Log out", role: .destructive) { … }; Button("Cancel", role: .cancel) {} }`
 - **React/RN :** `Alert.alert(title, message, [{ text, style: 'destructive' }, { text: 'Cancel', style: 'cancel' }])`
 - **Différence clé :** déclaratif, piloté par un booléen d'état (`isPresented`) ; sur iPhone c'est une feuille d'actions qui monte du bas, l'action `.destructive` est en rouge.
 - **Vu à :** étape 13, `Views/Profile/ProfileView.swift`

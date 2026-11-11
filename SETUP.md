@@ -20,18 +20,18 @@ Si un outil manque, Claude Code propose la commande d'installation et attend la 
 
 ## 2. Arborescence à créer
 
-Les assets sont **déjà fournis** dans `FocusApp/Resources/Assets.xcassets` (ne pas les recréer). Crée le reste :
+Les assets sont **déjà fournis** dans `ProgressTracker/Resources/Assets.xcassets` (ne pas les recréer). Crée le reste :
 
 ```
-FocusApp/                         ← racine du repo
+ProgressTracker/                         ← racine du repo
 ├── CLAUDE.md
 ├── SETUP.md
 ├── project.yml                   ← à créer (contenu ci-dessous)
 ├── .gitignore                    ← à créer (contenu ci-dessous)
 ├── docs/                         ← fourni
-├── FocusApp/                     ← sources de l'app
+├── ProgressTracker/                     ← sources de l'app
 │   ├── App/
-│   │   ├── FocusApp.swift        ← point d'entrée @main
+│   │   ├── ProgressTrackerApp.swift     ← point d'entrée @main
 │   │   └── RootView.swift
 │   ├── DesignSystem/
 │   ├── Models/
@@ -45,7 +45,7 @@ FocusApp/                         ← racine du repo
 │   ├── Utilities/
 │   └── Resources/
 │       └── Assets.xcassets       ← fourni (Avatar, GoalMountain, AccentColor, AppIcon)
-└── FocusAppTests/
+└── ProgressTrackerTests/
 ```
 
 XcodeGen n'inclut pas les dossiers vides. Pour l'étape 0, il suffit que `App/` contienne ses deux fichiers ; les autres dossiers seront remplis aux étapes suivantes.
@@ -53,7 +53,7 @@ XcodeGen n'inclut pas les dossiers vides. Pour l'étape 0, il suffit que `App/` 
 ## 3. `project.yml`
 
 ```yaml
-name: FocusApp
+name: ProgressTracker
 options:
   bundleIdPrefix: com.example          # à remplacer par le préfixe du développeur
   deploymentTarget:
@@ -68,14 +68,14 @@ settings:
     CURRENT_PROJECT_VERSION: "1"
 
 targets:
-  FocusApp:
+  ProgressTracker:
     type: application
     platform: iOS
     sources:
-      - path: FocusApp
+      - path: ProgressTracker
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.example.focusapp
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.progresstracker
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_UILaunchStoryboardName: LaunchScreen
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
@@ -86,29 +86,29 @@ targets:
         ENABLE_PREVIEWS: YES
         CODE_SIGN_STYLE: Automatic
 
-  FocusAppTests:
+  ProgressTrackerTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: FocusAppTests
+      - path: ProgressTrackerTests
     dependencies:
-      - target: FocusApp
+      - target: ProgressTracker
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
 
 schemes:
-  FocusApp:
+  ProgressTracker:
     build:
       targets:
-        FocusApp: all
-        FocusAppTests: [test]
+        ProgressTracker: all
+        ProgressTrackerTests: [test]
     test:
       targets:
-        - FocusAppTests
+        - ProgressTrackerTests
 ```
 
-Le dossier `FocusAppTests/` doit contenir au moins un fichier pour que la génération fonctionne. À l'étape 0, crée un test minimal (`FocusAppTests/SmokeTests.swift`) avec Swift Testing (`import Testing`, `@Test`).
+Le dossier `ProgressTrackerTests/` doit contenir au moins un fichier pour que la génération fonctionne. À l'étape 0, crée un test minimal (`ProgressTrackerTests/SmokeTests.swift`) avec Swift Testing (`import Testing`, `@Test`).
 
 ## 4. `.gitignore`
 
@@ -129,8 +129,8 @@ docs/screenshots/*.png
 
 ## 5. Point d'entrée minimal (étape 0)
 
-- `FocusApp/App/FocusApp.swift` : struct `@main` conforme à `App`, qui affiche `RootView()` dans un `WindowGroup`.
-- `FocusApp/App/RootView.swift` : pour l'étape 0, un simple `Text("FocusApp")`. Il deviendra le conteneur de la tab bar à l'étape 6.
+- `ProgressTracker/App/ProgressTracker.swift` : struct `@main` conforme à `App`, qui affiche `RootView()` dans un `WindowGroup`.
+- `ProgressTracker/App/RootView.swift` : pour l'étape 0, un simple `Text("ProgressTracker")`. Il deviendra le conteneur de la tab bar à l'étape 6.
 
 Commente ces deux fichiers selon les règles pédagogiques de `CLAUDE.md`. Ce sont les premiers concepts : `@main`, `App`, `Scene`, `View`, `body`, `some View`.
 
@@ -149,20 +149,20 @@ Ensuite, utilise ce nom (noté `SIM` ci-dessous ; préfère un modèle récent, 
 xcodegen generate
 
 # Compiler
-xcodebuild -project FocusApp.xcodeproj -scheme FocusApp \
+xcodebuild -project ProgressTracker.xcodeproj -scheme ProgressTracker \
   -destination "platform=iOS Simulator,name=$SIM" \
   -derivedDataPath build build | xcbeautify   # retirer "| xcbeautify" s'il n'est pas installé
 
 # Tester
-xcodebuild -project FocusApp.xcodeproj -scheme FocusApp \
+xcodebuild -project ProgressTracker.xcodeproj -scheme ProgressTracker \
   -destination "platform=iOS Simulator,name=$SIM" \
   -derivedDataPath build test | xcbeautify
 
 # Lancer dans le simulateur
 xcrun simctl boot "$SIM" 2>/dev/null || true
 open -a Simulator
-xcrun simctl install booted build/Build/Products/Debug-iphonesimulator/FocusApp.app
-xcrun simctl launch booted com.example.focusapp
+xcrun simctl install booted build/Build/Products/Debug-iphonesimulator/ProgressTracker.app
+xcrun simctl launch booted com.example.progresstracker
 ```
 
 > ⚛️ React : `xcodegen generate` ≈ `expo prebuild`, `xcodebuild build` ≈ `npx expo run:ios` sans le lancement, et `xcodebuild test` ≈ `npm test`. Il n'y a pas de Metro ni de hot reload en CLI : pour itérer vite sur l'UI, le développeur utilise les **Previews** dans Xcode (`#Preview`), l'équivalent le plus proche de Storybook combiné au fast refresh.
@@ -181,4 +181,4 @@ Ouvre ensuite la capture et `docs/reference/home_mockup.png`, puis liste les éc
 
 ## 8. Signature
 
-En simulateur, aucune signature n'est requise. Pour tester sur un vrai iPhone, le développeur ouvre `FocusApp.xcodeproj` dans Xcode et choisit son équipe dans *Signing & Capabilities*. Ce réglage sera perdu à la prochaine génération : il faudra alors ajouter `DEVELOPMENT_TEAM` dans `project.yml`.
+En simulateur, aucune signature n'est requise. Pour tester sur un vrai iPhone, le développeur ouvre `ProgressTracker.xcodeproj` dans Xcode et choisit son équipe dans *Signing & Capabilities*. Ce réglage sera perdu à la prochaine génération : il faudra alors ajouter `DEVELOPMENT_TEAM` dans `project.yml`.

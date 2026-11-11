@@ -1,5 +1,5 @@
 import Testing
-@testable import FocusApp
+@testable import ProgressTracker
 
 struct AppTabTests {
     @Test func tabsAreInDisplayOrder() {

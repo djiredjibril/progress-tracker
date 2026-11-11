@@ -21,9 +21,9 @@
 ## Arborescence cible
 
 ```
-FocusApp/
+ProgressTracker/
 ├── App/
-│   ├── FocusApp.swift              @main, WindowGroup { RootView() }
+│   ├── ProgressTrackerApp.swift           @main, WindowGroup { RootView() }
 │   └── RootView.swift              état de l'onglet sélectionné + CustomTabBar
 ├── DesignSystem/
 │   ├── Colors.swift                extension Color { static let appPrimary … }
@@ -62,7 +62,7 @@ FocusApp/
 │   └── Date+Formatting.swift       "Today, 10:00 AM"
 └── Resources/
     └── Assets.xcassets
-FocusAppTests/
+ProgressTrackerTests/
 └── HomeViewModelTests.swift
 ```
 
@@ -156,7 +156,7 @@ Règles :
 
 ## Tests (Swift Testing)
 
-`FocusAppTests/HomeViewModelTests.swift`, au minimum :
+`ProgressTrackerTests/HomeViewModelTests.swift`, au minimum :
 - `load()` passe à l'état `loaded` et remplit les données (provider mock avec `delay: .zero`)
 - `toggle()` inverse `isCompleted` et ajuste `tasksDone`
 - `greeting` renvoie la bonne salutation pour 8 h, 14 h et 21 h (heure injectée)

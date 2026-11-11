@@ -1,7 +1,7 @@
 import Foundation
 import Testing
 import UIKit
-@testable import FocusApp
+@testable import ProgressTracker
 
 struct ProfileDraftTests {
     private let user = User(firstName: "Alex", avatarName: "Avatar", email: "alex@example.com")

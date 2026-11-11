@@ -2,7 +2,7 @@
 
 Ces valeurs ont été **échantillonnées sur la maquette** (`docs/reference/home_mockup.png`) puis arrondies. Comme la maquette est en perspective et légèrement éclairée, elles sont fidèles à l'esprit plutôt qu'au pixel près. Claude Code peut les ajuster après comparaison visuelle, en notant chaque changement dans `DECISIONS.md`.
 
-Implémentation dans `FocusApp/DesignSystem/`, sous forme d'extensions `Color` et `Font` et d'enums `Spacing`, `Radius` et `Size`. Aucune valeur en dur dans les vues.
+Implémentation dans `ProgressTracker/DesignSystem/`, sous forme d'extensions `Color` et `Font` et d'enums `Spacing`, `Radius` et `Size`. Aucune valeur en dur dans les vues.
 
 ## Couleurs
 

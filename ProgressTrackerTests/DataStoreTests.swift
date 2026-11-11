@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import FocusApp
+@testable import ProgressTracker
 
 // Les deux implémentations doivent se comporter pareil : on exécute les mêmes tests sur chacune.
 @MainActor

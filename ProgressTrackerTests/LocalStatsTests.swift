@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import FocusApp
+@testable import ProgressTracker
 
 struct LocalStatsTests {
     private var calendar: Calendar { .mondayFirst }

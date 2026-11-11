@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import FocusApp
+@testable import ProgressTracker
 
 // ⚛️ React : ≈ `jest.useFakeTimers()` : on contrôle l'horloge à la main. Le minuteur ne dépend que de `now`, donc on
 // « avance le temps » en modifiant `clock.current`, puis on appelle `tick()` : aucun test n'attend pour de vrai.

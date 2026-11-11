@@ -76,28 +76,28 @@ Les données restent **sur l'appareil** (SwiftData). Au premier lancement l'app 
 
 ```bash
 brew install xcodegen xcbeautify     # xcbeautify est optionnel (logs lisibles)
-git clone <url-du-repo> && cd FocusApp      # le dossier garde son nom technique
-xcodegen generate                    # génère FocusApp.xcodeproj
-open FocusApp.xcodeproj              # puis ⌘R dans Xcode
+git clone <url-du-repo> && cd ProgressTracker
+xcodegen generate                    # génère ProgressTracker.xcodeproj
+open ProgressTracker.xcodeproj              # puis ⌘R dans Xcode
 ```
 
 En ligne de commande :
 
 ```bash
 # Compiler et lancer les tests
-xcodebuild -project FocusApp.xcodeproj -scheme FocusApp \
+xcodebuild -project ProgressTracker.xcodeproj -scheme ProgressTracker \
   -destination "platform=iOS Simulator,name=iPhone 17 Pro" \
   -derivedDataPath build test | xcbeautify
 ```
 
-> Le dossier `FocusApp.xcodeproj` est un artefact généré : après avoir ajouté, supprimé ou déplacé un fichier, relancer `xcodegen generate`. Les commandes de capture d'écran et de vérification visuelle sont dans [`SETUP.md`](SETUP.md).
+> Le dossier `ProgressTracker.xcodeproj` est un artefact généré : après avoir ajouté, supprimé ou déplacé un fichier, relancer `xcodegen generate`. Les commandes de capture d'écran et de vérification visuelle sont dans [`SETUP.md`](SETUP.md).
 
 ## Architecture
 
 **MVVM** : les vues sont de simples fonctions de l'état, les ViewModels `@Observable` portent la logique, les services isolent le stockage.
 
 ```
-FocusApp/
+ProgressTracker/
 ├── App/            Point d'entrée, RootView (onglets + navigation), routes
 ├── DesignSystem/   Tokens : couleurs (clair/sombre), typographie, espacements, rayons
 ├── Models/         Types métier (TaskItem, FocusSession…) et calculs (LocalStats)

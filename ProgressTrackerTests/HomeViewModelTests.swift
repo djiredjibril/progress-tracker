@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import FocusApp
+@testable import ProgressTracker
 
 // ⚛️ React : `@testable import` ≈ importer le module sous test en accédant aussi à ses éléments internes.
 // `@MainActor` : le ViewModel vit sur le thread principal, les tests qui le touchent aussi.

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import FocusApp
+@testable import ProgressTracker
 
 struct StatValueFormattingTests {
     @Test func plainNumberHasNoUnit() {

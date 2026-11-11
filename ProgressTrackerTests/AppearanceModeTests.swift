@@ -1,7 +1,7 @@
 import SwiftUI
 import Testing
 import UIKit
-@testable import FocusApp
+@testable import ProgressTracker
 
 struct AppearanceModeTests {
     @Test func titlesAndOrder() {

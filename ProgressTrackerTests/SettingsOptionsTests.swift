@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import FocusApp
+@testable import ProgressTracker
 
 struct SettingsOptionsTests {
     @Test(arguments: [(1, "1 task"), (5, "5 tasks"), (10, "10 tasks")])

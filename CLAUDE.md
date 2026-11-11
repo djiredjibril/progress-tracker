@@ -1,4 +1,4 @@
-# CLAUDE.md — FocusApp (apprentissage Swift / SwiftUI)
+# CLAUDE.md — Progress Tracker (apprentissage Swift / SwiftUI)
 
 ## Contexte
 
@@ -51,7 +51,7 @@ Ajoute une entrée dans `docs/CONCEPTS.md` (format du fichier à respecter).
 
 ## Règles techniques
 
-- **Ne jamais éditer `FocusApp.xcodeproj` à la main.** Le projet est généré par XcodeGen à partir de `project.yml`. Après avoir ajouté, supprimé ou déplacé un fichier : `xcodegen generate`.
+- **Ne jamais éditer `ProgressTracker.xcodeproj` à la main.** Le projet est généré par XcodeGen à partir de `project.yml`. Après avoir ajouté, supprimé ou déplacé un fichier : `xcodegen generate`.
 - **Aucune dépendance tierce** (pas de SPM, de CocoaPods ni de Carthage). Tout est natif : SwiftUI, Observation, Swift Testing.
 - Cible minimale : **iOS 17**. Mode de langage : **Swift 5** (voir DECISIONS.md, D-004).
 - **Aucune couleur, taille de police ou espacement en dur dans les vues.** Utilise toujours les tokens de `DesignSystem/` (définis selon `docs/DESIGN_SYSTEM.md`).

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import FocusApp
+@testable import ProgressTracker
 
 struct TaskSearchTests {
     private func task(_ title: String, hour: Int, category: TaskCategory = .work) -> TaskItem {
