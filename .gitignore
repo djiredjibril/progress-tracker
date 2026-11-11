@@ -1,0 +1,13 @@
+# Généré par XcodeGen
+*.xcodeproj
+# Xcode
+xcuserdata/
+DerivedData/
+build/
+npmcache/
+*.xcuserstate
+# macOS
+.DS_Store
+# Captures de vérification
+docs/screenshots/*.png
+!docs/screenshots/.gitkeep
