@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2622" height="2622" viewBox="0 0 2622 2622">
+  <!-- Canevas carré (qlmanage ne fait que des miniatures carrées) : l'écran de 1206 px est centré (x de 708 à 1914), puis recadré. -->
+  <defs>
+    <linearGradient id="bg" gradientUnits="userSpaceOnUse" x1="1070" y1="0" x2="1552" y2="2622">
+      <stop offset="0" stop-color="#A58DF0"/>
+      <stop offset="0.45" stop-color="#6B70E6"/>
+      <stop offset="1" stop-color="#4E60D9"/>
+    </linearGradient>
+    <filter id="blur" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6600" height="6600">
+      <feGaussianBlur stdDeviation="270"/>
+    </filter>
+  </defs>
+  <rect width="2622" height="2622" fill="url(#bg)"/>
+  <circle cx="1311" cy="970" r="480" fill="#FFFFFF" fill-opacity="0.35" filter="url(#blur)"/>
+  <circle cx="1744" cy="2490" r="450" fill="#3C32BE" fill-opacity="0.35" filter="url(#blur)"/>
+</svg>

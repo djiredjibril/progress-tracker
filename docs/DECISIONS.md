@@ -234,3 +234,8 @@ Toutes les icônes utilisent SF Symbols.
 - **Onboarding** : `TabView` en pages ; les illustrations réutilisent les vrais composants (`TaskRowView`, `FocusRingView`, `GoalCardView`) avec des pastilles flottantes. Le lien « I already have an account » occupe toujours sa place (invisible sauf page 3) pour que le bouton ne saute pas.
 - `FormFieldStyle` est sorti de `NewTaskView` pour être partagé ; nouveaux composants `CheckboxToggleStyle`, `AppLogoView` (anneau + coche dessinés en code), `AuthField`, `PasswordInput`.
 - Les fonds de Log In / Sign Up réutilisent `AppBackground` (les taches du canvas sont à des positions légèrement différentes).
+
+### D-041 : Étape 15 : launch screen
+**Choix :** un `LaunchScreen.storyboard` affiche une image plein écran (`LaunchBackground`) : le dégradé `#A58DF0` → `#6B70E6` → `#4E60D9` et les deux halos du Splash, **sans le logo**, que le `SplashView` dessine ensuite. `UILaunchScreen_Generation` (écran blanc) est remplacé par `INFOPLIST_KEY_UILaunchStoryboardName`. L'image (1206×2622, `@3x`, source `docs/reference/LaunchBackground.svg`) est faite pour l'iPhone 17 Pro ; sur un autre modèle elle est recadrée (`scaleAspectFill`) avec une couleur de repli proche (`#6B70E6`).
+**Pourquoi :** la clé `UILaunchScreen` de l'Info.plist ne gère pas un dégradé plein écran. Le storyboard est écrit à la main (le `.xcodeproj` reste généré par XcodeGen, D-010).
+**Limite :** l'image est rendue à partir d'un SVG (`qlmanage`) : de très faibles bandes sont possibles dans les zones floues. Elle n'a pas été testée sur d'autres tailles d'écran ni en mode sombre.

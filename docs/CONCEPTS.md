@@ -519,3 +519,9 @@ Format d'une entrée :
 - **React/RN :** `isSignedIn ? <MainTabs /> : <AuthStack />` ; `key={user.id}` pour tout réinitialiser ; `AsyncStorage` injecté
 - **Différence clé :** `.id(valeur)` ≈ `key` : quand il change, SwiftUI détruit et recrée la vue et ses `@State`. Les tests passent une suite `UserDefaults` jetable : rien n'est écrit dans les vrais réglages. `Shape` (`LogoCheckShape`) décrit un tracé comme un `<Path d>` SVG.
 - **Vu à :** étape 14, `Views/Entry/AppFlowView.swift`, `ViewModels/AuthViewModel.swift`, `Views/Shared/AppLogoView.swift`
+
+### launch-screen · Launch screen (storyboard + image d'asset)
+- **Swift / Xcode :** `LaunchScreen.storyboard` (une `UIImageView` plein écran, `scaleAspectFill`) + `Assets.xcassets/LaunchBackground.imageset`, et `INFOPLIST_KEY_UILaunchStoryboardName: LaunchScreen` dans `project.yml`
+- **React/RN :** le `splash` d'`app.json` (Expo : `image`, `backgroundColor`, `resizeMode`)
+- **Différence clé :** le launch screen est affiché par iOS AVANT que le code de l'app ne tourne : il ne peut donc pas être animé ni écrit en SwiftUI. On y met le décor fixe (ici le dégradé et les halos), et le `SplashView` SwiftUI y dessine ensuite le logo : le passage est continu. La clé `UILaunchScreen` de l'Info.plist ne sait faire qu'une couleur unie et une image centrée, pas un dégradé plein écran.
+- **Vu à :** étape 15, `Resources/LaunchScreen.storyboard`, `Resources/Assets.xcassets/LaunchBackground.imageset`
