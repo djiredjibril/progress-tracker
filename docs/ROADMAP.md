@@ -93,6 +93,42 @@ L'icône `AppIcon` 1024×1024 est déjà faite (D-034). Reste le launch screen s
 
 ---
 
+# Phase 3 : des fonctionnalités réelles (retours après la phase 2)
+
+Retours : la recherche, la suppression et l'édition de tâche, la modification du profil et le mode clair / sombre ne faisaient rien ; l'app repose entièrement sur des données mock ; l'onboarding n'est vu qu'une fois. Décisions associées : D-043 et suivantes.
+
+## [ ] Étape 16 — Édition et suppression de tâches
+Le menu ⋮ des lignes fait enfin quelque chose : **Edit** rouvre la feuille « New Task » préremplie, **Delete** demande confirmation puis supprime (et met à jour les statistiques).
+- **Concepts :** formulaire réutilisé en deux modes (création / édition), `confirmationDialog` sur un élément, mise à jour d'une collection par `id`
+- **Fini quand :** modifier le titre, l'heure, la catégorie… d'une tâche la met à jour partout (Home, Calendar, Analytics), supprimer la retire et les compteurs suivent (testé).
+
+## [ ] Étape 17 — Recherche
+Le bouton loupe de Home ouvre un écran de recherche : champ avec focus automatique, résultats en direct (titre, catégorie, jour), état vide, et un toucher sur un résultat ouvre ce jour dans Calendar.
+- **Concepts :** `.searchable` ou champ maison, filtrage insensible à la casse et aux accents, `localizedStandardContains`, route `NavigationStack`
+- **Fini quand :** taper filtre les tâches de tous les jours, et le moteur de recherche est testé.
+
+## [ ] Étape 18 — Modifier le profil
+Le bouton ✎ ouvre une feuille : prénom et e-mail (validés), avatar choisi dans la photothèque. Le résultat est persisté et visible sur Home, Profile et partout où le prénom apparaît.
+- **Concepts :** `PhotosPicker`, mise à jour d'une session persistée, validation d'un formulaire réutilisée
+- **Fini quand :** changer le prénom change « Hello, … » immédiatement et après un relancement.
+
+## [ ] Étape 19 — Apparence : clair, sombre, système
+La ligne Appearance propose Light / Dark / System, persisté. Les tokens de couleur deviennent **adaptatifs** (palette sombre dérivée du clair), et `.preferredColorScheme(.light)` est retiré.
+- **Concepts :** couleurs adaptatives (`UIColor` dynamique), `@AppStorage` + `preferredColorScheme`, `colorScheme` de l'environnement, matériaux en mode sombre
+- **Fini quand :** les 14 écrans sont lisibles dans les deux modes (captures comparées) et le choix survit au relancement.
+
+## [ ] Étape 20 — Données locales (SwiftData) et fin du mock
+Tâches, historique de focus et notifications sont stockés sur l'appareil (**SwiftData**). Les statistiques (Tasks Done, Focus Time, Day Streak, objectif du jour, Analytics) sont **calculées** à partir de ces données ; les notifications naissent d'événements réels (tâche terminée, session de focus, objectif atteint). `MockData` ne sert plus qu'aux previews et aux tests.
+- **Concepts :** `@Model`, `ModelContainer` / `ModelContext`, un protocole de stockage (SwiftData en prod, mémoire en test), données calculées, états vides
+- **Fini quand :** les tâches survivent au relancement, une installation neuve démarre sans donnée avec des états vides soignés, et les agrégats sont testés.
+
+## [ ] Étape 21 — Revoir l'introduction
+Une ligne « Replay introduction » dans Profile rouvre l'onboarding sans se déconnecter.
+- **Concepts :** `fullScreenCover`, réutilisation d'un écran avec un autre point de sortie
+- **Fini quand :** l'onboarding s'ouvre depuis Profile et se ferme proprement.
+
+---
+
 ## Bonus (au choix, après validation)
 - [x] Bouton + : une `sheet` pour ajouter une tâche → devenu l'étape 8
 - [ ] Persistance avec **SwiftData** (`@Model`, `@Query`) en remplacement du mock
