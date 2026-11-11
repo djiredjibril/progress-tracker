@@ -5,4 +5,5 @@
 enum AppRoute: Hashable {
     case notifications
     case focusSession
+    case search
 }

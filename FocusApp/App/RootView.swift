@@ -86,6 +86,7 @@ struct RootView: View {
                 viewModel: viewModel,
                 // Notifications désactivées dans Profile : plus de point sur la cloche.
                 hasUnreadNotifications: notificationsViewModel.hasUnread && notificationsEnabled,
+                onSearch: { path.append(.search) },
                 onNotifications: { path.append(.notifications) },
                 onFocusTime: { path.append(.focusSession) },
                 onGoalDetails: { select(.analytics) },
@@ -138,6 +139,13 @@ struct RootView: View {
                     select(.analytics)
                 }
             )
+        case .search:
+            SearchView(tasks: viewModel.data?.tasks ?? []) { task in
+                // Un résultat ouvre son jour dans Calendar : on revient à la racine, on sélectionne le jour, puis l'onglet.
+                path.removeAll()
+                calendarViewModel.select(task.dueDate)
+                select(.calendar)
+            }
         case .focusSession:
             // La tâche proposée est la prochaine à faire ; le temps de focus réalisé s'ajoute au total de Home.
             FocusSessionView(

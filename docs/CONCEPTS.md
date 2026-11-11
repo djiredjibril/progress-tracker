@@ -537,3 +537,9 @@ Format d'une entrée :
 - **React/RN :** `Alert.alert` ouvert depuis le handler d'une ligne, avec la ligne en closure
 - **Différence clé :** on mémorise la tâche « en attente » dans un `@State` ; la boîte s'ouvre tant qu'il est non `nil` et le remet à `nil` en se fermant. Rien n'est supprimé avant la confirmation.
 - **Vu à :** étape 16, `Views/Home/HomeView.swift`
+
+### derived-search · Recherche : une fonction pure et un état local
+- **Swift :** `enum TaskSearch { static func results(for query: String, in tasks: [TaskItem]) -> [TaskItem] }`, `@State private var query`, `task.title.localizedStandardContains(term)`, `.task { isFieldFocused = true }`
+- **React/RN :** `useMemo(() => tasks.filter(…), [query, tasks])` ; `autoFocus` sur un `<TextInput>`
+- **Différence clé :** la saisie est un état local et les résultats en sont DÉRIVÉS (jamais stockés, donc jamais périmés). La logique de filtrage vit hors de la vue : elle se teste sans interface. `localizedStandardContains` ignore la casse et les accents et suit la langue de l'appareil (« RÉUNION » trouve « reunion »).
+- **Vu à :** étape 17, `Models/TaskSearch.swift`, `Views/Search/SearchView.swift`

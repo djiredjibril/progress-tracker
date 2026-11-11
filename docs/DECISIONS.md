@@ -259,3 +259,10 @@ Toutes les icônes utilisent SF Symbols.
 - Un seul formulaire pour les deux usages : `NewTaskDraft(editing:)` conserve l'`id` et l'état « fait » de la tâche ; `RootView` présente la feuille avec `sheet(item:)` (enum `TaskSheet`). Enregistrer appelle `HomeViewModel.updateTask` (remplacement par `id`, liste retriée par échéance, aucun doublon).
 - Supprimer une tâche déjà faite fait baisser « Tasks Done » (jamais sous 0). Supprimer une tâche en attente ne change pas les compteurs.
 - Limites : l'édition et la suppression se font depuis **Home** (les lignes du planning de Calendar restent en lecture seule, comme le canvas). La suppression n'est pas annulable (« This cannot be undone »). Les actions agissent sur les données en mémoire du mock tant que l'étape 20 (SwiftData) n'est pas faite : elles sont perdues au relancement.
+
+### D-044 : Étape 17 : recherche
+**Choix :**
+- Le bouton loupe de Home empile un écran de recherche (route `.search`) : champ avec focus automatique, résultats en direct, état vide (« No tasks match … ») et raccourcis par catégorie quand le champ est vide. Le canvas n'a pas d'écran de recherche : il suit le style de l'app (champ `formField`, lignes en verre).
+- `TaskSearch.results(for:in:)` (pure, testée) : chaque mot saisi doit se retrouver dans le titre OU la catégorie (ET entre les mots), sans tenir compte de la casse ni des accents ; résultats triés par échéance. La recherche porte sur **toutes** les tâches, pas seulement celles du jour.
+- Un toucher sur un résultat revient à la racine, sélectionne ce jour dans Calendar (`CalendarViewModel.select`) et ouvre l'onglet.
+- Limites : pas d'historique de recherches, pas de surlignage du texte trouvé, pas de recherche dans les notifications.

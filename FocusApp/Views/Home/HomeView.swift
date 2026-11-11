@@ -10,6 +10,7 @@ struct HomeView: View {
     // ⚛️ React : la navigation est décidée par le PARENT : l'écran reçoit des callbacks (`onNotifications`…) comme les
     // `navigation.navigate(...)` qu'on passerait en props. HomeView ne connaît ni la pile ni les onglets.
     let hasUnreadNotifications: Bool
+    let onSearch: () -> Void
     let onNotifications: () -> Void
     let onFocusTime: () -> Void
     let onGoalDetails: () -> Void
@@ -123,7 +124,7 @@ struct HomeView: View {
                 firstName: data.user.firstName,
                 avatarName: data.user.avatarName,
                 hasUnreadNotifications: hasUnreadNotifications,
-                onSearch: {},                   // action mock : la recherche n'est pas dans le design
+                onSearch: onSearch,
                 onNotifications: onNotifications
             )
 
@@ -192,6 +193,7 @@ struct HomeView: View {
     HomeView(
         viewModel: HomeViewModel(provider: MockHomeDataProvider(delay: .zero)),
         hasUnreadNotifications: true,
+        onSearch: {},
         onNotifications: {},
         onFocusTime: {},
         onGoalDetails: {},

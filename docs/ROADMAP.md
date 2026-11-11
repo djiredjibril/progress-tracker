@@ -102,7 +102,7 @@ Le menu ⋮ des lignes fait enfin quelque chose : **Edit** rouvre la feuille « 
 - **Concepts :** formulaire réutilisé en deux modes (création / édition), `confirmationDialog` sur un élément, mise à jour d'une collection par `id`
 - **Fini quand :** modifier le titre, l'heure, la catégorie… d'une tâche la met à jour partout (Home, Calendar, Analytics), supprimer la retire et les compteurs suivent (testé).
 
-## [ ] Étape 17 — Recherche
+## [x] Étape 17 — Recherche
 Le bouton loupe de Home ouvre un écran de recherche : champ avec focus automatique, résultats en direct (titre, catégorie, jour), état vide, et un toucher sur un résultat ouvre ce jour dans Calendar.
 - **Concepts :** `.searchable` ou champ maison, filtrage insensible à la casse et aux accents, `localizedStandardContains`, route `NavigationStack`
 - **Fini quand :** taper filtre les tâches de tous les jours, et le moteur de recherche est testé.
