@@ -223,3 +223,14 @@ Toutes les icônes utilisent SF Symbols.
 - « Edit profile » (✎) et « Help & Support » sont des actions mock : le design ne détaille pas ces écrans.
 - `User` gagne `email` (mock « alex@example.com »). Tant que Home n'a pas chargé, Profile réutilise le squelette `redacted` avec les données mock.
 - Composants : `SettingsRow<Trailing>`, `SettingsValueTrailing` et `SettingsGroup` (verre) ; l'avatar a un liseré blanc de 4 pt et une ombre violette.
+
+### D-040 : Étape 14 : parcours d'entrée et authentification fictive
+**Choix :**
+- `AppFlowView` devient la racine de l'app : Splash → (Onboarding la première fois) → Log In / Sign Up → `RootView`. `RootView` reçoit `onLogOut`. Quand l'utilisateur est déjà connecté, le Splash (≈ 2,6 s, ou un toucher) mène directement à l'app. L'app est recréée (`.id`) quand la session change.
+- **Authentification fictive** (D-032) : protocole `AuthProviding`, `MockAuthProvider` (délai simulé, accepte toute saisie valide, `failure` configurable). Au login, le prénom est dérivé de l'e-mail (`alex@…` donne « Alex »). La session et « onboarding vu » sont persistés dans `UserDefaults` (injectable ; suite jetable en test). Après connexion, `MockHomeDataProvider(user:)` met le vrai prénom et l'e-mail dans Home et Profile.
+- `hasSeenOnboarding` passe à vrai seulement à la **première connexion réussie** (le retour depuis Sign Up revient donc à l'onboarding, comme le canvas) et reste vrai après « Log out », qui ramène à Log In.
+- Validation (testée, dans `LoginDraft` / `SignUpDraft`) : e-mail valide, mot de passe non vide au login, ≥ 8 caractères et CGU cochées (par défaut, comme le canvas) à l'inscription. Les messages d'erreur d'e-mail et de mot de passe n'apparaissent qu'une fois le champ quitté ; une erreur du « serveur » s'efface dès qu'on retape. « Forgot password? » est une action mock.
+- **Splash** : anneau qui se dessine (`trim`), coche qui « pop », nom et slogan en fondu, halo qui respire ; avec « Réduire les animations », tout s'affiche d'un coup. Le launch screen statique (même dégradé) reste à faire à l'étape 15.
+- **Onboarding** : `TabView` en pages ; les illustrations réutilisent les vrais composants (`TaskRowView`, `FocusRingView`, `GoalCardView`) avec des pastilles flottantes. Le lien « I already have an account » occupe toujours sa place (invisible sauf page 3) pour que le bouton ne saute pas.
+- `FormFieldStyle` est sorti de `NewTaskView` pour être partagé ; nouveaux composants `CheckboxToggleStyle`, `AppLogoView` (anneau + coche dessinés en code), `AuthField`, `PasswordInput`.
+- Les fonds de Log In / Sign Up réutilisent `AppBackground` (les taches du canvas sont à des positions légèrement différentes).

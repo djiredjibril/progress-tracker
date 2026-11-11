@@ -81,7 +81,7 @@ Avatar, e-mail, trois stats, interrupteur Notifications, lignes Daily goal / Foc
 - **Concepts :** `Toggle`, `@AppStorage`, `Stepper` / `Picker`, groupes de lignes réutilisables
 - **Fini quand :** les réglages sont persistés entre deux lancements et « Log out » est branché (le flux d'entrée arrive à l'étape 14).
 
-## [ ] Étape 14 — Parcours d'entrée : Splash, Onboarding, Log In, Sign Up
+## [x] Étape 14 — Parcours d'entrée : Splash, Onboarding, Log In, Sign Up
 Splash animé (anneau qui se dessine, coche, nom et slogan), onboarding en 3 pages avec « Skip », formulaires Log In / Sign Up avec validation, état « connecté » **fictif** (service mock, persisté localement). `RootView` choisit entre entrée et app.
 - **Concepts :** `TabView(.page)`, `TextField` / `SecureField`, `@FocusState`, `accessibilityReduceMotion`, protocole `AuthProviding` mock, `@AppStorage`
 - **Fini quand :** Splash → Onboarding → Sign Up / Log In → Home fonctionne, « Log out » ramène à Log In, et les règles de validation sont testées.

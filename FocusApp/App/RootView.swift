@@ -26,8 +26,12 @@ struct RootView: View {
 
     // ⚛️ voir CONCEPTS.md#state : on reçoit un *provider* pour que les `#Preview` injectent un service instantané ;
     // `_viewModel = State(initialValue:)` initialise le `@State` depuis un paramètre.
-    init(provider: HomeDataProviding = MockHomeDataProvider()) {
+    // `onLogOut` : appelée par « Log out » (Profile) ; c'est `AppFlowView` qui déconnecte et change d'écran.
+    private let onLogOut: () -> Void
+
+    init(provider: HomeDataProviding = MockHomeDataProvider(), onLogOut: @escaping () -> Void = {}) {
         _viewModel = State(initialValue: HomeViewModel(provider: provider))
+        self.onLogOut = onLogOut
     }
 
     // ⚛️ React : `body` ≈ le `return (...)` du composant. SwiftUI le rappelle quand l'état change.
@@ -109,8 +113,7 @@ struct RootView: View {
         }
     }
 
-    // Branché au flux d'entrée à l'étape 14 : l'écran de connexion n'existe pas encore.
-    private func logOut() {}
+    private func logOut() { onLogOut() }
 
     @ViewBuilder
     private func destination(for route: AppRoute) -> some View {

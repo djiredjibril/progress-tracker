@@ -12,7 +12,7 @@ struct FocusApp: App {
         // ⚛️ React : `WindowGroup` crée la fenêtre principale et y monte la vue racine,
         // un peu comme `<NavigationContainer>` ou `root.render(...)`.
         WindowGroup {
-            RootView()
+            AppFlowView()
         }
     }
 }

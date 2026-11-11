@@ -20,6 +20,7 @@ enum Radius {
     static let task: CGFloat = 20
     static let tabBar: CGFloat = 28
     static let tabItem: CGFloat = 20    // pastille de l'onglet actif
+    static let logoTile: CGFloat = 18   // tuile du logo sur Log In
     static let day: CGFloat = 16        // jour sélectionné du bandeau de semaine
     static let tag: CGFloat = 10        // pastille de catégorie
     static let field: CGFloat = 16      // champs de formulaire
@@ -52,6 +53,11 @@ enum Size {
     static let dayDot: CGFloat = 5          // point « il y a des tâches ce jour-là »
     static let chartHeight: CGFloat = 140
     static let profileAvatar: CGFloat = 92
+    static let splashLogo: CGFloat = 140
+    static let logoTile: CGFloat = 64
+    static let onboardingArt: CGFloat = 340
+    static let pageDot: CGFloat = 8
+    static let pageDotActiveWidth: CGFloat = 24
     static let settingsRow: CGFloat = 52
     static let settingsIcon: CGFloat = 32
     static let miniRing: CGFloat = 56       // anneau « Tasks done »

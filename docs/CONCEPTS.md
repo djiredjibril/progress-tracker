@@ -489,3 +489,33 @@ Format d'une entrée :
 - **React/RN :** un composant `<Row icon title right={…} />` avec une prop render `right`
 - **Différence clé :** le contenu de droite est un `@ViewBuilder` (interrupteur, valeur + chevron, rien) et la même ligne sert de label à un `Menu` ou à un `Button`. Le trait de séparation est porté par la ligne (`showsTopDivider`).
 - **Vu à :** étape 13, `Views/Profile/SettingsRow.swift`
+
+### reduce-motion · Animation séquencée et `accessibilityReduceMotion`
+- **Swift :** `withAnimation(.timingCurve(0.65, 0, 0.35, 1, duration: 1.1).delay(0.2)) { arc = 0.75 }`, `.spring(response:dampingFraction:)`, `.repeatForever(autoreverses: true)`, `@Environment(\.accessibilityReduceMotion)`
+- **React/RN :** `Animated.sequence` / `Animated.delay` / `Animated.loop`, `Easing.bezier`, `AccessibilityInfo.isReduceMotionEnabled()`
+- **Différence clé :** on enchaîne les étapes en changeant des `@State` dans des `withAnimation` avec des délais : SwiftUI interpole tout seul. Avec « Réduire les animations », on pose directement les valeurs finales. Le Splash passe à la suite à la fin du `.task` OU au toucher (le premier gagne).
+- **Vu à :** étape 14, `Views/Entry/SplashView.swift`
+
+### paging-tabview · `TabView(selection:)` en pages
+- **Swift :** `TabView(selection: $page) { ForEach(pages) { page in content.tag(page) } }.tabViewStyle(.page(indexDisplayMode: .never))`
+- **React/RN :** un `ScrollView horizontal pagingEnabled` / `PagerView` avec un index d'état
+- **Différence clé :** le `@State` page est lu ET écrit : glisser change la page, changer la page par code fait glisser. Les points système sont masqués : on dessine les nôtres (le point actif s'allonge).
+- **Vu à :** étape 14, `Views/Entry/OnboardingView.swift`
+
+### text-fields · `TextField`, `SecureField`, `@FocusState` sur une enum, `FocusState.Binding`
+- **Swift :** `@FocusState private var focused: Field?`, `.focused($focused, equals: .email)`, `.submitLabel(.next)`, `.onSubmit { focused = .password }`, `.textContentType(.emailAddress)`, `.keyboardType(.emailAddress)`
+- **React/RN :** `<TextInput secureTextEntry keyboardType autoComplete returnKeyType onSubmitEditing ref />`
+- **Différence clé :** un seul `@FocusState` d'enum pilote le champ actif de tout le formulaire. Un composant enfant reçoit le focus du parent par `FocusState<Bool>.Binding`. `Text(verbatim:)` évite que SwiftUI détecte une adresse e-mail dans un texte et la colore comme un lien.
+- **Vu à :** étape 14, `Views/Entry/LoginView.swift`, `SignUpView.swift`, `AuthComponents.swift`
+
+### toggle-style · `ToggleStyle` personnalisé
+- **Swift :** `struct CheckboxToggleStyle: ToggleStyle { func makeBody(configuration:) … }` + `.toggleStyle(.checkbox)`
+- **React/RN :** un composant `<Checkbox checked onChange />`
+- **Différence clé :** on redessine un `Toggle` sans perdre son état lié par `Binding`, ni son accessibilité (`.isToggle`).
+- **Vu à :** étape 14, `Views/Shared/CheckboxToggleStyle.swift`
+
+### auth-flow · Racine conditionnelle, `.id()` et `UserDefaults` injecté
+- **Swift :** `if auth.isLoggedIn { RootView(…).id(session?.email) } else { entry }`, `AuthViewModel(provider:defaults:)`
+- **React/RN :** `isSignedIn ? <MainTabs /> : <AuthStack />` ; `key={user.id}` pour tout réinitialiser ; `AsyncStorage` injecté
+- **Différence clé :** `.id(valeur)` ≈ `key` : quand il change, SwiftUI détruit et recrée la vue et ses `@State`. Les tests passent une suite `UserDefaults` jetable : rien n'est écrit dans les vrais réglages. `Shape` (`LogoCheckShape`) décrit un tracé comme un `<Path d>` SVG.
+- **Vu à :** étape 14, `Views/Entry/AppFlowView.swift`, `ViewModels/AuthViewModel.swift`, `Views/Shared/AppLogoView.swift`

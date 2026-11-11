@@ -111,4 +111,16 @@ extension Color {
     static let settingsCoralFill = Color.statStreakDark.opacity(0.18)
     static let settingsCoralForeground = Color(hex: 0xA63D28)
     static let settingsDestructiveFill = Color.destructive.opacity(0.10)
+
+    // MARK: - Marque (Splash, icône) et parcours d'entrée
+
+    static let brandStart = Color.ringGradientStart                 // #A58DF0
+    static let brandMid = Color(hex: 0x6B70E6)
+    static let brandEnd = Color(hex: 0x4E60D9)
+    static let splashHalo = Color.white.opacity(0.45)
+    static let splashShade = Color(hex: 0x3C32BE, opacity: 0.35)
+    static let onboardingBlobPlan = Color.appPrimary.opacity(0.22)
+    static let onboardingBlobFocus = Color.statFocusDark.opacity(0.25)
+    static let onboardingBlobProgress = Color.goalGradientEnd.opacity(0.30)
+    static let pageDotInactive = Color.appPrimaryStrong.opacity(0.25)
 }
