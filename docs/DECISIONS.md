@@ -137,3 +137,23 @@ Toutes les icônes utilisent SF Symbols.
 - Accessibilité : titres marqués `isHeader`, une seule annonce par ligne de tâche (titre + échéance), pourcentage de la carte masqué (doublon avec la barre), « See All My Tasks ».
 - Écart de la maquette corrigé : la cible de « Today's Goal » est dans un disque blanc (`Size.eyebrowIcon`, `Font.appEyebrowIcon`).
 - Écarts connus restants : la barre de progression est un peu plus fine que sur la maquette (`Size.progressBar` = 8), et la maquette est en perspective, donc comparée aux proportions et non au pixel.
+
+### D-028 : Phase 2 : source de design et découpage
+**Choix :** les écrans restants viennent du canvas Claude Design « FocusApp — Écrans » (https://claude.ai/artifact/RDVEnKPgzbb23GAKCTAMwg) : 14 écrans (Splash, Onboarding 1 à 3, Log In, Sign Up, Home, Calendar, Analytics, Profile, New Task, Focus Session, Notifications, App Icon). La phase 2 de `ROADMAP.md` (étapes 8 à 15) les implémente, une étape à la fois.
+**Pourquoi :** le design a été fait après la phase 1 et va au-delà de l'écran d'accueil. Le canvas est la référence visuelle tant qu'il ne contredit pas une décision déjà prise.
+
+### D-029 : Tokens assombris du canvas appliqués partout
+**Choix :** on applique à toute l'app, y compris aux écrans de la phase 1, les couleurs du canvas : `textSecondary` `#6B7088` devient `#5F6479`, nouveau violet fort `#5552E0` (onglet actif, liens), dégradé du bouton principal `#6D6BEE` → `#4F4BD8`, couleur de placeholder `#6E7389` et rouge destructif `#B4322A`.
+**Pourquoi :** le canvas les a assombries pour atteindre le contraste 4.5:1. Les appliquer partout évite une incohérence entre anciens et nouveaux écrans. À faire à l'étape 8 ; les valeurs de `DESIGN_SYSTEM.md` seront mises à jour.
+
+### D-030 : Police système conservée (confirme D-013)
+**Choix :** SF Pro, pas Inter.
+**Pourquoi :** la note du canvas dit qu'Inter y remplace SF Pro. Garder la police système donne le Dynamic Type gratuitement et évite d'embarquer des fichiers de police.
+
+### D-031 : Écarts Home canvas / maquette d'origine
+**Choix :** le 👋 après « Hello, Alex » est conservé (le canvas l'a retiré). Les autres écarts (avatar 112 pt contre 120, liseré de 4 pt autour du bouton +) sont tranchés à l'étape 8 par comparaison visuelle, puis notés ici.
+**Pourquoi :** le retrait de l'emoji n'a pas été jugé voulu. Les autres écarts sont des détails mineurs.
+
+### D-032 : Swift Charts autorisé, authentification fictive
+**Choix :** Analytics utilise **Swift Charts**, framework natif d'Apple : D-011 (zéro dépendance tierce) reste respecté. Log In / Sign Up passent par un protocole `AuthProviding` avec une implémentation mock, sans backend ; l'état « connecté » est persisté localement.
+**Pourquoi :** Swift Charts est dans le SDK. L'authentification réelle sort du périmètre d'apprentissage.

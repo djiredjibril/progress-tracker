@@ -47,10 +47,56 @@ Comparaison fine avec la maquette, animations d'apparition, états de chargement
 
 ---
 
+# Phase 2 : les autres écrans (source : canvas Claude Design « FocusApp — Écrans »)
+
+Source de design : https://claude.ai/artifact/RDVEnKPgzbb23GAKCTAMwg (14 écrans, 390×844). Décisions associées : D-028 à D-032. Même méthode qu'en phase 1 : une étape à la fois, pause pour validation, commit à la fin de chaque étape.
+
+## [ ] Étape 8 — Alignement sur le design + feuille « New Task »
+Tokens mis à jour (D-029), puis `TaskItem` étendu (catégorie, priorité, durée, rappel), `addTask` dans le ViewModel, et la feuille « New Task » ouverte par le bouton +.
+- **Concepts :** `.sheet`, `@FocusState`, validation de formulaire, `Picker`, `Toggle`, `DatePicker`, `presentationDetents`
+- **Fini quand :** le bouton + ouvre la feuille, « Create Task » est désactivé tant que le titre est vide, et la nouvelle tâche apparaît dans « My Tasks » (testé).
+
+## [ ] Étape 9 — Navigation secondaire et écran Notifications
+`NavigationStack` avec une route typée : cloche → Notifications, carte Focus Time → Focus Session (écran provisoire), flèche de l'objectif → onglet Analytics, « See All » → onglet Calendar. Écran Notifications : groupes « Today / Earlier », points non lus, « Mark all as read ».
+- **Concepts :** `NavigationStack`, `navigationDestination`, `@Environment(\.dismiss)`, sections groupées
+- **Fini quand :** chaque lien du prototype mène au bon écran et « Mark all as read » met à jour l'état (testé).
+
+## [ ] Étape 10 — Focus Session
+Minuteur 25:00 avec anneau de progression, pause / reset / skip, « Session 2 of 4 ». Logique testable : horloge injectée, machine à états.
+- **Concepts :** `trim(from:to:)`, `Task.sleep` annulable, machine à états (`enum`), `monospacedDigit`
+- **Fini quand :** le minuteur décompte, se met en pause et se réinitialise, et les transitions d'état sont testées.
+
+## [ ] Étape 11 — Calendar
+Titre + « Today », navigation de semaine, bandeau des 7 jours (jour sélectionné, points), liste horaire avec pastilles de catégorie et ligne « maintenant ».
+- **Concepts :** `Calendar` / `DateComponents`, `LazyVGrid`, sélection par `@State`, `Date.FormatStyle`
+- **Fini quand :** changer de jour met à jour la liste, et le calcul de semaine est testé.
+
+## [ ] Étape 12 — Analytics
+Sélecteur Week / Month / Year, graphe de focus par jour (barre du jour en dégradé et infobulle), anneau 9/12, meilleure série, temps par catégorie.
+- **Concepts :** **Swift Charts** (`Chart`, `BarMark`), `Picker` segmenté, données agrégées dans le ViewModel
+- **Fini quand :** les trois périodes affichent des données mock cohérentes et les agrégats sont testés.
+
+## [ ] Étape 13 — Profile et réglages
+Avatar, e-mail, trois stats, interrupteur Notifications, lignes Daily goal / Focus session / Appearance, Help & Support, « Log out » (destructif).
+- **Concepts :** `Toggle`, `@AppStorage`, `Stepper` / `Picker`, groupes de lignes réutilisables
+- **Fini quand :** les réglages sont persistés entre deux lancements et « Log out » est branché (le flux d'entrée arrive à l'étape 14).
+
+## [ ] Étape 14 — Parcours d'entrée : Splash, Onboarding, Log In, Sign Up
+Splash animé (anneau qui se dessine, coche, nom et slogan), onboarding en 3 pages avec « Skip », formulaires Log In / Sign Up avec validation, état « connecté » **fictif** (service mock, persisté localement). `RootView` choisit entre entrée et app.
+- **Concepts :** `TabView(.page)`, `TextField` / `SecureField`, `@FocusState`, `accessibilityReduceMotion`, protocole `AuthProviding` mock, `@AppStorage`
+- **Fini quand :** Splash → Onboarding → Sign Up / Log In → Home fonctionne, « Log out » ramène à Log In, et les règles de validation sont testées.
+
+## [ ] Étape 15 — Icône et launch screen
+`AppIcon` 1024×1024 (anneau + coche) dans l'asset catalog, launch screen statique au même dégradé que le Splash.
+- **Concepts :** `AppIcon` dans `Assets.xcassets`, `INFOPLIST_KEY_UILaunchScreen_*`
+- **Fini quand :** l'icône s'affiche sur l'écran d'accueil du simulateur, sans le warning d'icône vide.
+
+---
+
 ## Bonus (au choix, après validation)
-- [ ] Bouton + : une `sheet` pour ajouter une tâche (formulaire, `@FocusState`, validation)
+- [x] Bouton + : une `sheet` pour ajouter une tâche → devenu l'étape 8
 - [ ] Persistance avec **SwiftData** (`@Model`, `@Query`) en remplacement du mock
 - [ ] Dark mode (tokens adaptatifs)
 - [ ] Dynamic Type complet
 - [ ] Passage en Swift 6 language mode
-- [ ] Navigation « See All » avec `NavigationStack`
+- [x] Navigation « See All » avec `NavigationStack` → intégré aux étapes 9 et 11
