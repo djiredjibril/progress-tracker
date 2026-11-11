@@ -7,9 +7,9 @@ enum TaskPriority: String, CaseIterable, Identifiable, Hashable {
 
     var title: String {
         switch self {
-        case .low: "Low"
-        case .medium: "Medium"
-        case .high: "High"
+        case .low: tr("Low")
+        case .medium: tr("Medium")
+        case .high: tr("High")
         }
     }
 }

@@ -11,10 +11,10 @@ enum TaskCategory: String, CaseIterable, Identifiable, Hashable {
 
     var title: String {
         switch self {
-        case .work: "Work"
-        case .health: "Health"
-        case .learning: "Learning"
-        case .personal: "Personal"
+        case .work: tr("Work")
+        case .health: tr("Health")
+        case .learning: tr("Learning")
+        case .personal: tr("Personal")
         }
     }
 }

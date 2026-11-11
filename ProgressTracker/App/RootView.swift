@@ -26,6 +26,9 @@ struct RootView: View {
     // Réglages persistés (voir ProfileView) : `RootView` les relit pour qu'ils aient un effet réel ailleurs dans l'app.
     @AppStorage(SettingsKey.notificationsEnabled) private var notificationsEnabled = true
     @AppStorage(SettingsKey.focusMinutes) private var focusMinutes = SettingsOptions.defaultFocusMinutes
+    // Lue ici pour que RootView (et donc les onglets) se re-rende quand la langue change : les textes calculés par `tr(...)`
+    // sont relus à ce moment-là.
+    @AppStorage(SettingsKey.language) private var language = AppLanguage.defaultLanguage.rawValue
 
     // ⚛️ voir CONCEPTS.md#state : on reçoit un *provider* pour que les `#Preview` injectent un service instantané ;
     // `_viewModel = State(initialValue:)` initialise le `@State` depuis un paramètre.

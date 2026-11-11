@@ -138,8 +138,8 @@ struct EditProfileView: View {
     private var form: some View {
         VStack(alignment: .leading, spacing: Spacing.l) {
             AuthField(
-                label: "First name",
-                errorMessage: (!draft.isFirstNameValid && focusedField != .name) ? "Enter your first name." : nil
+                label: tr("First name"),
+                errorMessage: (!draft.isFirstNameValid && focusedField != .name) ? tr("Enter your first name.") : nil
             ) {
                 TextField("", text: $draft.firstName, prompt: Text("Alex").foregroundStyle(Color.textPlaceholder))
                     .font(.appFieldText)
@@ -152,9 +152,9 @@ struct EditProfileView: View {
                     .formField(isFocused: focusedField == .name)
             }
             AuthField(
-                label: "Email",
+                label: tr("Email"),
                 errorMessage: (!draft.email.isEmpty && !draft.isEmailValid && focusedField != .email)
-                    ? "Enter a valid email address." : nil
+                    ? tr("Enter a valid email address.") : nil
             ) {
                 TextField("", text: $draft.email, prompt: Text(verbatim: "you@example.com").foregroundStyle(Color.textPlaceholder))
                     .font(.appFieldText)

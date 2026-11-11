@@ -69,7 +69,7 @@ struct PasswordInput: View {
                     .frame(width: Size.circleButton, height: Size.circleButton)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(isRevealed ? "Hide password" : "Show password")
+            .accessibilityLabel(isRevealed ? tr("Hide password") : tr("Show password"))
         }
         .padding(.trailing, -Spacing.s)     // l'œil colle au bord : on compense le padding du champ
         .formField(isFocused: isFocused.wrappedValue)

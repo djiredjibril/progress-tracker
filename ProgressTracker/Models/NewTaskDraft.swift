@@ -81,9 +81,9 @@ struct NewTaskDraft {
         let hours = minutes / 60
         let rest = minutes % 60
         switch (hours, rest) {
-        case (0, _): return "\(rest) min"
-        case (_, 0): return "\(hours) h"
-        default: return "\(hours) h \(rest)"
+        case (0, _): return tr("%lld min", rest)
+        case (_, 0): return tr("%lld h", hours)
+        default: return tr("%lld h %lld", hours, rest)
         }
     }
 }

@@ -298,3 +298,13 @@ Toutes les icônes utilisent SF Symbols.
 
 ### D-049 : Renommage en « Progress Tracker »
 **Choix :** l'app s'appelle partout **Progress Tracker** : nom affiché sous l'icône, Splash, dialogues, README. Les noms techniques suivent : target, module et dossiers `ProgressTracker` / `ProgressTrackerTests`, projet `ProgressTracker.xcodeproj`, point d'entrée `ProgressTrackerApp`, bundle id `com.example.progresstracker`. Le changement de bundle id fait de l'app une NOUVELLE installation : les réglages et les données de l'ancienne (`com.example.focusapp`) ne sont pas repris.
+
+### D-050 : Étape 22 : français et anglais, français par défaut
+**Choix :**
+- Deux langues, **français par défaut** (`AppLanguage.defaultLanguage`, `developmentLanguage: fr`). Un réglage **Profile > Language** (Français / English) la change en direct. Le défaut est le français même sur un téléphone en anglais, comme demandé ; il ne suit pas la langue du système.
+- Catalogue unique `ProgressTracker/Resources/Localizable.xcstrings`, **généré** par `tools/localization.py` (la clé est le texte anglais, la valeur la traduction française) : c'est ce script qu'on édite pour ajouter ou corriger un texte, puis on le relance.
+- Les littéraux des vues sont traduits par SwiftUI avec `.environment(\.locale, …)` posé dans `AppFlowView`. Les `String` calculés (ViewModels, énumérations, formats de dates) passent par `tr(...)`, qui lit le même réglage.
+- Dates, heures et nombres suivent la langue (`fr_FR` : 24 h, `en_US` : 12 h avec AM/PM).
+- **Tests en anglais** : le schéma de test fixe `PT_LANGUAGE=en` ; les tests du français appellent `tr(..., language: .fr)`. `LocalizationTests` vérifie que les deux catalogues ont les mêmes clés et les mêmes champs (`%@`, `%lld`).
+- Textes courts adaptés au français quand la traduction littérale débordait : « Études » (Learning), « À planifier », « Bravo ! », « Focus » (Focus Time).
+- Limites : les notifications déjà enregistrées gardent la langue dans laquelle elles ont été créées ; les données d'exemple des previews (`MockData`) restent en anglais ; les noms de jours de la mini-frise (barres d'Analytics) viennent du système.

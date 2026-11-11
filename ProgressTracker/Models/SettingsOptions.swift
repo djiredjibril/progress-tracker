@@ -8,6 +8,7 @@ enum SettingsKey {
     static let dailyGoal = "settings.dailyGoal"
     static let focusMinutes = "settings.focusMinutes"
     static let appearance = "settings.appearance"
+    static let language = "settings.language"
 }
 
 // Valeurs proposées et libellés des réglages (testables sans aucune vue).
@@ -19,11 +20,11 @@ enum SettingsOptions {
 
     // « 5 tasks », « 1 task »
     static func dailyGoalLabel(_ tasks: Int) -> String {
-        "\(tasks) \(tasks == 1 ? "task" : "tasks")"
+        tasks == 1 ? tr("%lld task", Int64(tasks)) : tr("%lld tasks", Int64(tasks))
     }
 
     // « 25 min »
     static func focusLabel(_ minutes: Int) -> String {
-        "\(minutes) min"
+        tr("%lld min", Int64(minutes))
     }
 }

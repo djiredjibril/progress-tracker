@@ -49,7 +49,7 @@ struct CategoryBreakdownCard: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(share.category.title)
-        .accessibilityValue("\(share.percent) percent")
+        .accessibilityValue(tr("%lld percent", share.percent))
     }
 }
 

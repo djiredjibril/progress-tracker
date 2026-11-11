@@ -15,6 +15,8 @@ struct AppFlowView: View {
 
     // ⚛️ voir CONCEPTS.md#app-storage : le mode d'apparence choisi dans Profile, relu ici pour toute l'app.
     @AppStorage(SettingsKey.appearance) private var appearanceValue = AppearanceMode.system.rawValue
+    // La langue choisie dans Profile (français par défaut), relue ici pour toute l'app.
+    @AppStorage(SettingsKey.language) private var languageValue = AppLanguage.defaultLanguage.rawValue
 
     // ⚛️ React : le ViewModel est créé DANS l'`init` (et non en valeur par défaut) : `AuthViewModel` est isolé au thread
     // principal, et une valeur par défaut serait évaluée ailleurs. `nil` = « utilise la vraie persistance ».
@@ -43,6 +45,10 @@ struct AppFlowView: View {
         // ⚛️ React : ≈ `<ThemeProvider>` à la racine. `nil` (mode System) laisse iOS décider ; posé ici, il s'applique à TOUT :
         // onglets, feuilles, écrans empilés. Il remplace le mode clair forcé de D-014.
         .preferredColorScheme(AppearanceMode(storedValue: appearanceValue).colorScheme)
+        // ⚛️ React : ≈ `<I18nextProvider>` : SwiftUI traduit chaque `Text("…")` littéral avec la locale de l'environnement, et
+        // formate dates et nombres avec elle. Les `String` calculés passent par `tr(...)`, qui lit le même réglage. Changer la
+        // langue relit `languageValue` ici et re-rend tout l'écran.
+        .environment(\.locale, AppLanguage(storedValue: languageValue).locale)
     }
 
     // MARK: - L'app connectée

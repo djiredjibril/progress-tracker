@@ -129,8 +129,8 @@ struct FocusSessionView: View {
     private var sessionIndicator: some View {
         HStack(spacing: Spacing.m - 2) {
             Text(viewModel.runState == .finished
-                 ? "All \(viewModel.config.sessionCount) sessions done"
-                 : "Session \(viewModel.sessionIndex) of \(viewModel.config.sessionCount)")
+                 ? tr("All %lld sessions done", viewModel.config.sessionCount)
+                 : tr("Session %lld of %lld", viewModel.sessionIndex, viewModel.config.sessionCount))
                 .font(.appCardBody)
                 .foregroundStyle(Color.textSecondary)
             HStack(spacing: 6) {
@@ -196,7 +196,7 @@ struct FocusSessionView: View {
                 icon: "clock",
                 iconColors: [Color.statFocusLight, Color.statFocusDark],
                 value: viewModel.focusToday.shortDurationLabel,
-                label: "Focus today"
+                label: tr("Focus today")
             )
             InfoCard(
                 icon: "cup.and.saucer",

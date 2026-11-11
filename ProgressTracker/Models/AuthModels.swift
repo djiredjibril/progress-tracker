@@ -25,9 +25,9 @@ enum AuthError: LocalizedError, Equatable {
 
     var errorDescription: String? {
         switch self {
-        case .invalidCredentials: "Incorrect email or password."
-        case .emailAlreadyUsed: "An account with this email already exists."
-        case .network: "Something went wrong. Please try again."
+        case .invalidCredentials: tr("Incorrect email or password.")
+        case .emailAlreadyUsed: tr("An account with this email already exists.")
+        case .network: tr("Something went wrong. Please try again.")
         }
     }
 }

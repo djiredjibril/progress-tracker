@@ -46,7 +46,7 @@ struct FocusChartCard: View {
     // « 15h 42m » avec de grands chiffres et de petites unités.
     private var totalText: AttributedString {
         let minutes = Int(total) / 60
-        return .stat([(minutes / 60, "h"), (minutes % 60, "m")], valueFont: .appChartValue, unitFont: .appChartUnit)
+        return .stat([(minutes / 60, tr("h")), (minutes % 60, tr("m"))], valueFont: .appChartValue, unitFont: .appChartUnit)
     }
 
     // ⚛️ React : `Chart` ≈ un composant de graphique (Victory, `react-native-chart-kit`) mais natif et DÉCLARATIF :

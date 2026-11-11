@@ -48,7 +48,7 @@ struct NewTaskView: View {
         .safeAreaInset(edge: .bottom) {
             // ⚛️ React : `.disabled(true)` ≈ `disabled` d'un `Pressable`. `PrimaryButtonStyle` le lit via
             // `@Environment(\.isEnabled)` et pâlit tout seul : on ne passe aucune prop de plus.
-            Button(draft.isEditing ? "Save Changes" : "Create Task", action: submit)
+            Button(draft.isEditing ? tr("Save Changes") : tr("Create Task"), action: submit)
                 .buttonStyle(.primary)
                 .disabled(!draft.isValid)
                 .padding(.horizontal, Spacing.screen)
@@ -74,7 +74,7 @@ struct NewTaskView: View {
         // ⚛️ React : `ZStack` centre le titre sur TOUTE la largeur, indépendamment du bouton de gauche (avec un
         // `HStack`, le titre serait décalé par la largeur du bouton).
         ZStack {
-            Text(draft.isEditing ? "Edit Task" : "New Task")
+            Text(draft.isEditing ? tr("Edit Task") : tr("New Task"))
                 .font(.appSheetTitle)
                 .foregroundStyle(Color.textPrimary)
                 .accessibilityAddTraits(.isHeader)
@@ -96,7 +96,7 @@ struct NewTaskView: View {
     }
 
     private var titleField: some View {
-        labeled("Title") {
+        labeled(tr("Title")) {
             // ⚛️ React : ≈ `<TextInput value onChangeText placeholder />`. `$draft.title` est le `Binding` : la
             // saisie écrit dans `draft.title`, et un changement de `draft.title` met le champ à jour (deux sens).
             TextField(
@@ -118,18 +118,18 @@ struct NewTaskView: View {
         let isToday = calendar.isDateInToday(draft.day)
         let isTomorrow = calendar.isDateInTomorrow(draft.day)
 
-        return labeled("Date") {
+        return labeled(tr("Date")) {
             HStack(spacing: Spacing.s) {
-                ChoiceChip(title: "Today", isSelected: isToday) {
+                ChoiceChip(title: tr("Today"), isSelected: isToday) {
                     draft.day = .now
                 }
-                ChoiceChip(title: "Tomorrow", isSelected: isTomorrow) {
+                ChoiceChip(title: tr("Tomorrow"), isSelected: isTomorrow) {
                     draft.day = calendar.date(byAdding: .day, value: 1, to: .now) ?? .now
                 }
                 ChoiceChip(
                     title: isToday || isTomorrow
-                        ? "Pick a date"
-                        : draft.day.formatted(.dateTime.month(.abbreviated).day()),
+                        ? tr("Pick a date")
+                        : draft.day.formatted(.dateTime.month(.abbreviated).day().locale(AppLanguage.current.locale)),
                     systemImage: "calendar",
                     isSelected: !(isToday || isTomorrow)
                 ) {
@@ -141,7 +141,7 @@ struct NewTaskView: View {
 
     private var timeAndDuration: some View {
         HStack(alignment: .top, spacing: Spacing.m) {
-            labeled("Time") {
+            labeled(tr("Time")) {
                 HStack(spacing: Spacing.s) {
                     Image(systemName: "clock")
                         .foregroundStyle(Color.appPrimaryStrong)
@@ -155,7 +155,7 @@ struct NewTaskView: View {
                 }
                 .formField()
             }
-            labeled("Duration") {
+            labeled(tr("Duration")) {
                 // ⚛️ React : `Menu` + `Picker` ≈ un `<select>` : le menu natif liste les options, et la valeur choisie
                 // est écrite dans `draft.durationMinutes` grâce au `tag` de chaque ligne.
                 Menu {
@@ -181,7 +181,7 @@ struct NewTaskView: View {
     }
 
     private var categoryField: some View {
-        labeled("Category") {
+        labeled(tr("Category")) {
             HStack(spacing: Spacing.s) {
                 ForEach(TaskCategory.allCases) { category in
                     ChoiceChip(
@@ -197,7 +197,7 @@ struct NewTaskView: View {
     }
 
     private var priorityField: some View {
-        labeled("Priority") {
+        labeled(tr("Priority")) {
             PillSegmentedControl(selection: $draft.priority, options: TaskPriority.allCases, title: \.title)
         }
     }

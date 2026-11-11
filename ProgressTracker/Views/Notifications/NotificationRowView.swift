@@ -55,7 +55,7 @@ struct NotificationRowView: View {
         // Une seule annonce VoiceOver : « Focus session complete, You focused…, Just now, Unread ».
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(notification.title), \(notification.message), \(timeLabel)")
-        .accessibilityValue(notification.isRead ? "" : "Unread")
+        .accessibilityValue(notification.isRead ? "" : tr("Unread"))
     }
 
     private var iconBadge: some View {

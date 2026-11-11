@@ -63,20 +63,20 @@ final class FocusSessionViewModel {
 
     var phaseLabel: String {
         switch (runState, phase) {
-        case (.finished, _): "Complete"
-        case (_, .focus): "Deep work"
-        case (_, .rest): "Break"
+        case (.finished, _): tr("Complete")
+        case (_, .focus): tr("Deep work")
+        case (_, .rest): tr("Break")
         }
     }
 
     var durationLabel: String {
-        runState == .finished ? "all sessions done" : "of \(Int(phaseDuration / 60)) min"
+        runState == .finished ? tr("all sessions done") : tr("of %lld min", Int(phaseDuration / 60))
     }
 
     // « Next break : 5 min » pendant le focus, « Next focus : 25 min » pendant la pause.
-    var nextLabel: String { phase == .focus ? "Next break" : "Next focus" }
+    var nextLabel: String { phase == .focus ? tr("Next break") : tr("Next focus") }
     var nextDurationText: String {
-        "\(Int((phase == .focus ? config.breakDuration : config.focusDuration) / 60)) min"
+        tr("%lld min", Int((phase == .focus ? config.breakDuration : config.focusDuration) / 60))
     }
 
     // Temps de focus du jour : la base (Home) + ce qui est déjà comptabilisé + la session en cours.

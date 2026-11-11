@@ -26,7 +26,7 @@ struct LoginView: View {
             .scrollIndicators(.hidden)
         }
         .safeAreaInset(edge: .bottom) {
-            AuthSwitchRow(prompt: "Don't have an account?", action: "Sign up", onTap: onShowSignUp)
+            AuthSwitchRow(prompt: tr("Don't have an account?"), action: tr("Sign up"), onTap: onShowSignUp)
                 .padding(.bottom, Spacing.s)
         }
         .toolbar(.hidden, for: .navigationBar)
@@ -51,9 +51,9 @@ struct LoginView: View {
     private var form: some View {
         VStack(alignment: .leading, spacing: Spacing.l) {
             AuthField(
-                label: "Email",
+                label: tr("Email"),
                 // L'erreur n'apparaît que quand on a fini de taper (le champ perd le focus) et que l'e-mail est invalide.
-                errorMessage: (!draft.email.isEmpty && !draft.isEmailValid && !emailFocused) ? "Enter a valid email address." : nil
+                errorMessage: (!draft.email.isEmpty && !draft.isEmailValid && !emailFocused) ? tr("Enter a valid email address.") : nil
             ) {
                 // ⚛️ React : ≈ `<TextInput keyboardType="email-address" autoCapitalize="none" autoComplete="email" />`.
                 TextField("", text: $draft.email, // `Text(verbatim:)` : sans lui, SwiftUI détecte l'adresse e-mail dans le texte et la colore comme un lien.
@@ -69,9 +69,9 @@ struct LoginView: View {
                     .onSubmit { passwordFocused = true }
                     .formField(isFocused: emailFocused)
             }
-            AuthField(label: "Password") {
+            AuthField(label: tr("Password")) {
                 PasswordInput(
-                    prompt: "Your password",
+                    prompt: tr("Your password"),
                     text: $draft.password,
                     contentType: .password,
                     isFocused: $passwordFocused,
@@ -104,7 +104,7 @@ struct LoginView: View {
 
     private var submitButton: some View {
         Button(action: submit) {
-            SubmitButtonLabel(title: "Log In", isSubmitting: auth.isSubmitting)
+            SubmitButtonLabel(title: tr("Log In"), isSubmitting: auth.isSubmitting)
         }
         .buttonStyle(.primary)
         .disabled(!draft.isValid || auth.isSubmitting)

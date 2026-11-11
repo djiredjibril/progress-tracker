@@ -5,8 +5,8 @@ enum AnalyticsPeriod: String, CaseIterable, Identifiable, Hashable {
     case week, month, year
 
     var id: String { rawValue }
-    var title: String { rawValue.capitalized }                   // « Week », « Month », « Year »
-    var focusTitle: String { "Focus time this \(rawValue)" }
+    var title: String { tr(rawValue.capitalized) }                   // « Week », « Month », « Year »
+    var focusTitle: String { tr("Focus time this \(rawValue)") }
 }
 
 // Le temps de focus d'une journée (l'historique, base de toutes les agrégations).

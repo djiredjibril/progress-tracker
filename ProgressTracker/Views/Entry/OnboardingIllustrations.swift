@@ -45,7 +45,7 @@ struct PlanIllustration: View {
             FloatingChip(
                 systemImage: "calendar",
                 colors: [Color.appPrimaryLight, Color.appPrimaryStrong],
-                text: "4 tasks today"
+                text: tr("4 tasks today")
             )
             .offset(x: Spacing.m + 2, y: Spacing.section * 2)
         }
@@ -101,13 +101,13 @@ struct ProgressIllustration: View {
 
     var body: some View {
         VStack(spacing: Spacing.l) {
-            GoalCardView(title: "Keep Going!", progress: 0.7, percent: 70, onTap: {})
+            GoalCardView(title: tr("Keep Going!"), progress: 0.7, percent: 70, onTap: {})
                 .allowsHitTesting(false)
                 .overlay(alignment: .topLeading) {
                     FloatingChip(
                         systemImage: "flame.fill",
                         colors: [Color.statStreakLight, Color.statStreakDark],
-                        text: "5-day streak"
+                        text: tr("%lld-day streak", 5)
                     )
                     .offset(x: -Spacing.m, y: -Spacing.section)
                 }

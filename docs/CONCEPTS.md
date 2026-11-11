@@ -591,3 +591,9 @@ Format d'une entrée :
 - **React/RN :** `<Modal presentationStyle="fullScreen" visible={flag}>` qui contient un écran déjà existant
 - **Différence clé :** `sheet` laisse voir l'écran dessous et se ferme au glissement ; `fullScreenCover` recouvre tout et ne se ferme que par code. L'écran réutilisé ne sait pas où il est : il reçoit un `onExit` (une closure) et le parent décide de la suite (aller vers Sign Up au premier lancement, simplement refermer ici).
 - **Vu à :** étape 21, `Views/Profile/ProfileView.swift`
+
+### localization · String Catalog, `LocalizedStringKey` et `tr(...)`
+- **Swift :** `Text("Home")` est traduit tout seul (`Text` prend un `LocalizedStringKey`) ; le catalogue `Localizable.xcstrings` associe chaque clé à ses traductions ; `.environment(\.locale, …)` choisit la langue ; `tr("%lld tasks", n)` traduit un `String` calculé
+- **React/RN :** i18next : `t("home")` + `fr.json` / `en.json` + `<I18nextProvider>`
+- **Différence clé :** la clé est le texte anglais lui-même (pas un identifiant `home.title`), et les littéraux passés à `Text`, `Button`, `Toggle`… sont traduits sans rien écrire. Piège : un `String` passé à un composant (`title: String` puis `Text(title)`) n'est PAS traduit, parce que `Text(String)` affiche tel quel ; on traduit donc à la source avec `tr(...)`. Les dates se formatent avec la locale (`10:00 AM` en anglais, `10:00` en français).
+- **Vu à :** étape 22, `Utilities/Localization.swift`, `Resources/Localizable.xcstrings`

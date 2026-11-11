@@ -11,7 +11,8 @@
 ![SwiftUI](https://img.shields.io/badge/SwiftUI-MVVM-0A84FF)
 ![SwiftData](https://img.shields.io/badge/SwiftData-local-6E5BE8)
 ![Dependencies](https://img.shields.io/badge/d%C3%A9pendances-0-2EA44F)
-![Tests](https://img.shields.io/badge/tests-140%20passent-2EA44F)
+![Tests](https://img.shields.io/badge/tests-147%20passent-2EA44F)
+![Langues](https://img.shields.io/badge/langues-FR%20%7C%20EN-6E5BE8)
 
 </div>
 
@@ -37,6 +38,7 @@
 | 🔍 **Recherche** | Recherche dans les tâches, avec ouverture du jour concerné dans le calendrier |
 | 👤 **Profil** | Modification du nom, de l'e-mail et de la photo ; réglages persistés |
 | 🌗 **Apparence** | Clair, sombre ou système |
+| 🌍 **Langues** | Français (par défaut) et anglais, au choix dans le profil |
 | 👋 **Parcours d'entrée** | Splash, onboarding en 3 pages, inscription et connexion (fictives, sans serveur) |
 
 Les données restent **sur l'appareil** (SwiftData). Au premier lancement l'app est vide, avec des états vides soignés ; les statistiques (tâches faites, temps de focus, série, objectif) sont **calculées** à partir des tâches et des sessions, jamais stockées.
@@ -66,7 +68,8 @@ Les données restent **sur l'appareil** (SwiftData). Au premier lancement l'app 
 - **SwiftUI** (iOS 17+) et **Observation** (`@Observable`) : interface et état
 - **SwiftData** : stockage local des tâches, de l'historique de focus et des notifications
 - **Swift Charts** : graphiques d'Analytics
-- **Swift Testing** : 140 tests dans 23 suites
+- **String Catalog** : localisation français / anglais
+- **Swift Testing** : 147 tests dans 24 suites
 - **XcodeGen** : le projet Xcode est généré depuis `project.yml`
 - **Aucune dépendance tierce** : ni SPM, ni CocoaPods, ni Carthage
 
@@ -90,7 +93,7 @@ xcodebuild -project ProgressTracker.xcodeproj -scheme ProgressTracker \
   -derivedDataPath build test | xcbeautify
 ```
 
-> Le dossier `ProgressTracker.xcodeproj` est un artefact généré : après avoir ajouté, supprimé ou déplacé un fichier, relancer `xcodegen generate`. Les commandes de capture d'écran et de vérification visuelle sont dans [`SETUP.md`](SETUP.md).
+> Le dossier `ProgressTracker.xcodeproj` est un artefact généré : après avoir ajouté, supprimé ou déplacé un fichier, relancer `xcodegen generate`. Les traductions se modifient dans `tools/localization.py` (puis `python3 tools/localization.py`). Les commandes de capture d'écran et de vérification visuelle sont dans [`SETUP.md`](SETUP.md).
 
 ## Architecture
 
@@ -105,6 +108,7 @@ ProgressTracker/
 ├── ViewModels/     Home, Calendar, Analytics, Notifications, FocusSession, Auth
 ├── Views/          Un dossier par écran ; composants présentationnels dans Components/
 ├── Mock/           Données d'exemple : previews et tests uniquement
+├── Resources/      Assets et catalogue de traductions (Localizable.xcstrings)
 └── Utilities/      Extensions de dates et de calendrier
 ```
 

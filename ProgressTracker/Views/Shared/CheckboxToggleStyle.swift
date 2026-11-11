@@ -22,7 +22,7 @@ struct CheckboxToggleStyle: ToggleStyle {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(.isToggle)
-        .accessibilityValue(configuration.isOn ? "Checked" : "Unchecked")
+        .accessibilityValue(configuration.isOn ? tr("Checked") : tr("Unchecked"))
     }
 }
 

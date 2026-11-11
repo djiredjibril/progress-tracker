@@ -30,7 +30,7 @@ struct ProgressBarView: View {
         // VoiceOver annonce « Progress, 70 percent » plutôt que de lire des formes sans sens.
         .accessibilityElement()
         .accessibilityLabel("Progress")
-        .accessibilityValue("\(Int((clamped * 100).rounded())) percent")
+        .accessibilityValue(tr("%lld percent", Int((clamped * 100).rounded())))
     }
 }
 

@@ -61,7 +61,7 @@ final class AnalyticsViewModel {
 
     private var today: Date { calendar.startOfDay(for: now()) }
     private func format(_ date: Date, _ style: Date.FormatStyle) -> String {
-        date.formatted(style.locale(Locale(identifier: "en_US")))
+        date.formatted(style.locale(AppLanguage.current.locale))
     }
 
     // Semaine : 7 barres, lundi → dimanche.
@@ -92,7 +92,7 @@ final class AnalyticsViewModel {
             let rangeName = "\(format(first, .dateTime.month(.abbreviated))) \(firstDay)–\(lastDay)"
             return FocusBar(
                 id: index,
-                label: "W\(index + 1)",
+                label: tr("W%lld", index + 1),
                 name: rangeName,
                 seconds: days.reduce(0) { $0 + seconds(on: $1, todayFocus: todayFocus) },
                 isCurrent: days.contains(today),

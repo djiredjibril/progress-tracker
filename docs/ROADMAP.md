@@ -127,6 +127,11 @@ Une ligne « Replay introduction » dans Profile rouvre l'onboarding sans se dé
 - **Concepts :** `fullScreenCover`, réutilisation d'un écran avec un autre point de sortie
 - **Fini quand :** l'onboarding s'ouvre depuis Profile et se ferme proprement.
 
+## [x] Étape 22 : Français et anglais (français par défaut)
+Tous les textes existent en français et en anglais ; le français est la langue par défaut, l'anglais se choisit dans Profile > Language.
+- **Concepts :** String Catalog (`Localizable.xcstrings`), `LocalizedStringKey`, locale de l'environnement, formats de dates
+- **Fini quand :** chaque écran s'affiche dans les deux langues, la langue change en direct, et un test garantit que les deux catalogues ont les mêmes clés.
+
 ---
 
 ## Bonus (au choix, après validation)

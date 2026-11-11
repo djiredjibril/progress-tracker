@@ -7,15 +7,15 @@ extension Date {
         // ⚛️ React : `Date.FormatStyle` ≈ `Intl.DateTimeFormat` / `date-fns` : on compose les champs voulus
         // (`.hour().minute()`). Différence : le format s'adapte à la locale. On la force en `en_US` pour coller
         // à la maquette (« 10:00 AM »).
-        let locale = Locale(identifier: "en_US")
+        let locale = AppLanguage.current.locale
         let time = formatted(.dateTime.hour().minute().locale(locale))
 
         if calendar.isDate(self, inSameDayAs: now) {
-            return "Today, \(time)"
+            return tr("Today, %@", time)
         }
         if let tomorrow = calendar.date(byAdding: .day, value: 1, to: now),
            calendar.isDate(self, inSameDayAs: tomorrow) {
-            return "Tomorrow, \(time)"
+            return tr("Tomorrow, %@", time)
         }
         return "\(formatted(.dateTime.month(.abbreviated).day().locale(locale))), \(time)"
     }
@@ -26,17 +26,17 @@ extension Date {
     // `now` et `calendar` sont injectables, comme pour `dueLabel`.
     func relativeLabel(now: Date = .now, calendar: Calendar = .current) -> String {
         let seconds = now.timeIntervalSince(self)
-        if seconds < 60 { return "Just now" }
+        if seconds < 60 { return tr("Just now") }
 
         if calendar.isDate(self, inSameDayAs: now) {
             let minutes = Int(seconds / 60)
-            return minutes < 60 ? "\(minutes)m ago" : "\(minutes / 60)h ago"
+            return minutes < 60 ? tr("%lldm ago", minutes) : tr("%lldh ago", minutes / 60)
         }
         if let yesterday = calendar.date(byAdding: .day, value: -1, to: now),
            calendar.isDate(self, inSameDayAs: yesterday) {
-            return "Yesterday"
+            return tr("Yesterday")
         }
-        return formatted(.dateTime.weekday(.abbreviated).locale(Locale(identifier: "en_US")))
+        return formatted(.dateTime.weekday(.abbreviated).locale(AppLanguage.current.locale))
     }
 }
 
@@ -46,7 +46,7 @@ extension TimeInterval {
         let totalMinutes = Int(self) / 60
         let hours = totalMinutes / 60
         let minutes = totalMinutes % 60
-        return hours > 0 ? "\(hours)h \(minutes)m" : "\(minutes)m"
+        return hours > 0 ? tr("%lldh %lldm", hours, minutes) : tr("%lldm", minutes)
     }
 }
 
@@ -54,7 +54,7 @@ extension Date {
     // « 10:00 » et « AM » séparés (colonne des heures du planning). On normalise l'espace insécable fine qu'iOS insère
     // avant AM/PM pour pouvoir couper proprement.
     func clockParts() -> (time: String, period: String) {
-        let text = formatted(.dateTime.hour().minute().locale(Locale(identifier: "en_US")))
+        let text = formatted(.dateTime.hour().minute().locale(AppLanguage.current.locale))
             .replacingOccurrences(of: "\u{202F}", with: " ")
         let pieces = text.split(separator: " ", maxSplits: 1).map(String.init)
         return (pieces.first ?? text, pieces.count > 1 ? pieces[1] : "")
@@ -70,8 +70,10 @@ extension Date {
     func timeRangeLabel(to end: Date) -> String {
         let start = clockParts()
         let stop = end.clockParts()
-        return start.period == stop.period
+        // En français (24 h) il n'y a pas de AM/PM : « 10:00 – 11:30 ».
+        let range = start.period == stop.period
             ? "\(start.time) – \(stop.time) \(stop.period)"
             : "\(start.time) \(start.period) – \(stop.time) \(stop.period)"
+        return range.trimmingCharacters(in: .whitespaces)
     }
 }

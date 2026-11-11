@@ -53,9 +53,9 @@ final class HomeViewModel {
     var greeting: String {
         let hour = Calendar.current.component(.hour, from: now())
         switch hour {
-        case 5..<12: return "Good Morning"
-        case 12..<18: return "Good Afternoon"
-        default: return "Good Evening"
+        case 5..<12: return tr("Good Morning")
+        case 12..<18: return tr("Good Afternoon")
+        default: return tr("Good Evening")
         }
     }
 
@@ -142,9 +142,9 @@ final class HomeViewModel {
         store.add(FocusSession(date: now(), seconds: seconds, taskTitle: taskTitle))
         recomputeDerived()
         let minutes = max(1, Int((seconds / 60).rounded()))
-        let subject = taskTitle.map { " on \($0)" } ?? ""
-        onEvent(AppNotification(kind: .focusSession, title: "Focus session complete",
-                                message: "You focused \(minutes) min\(subject).", date: now()))
+                onEvent(AppNotification(kind: .focusSession, title: tr("Focus session complete"),
+                                message: taskTitle.map { tr("You focused %lld min on %@.", minutes, $0) } ?? tr("You focused %lld min.", minutes),
+                                date: now()))
         announceStreak(from: streakBefore)
     }
 
@@ -160,8 +160,8 @@ final class HomeViewModel {
     // Une série qui s'allonge (2 jours ou plus) mérite une notification.
     private func announceStreak(from before: Int) {
         guard let days = data?.stats.streakDays, days > before, days >= 2 else { return }
-        onEvent(AppNotification(kind: .streak, title: "\(days)-day streak!",
-                                message: "You've been active \(days) days in a row. Keep it up!", date: now()))
+        onEvent(AppNotification(kind: .streak, title: tr("%lld-day streak!", days),
+                                message: tr("You've been active %lld days in a row. Keep it up!", days), date: now()))
     }
 
     // ⚛️ React : le `_` signifie « pas de label à l'appel » : `toggle(task)` et non `toggle(task: task)`.
@@ -183,11 +183,11 @@ final class HomeViewModel {
         recomputeDerived()
         // Événements : seulement quand on COCHE (décocher n'annonce rien).
         guard updated.isCompleted else { return }
-        onEvent(AppNotification(kind: .taskCompleted, title: "Task completed",
-                                message: "\(updated.title) was marked as done.", date: now()))
+        onEvent(AppNotification(kind: .taskCompleted, title: tr("Task completed"),
+                                message: tr("%@ was marked as done.", updated.title), date: now()))
         if let goal = data?.goal, goal.progress >= 1, goalBefore < 1 {
-            onEvent(AppNotification(kind: .dailyGoal, title: "Daily goal reached",
-                                    message: "You completed every task planned for today.", date: now()))
+            onEvent(AppNotification(kind: .dailyGoal, title: tr("Daily goal reached"),
+                                    message: tr("You completed every task planned for today."), date: now()))
         }
         announceStreak(from: streakBefore)
     }

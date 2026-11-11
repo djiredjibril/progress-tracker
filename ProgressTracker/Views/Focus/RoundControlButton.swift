@@ -39,7 +39,7 @@ struct RoundControlButton: View {
                 }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(accessibilityLabel)
+        .accessibilityLabel(LocalizedStringKey(accessibilityLabel))
     }
 }
 

@@ -42,7 +42,7 @@ struct CircleIconButton: View {
         .buttonStyle(.plain)
         // ⚛️ React : ≈ `accessibilityLabel` de RN. Obligatoire sur un bouton qui n'a qu'une icône,
         // sinon VoiceOver ne sait pas quoi annoncer.
-        .accessibilityLabel(accessibilityLabel)
+        .accessibilityLabel(LocalizedStringKey(accessibilityLabel))
     }
 }
 

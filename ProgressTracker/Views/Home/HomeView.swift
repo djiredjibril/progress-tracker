@@ -136,7 +136,7 @@ struct HomeView: View {
                     icon: "chart.bar.fill",
                     iconColors: [Color.statTasksLight, Color.statTasksDark],
                     value: .stat([(data.stats.tasksDone, "")]),
-                    label: "Tasks Done"
+                    label: tr("Tasks Done")
                 )
                 // ⚛️ React : ≈ envelopper la carte dans un `<Pressable onPress>`. `.plain` garde l'apparence de la carte ;
                 // le hint dit à VoiceOver où mène le toucher (la carte seule est annoncée comme une statistique).
@@ -144,8 +144,8 @@ struct HomeView: View {
                     StatCardView(
                         icon: "clock",
                         iconColors: [Color.statFocusLight, Color.statFocusDark],
-                        value: .stat([(data.stats.focusHours, "h"), (data.stats.focusMinutes, "m")]),
-                        label: "Focus Time"
+                        value: .stat([(data.stats.focusHours, tr("h")), (data.stats.focusMinutes, tr("m"))]),
+                        label: tr("Focus Time")
                     )
                 }
                 .buttonStyle(.plain)
@@ -154,7 +154,7 @@ struct HomeView: View {
                     icon: "flame.fill",
                     iconColors: [Color.statStreakLight, Color.statStreakDark],
                     value: .stat([(data.stats.streakDays, "")]),
-                    label: "Day Streak"
+                    label: tr("Day Streak")
                 )
             }
 
@@ -167,16 +167,16 @@ struct HomeView: View {
 
             // En-tête (44 pt) puis les lignes : 4 pt entre eux, 8 pt entre les lignes (canvas).
             VStack(alignment: .leading, spacing: Spacing.xs) {
-                SectionHeaderView(title: "My Tasks", actionTitle: "See All", onAction: onSeeAll)
+                SectionHeaderView(title: tr("My Tasks"), actionTitle: tr("See All"), onAction: onSeeAll)
 
                 let todayTasks = data.tasks(on: viewModel.currentDate)
                 if todayTasks.isEmpty {
                     // Premier lancement ou journée vide : on invite à créer une tâche au lieu de laisser un blanc.
                     EmptyStateView(
                         systemImage: "checklist",
-                        title: "No tasks today",
-                        message: "Plan your day by adding your first task.",
-                        actionTitle: "Add a task",
+                        title: tr("No tasks today"),
+                        message: tr("Plan your day by adding your first task."),
+                        actionTitle: tr("Add a task"),
                         action: onAddTask
                     )
                     .glassCard(cornerRadius: Radius.stat, hasShadow: false)

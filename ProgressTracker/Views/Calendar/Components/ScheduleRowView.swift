@@ -24,7 +24,7 @@ struct ScheduleRowView: View {
         // Une seule annonce : « Work, Design new UI screens, 10:00 – 11:30 AM, done ».
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(task.category.title), \(task.title), \(task.dueDate.timeRangeLabel(to: task.endDate))")
-        .accessibilityValue(task.isCompleted ? "Done" : "Not done")
+        .accessibilityValue(task.isCompleted ? tr("Done") : tr("Not done"))
     }
 
     private var card: some View {

@@ -63,7 +63,7 @@ struct TaskRowView: View {
         .sensoryFeedback(.selection, trigger: task.isCompleted)
         .accessibilityLabel("\(task.title), \(task.dueDate.dueLabel())")
         // ⚛️ React : ≈ `accessibilityState={{ checked }}` : VoiceOver annonce « coché / non coché ».
-        .accessibilityValue(task.isCompleted ? "Completed" : "Not completed")
+        .accessibilityValue(task.isCompleted ? tr("Completed") : tr("Not completed"))
         .accessibilityHint("Double-tap to toggle")
     }
 

@@ -33,7 +33,7 @@ struct WeekStripView: View {
             withAnimation(.snappy) { onSelect(day) }
         } label: {
             VStack(spacing: Spacing.xs) {
-                Text(day.formatted(.dateTime.weekday(.abbreviated).locale(Locale(identifier: "en_US"))))
+                Text(day.formatted(.dateTime.weekday(.abbreviated).locale(AppLanguage.current.locale)))
                     .font(.appCaption)
                     .foregroundStyle(isSelected ? Color.textOnAccent : Color.textSecondary)
                 Text("\(calendar.component(.day, from: day))")
@@ -64,9 +64,9 @@ struct WeekStripView: View {
         .buttonStyle(.plain)
         // « Wednesday, November 11, today, 3 tasks » : VoiceOver lit la date complète, pas « Wed 11 ».
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(day.formatted(.dateTime.weekday(.wide).month(.wide).day().locale(Locale(identifier: "en_US")))
-                            + (isToday ? ", today" : "")
-                            + (hasDot ? ", has tasks" : ""))
+        .accessibilityLabel(day.formatted(.dateTime.weekday(.wide).month(.wide).day().locale(AppLanguage.current.locale))
+                            + (isToday ? tr(", today") : "")
+                            + (hasDot ? tr(", has tasks") : ""))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }

@@ -33,7 +33,7 @@ struct SignUpView: View {
             .scrollIndicators(.hidden)
         }
         .safeAreaInset(edge: .bottom) {
-            AuthSwitchRow(prompt: "Already have an account?", action: "Log in", onTap: onShowLogIn)
+            AuthSwitchRow(prompt: tr("Already have an account?"), action: tr("Log in"), onTap: onShowLogIn)
                 .padding(.bottom, Spacing.s)
         }
         .toolbar(.hidden, for: .navigationBar)
@@ -54,7 +54,7 @@ struct SignUpView: View {
 
     private var form: some View {
         VStack(alignment: .leading, spacing: Spacing.l) {
-            AuthField(label: "First name") {
+            AuthField(label: tr("First name")) {
                 TextField("", text: $draft.firstName, prompt: Text("Alex").foregroundStyle(Color.textPlaceholder))
                     .font(.appFieldText)
                     .foregroundStyle(Color.textPrimary)
@@ -66,9 +66,9 @@ struct SignUpView: View {
                     .formField(isFocused: focused == .name)
             }
             AuthField(
-                label: "Email",
+                label: tr("Email"),
                 errorMessage: (!draft.email.isEmpty && !draft.isEmailValid && focused != .email)
-                    ? "Enter a valid email address." : nil
+                    ? tr("Enter a valid email address.") : nil
             ) {
                 TextField("", text: $draft.email, // `Text(verbatim:)` : sans lui, SwiftUI détecte l'adresse e-mail dans le texte et la colore comme un lien.
                     prompt: Text(verbatim: "you@example.com").foregroundStyle(Color.textPlaceholder))
@@ -84,14 +84,14 @@ struct SignUpView: View {
                     .formField(isFocused: focused == .email)
             }
             AuthField(
-                label: "Password",
+                label: tr("Password"),
                 // Le rappel devient une erreur seulement quand on a commencé à taper un mot de passe trop court.
-                hint: "At least \(SignUpDraft.minimumPasswordLength) characters.",
+                hint: tr("At least %lld characters.", SignUpDraft.minimumPasswordLength),
                 errorMessage: (!draft.password.isEmpty && !draft.isPasswordLongEnough && !passwordFocused)
-                    ? "Use at least \(SignUpDraft.minimumPasswordLength) characters." : nil
+                    ? tr("Use at least %lld characters.", SignUpDraft.minimumPasswordLength) : nil
             ) {
                 PasswordInput(
-                    prompt: "Create a password",
+                    prompt: tr("Create a password"),
                     text: $draft.password,
                     contentType: .newPassword,
                     isFocused: $passwordFocused,
@@ -111,7 +111,7 @@ struct SignUpView: View {
 
     private var submitButton: some View {
         Button(action: submit) {
-            SubmitButtonLabel(title: "Create Account", isSubmitting: auth.isSubmitting)
+            SubmitButtonLabel(title: tr("Create Account"), isSubmitting: auth.isSubmitting)
         }
         .buttonStyle(.primary)
         .disabled(!draft.isValid || auth.isSubmitting)

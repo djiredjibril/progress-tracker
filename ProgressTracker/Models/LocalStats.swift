@@ -21,12 +21,12 @@ enum LocalStats {
     // L'objectif du jour : la part des tâches d'aujourd'hui qui sont faites.
     static func goal(tasks: [TaskItem], now: Date, calendar: Calendar = .current) -> DailyGoal {
         let today = tasks.filter { calendar.isDate($0.dueDate, inSameDayAs: now) }
-        guard !today.isEmpty else { return DailyGoal(title: "Plan your day", progress: 0) }
+        guard !today.isEmpty else { return DailyGoal(title: tr("Plan your day"), progress: 0) }
         let progress = Double(today.filter(\.isCompleted).count) / Double(today.count)
         switch progress {
-        case 0: return DailyGoal(title: "Let's Go!", progress: 0)
-        case 1: return DailyGoal(title: "Goal Reached!", progress: 1)
-        default: return DailyGoal(title: "Keep Going!", progress: progress)
+        case 0: return DailyGoal(title: tr("Let's Go!"), progress: 0)
+        case 1: return DailyGoal(title: tr("Goal Reached!"), progress: 1)
+        default: return DailyGoal(title: tr("Keep Going!"), progress: progress)
         }
     }
 

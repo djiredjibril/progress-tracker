@@ -121,7 +121,7 @@ private struct StreakCard: View {
                 )
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
-                Text("\(days) days")
+                Text(days == 1 ? tr("%lld day", days) : tr("%lld days", days))
                     .font(.appRowTitle.weight(.bold))
                     .foregroundStyle(Color.textPrimary)
                 Text("Best streak")

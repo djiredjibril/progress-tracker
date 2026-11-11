@@ -49,7 +49,7 @@ final class NotificationsViewModel {
         let sorted = notifications.sorted { $0.date > $1.date }
         let today = sorted.filter { calendar.isDate($0.date, inSameDayAs: current) }
         let earlier = sorted.filter { !calendar.isDate($0.date, inSameDayAs: current) }
-        return [Group(title: "Today", items: today), Group(title: "Earlier", items: earlier)]
+        return [Group(title: tr("Today"), items: today), Group(title: tr("Earlier"), items: earlier)]
             .filter { !$0.items.isEmpty }
     }
 

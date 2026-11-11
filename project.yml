@@ -52,3 +52,6 @@ schemes:
     test:
       targets:
         - ProgressTrackerTests
+      # Les tests vérifient les textes anglais : la langue est fixée ici, quel que soit le réglage de l'app (voir Localization.swift).
+      environmentVariables:
+        PT_LANGUAGE: en

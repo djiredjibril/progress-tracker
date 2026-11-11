@@ -43,7 +43,7 @@ final class CalendarViewModel {
     }
 
     var monthTitle: String {
-        selectedDate.formatted(.dateTime.month(.wide).year().locale(Locale(identifier: "en_US")))
+        selectedDate.formatted(.dateTime.month(.wide).year().locale(AppLanguage.current.locale)).capitalized
     }
 
     func isSelected(_ day: Date) -> Bool { calendar.isDate(day, inSameDayAs: selectedDate) }
@@ -71,19 +71,19 @@ final class CalendarViewModel {
 
     // « Today's Schedule », « Tomorrow's Schedule », ou « Thu, Nov 12 » pour un autre jour.
     var scheduleTitle: String {
-        if calendar.isDate(selectedDate, inSameDayAs: now()) { return "Today's Schedule" }
+        if calendar.isDate(selectedDate, inSameDayAs: now()) { return tr("Today's Schedule") }
         if let tomorrow = calendar.date(byAdding: .day, value: 1, to: now()),
-           calendar.isDate(selectedDate, inSameDayAs: tomorrow) { return "Tomorrow's Schedule" }
+           calendar.isDate(selectedDate, inSameDayAs: tomorrow) { return tr("Tomorrow's Schedule") }
         if let yesterday = calendar.date(byAdding: .day, value: -1, to: now()),
-           calendar.isDate(selectedDate, inSameDayAs: yesterday) { return "Yesterday's Schedule" }
-        return selectedDate.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day().locale(Locale(identifier: "en_US")))
+           calendar.isDate(selectedDate, inSameDayAs: yesterday) { return tr("Yesterday's Schedule") }
+        return selectedDate.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day().locale(AppLanguage.current.locale))
     }
 
     // « 4 tasks · 1 done », « 1 task · 0 done » ou « No tasks ».
     func summary(for dayTasks: [TaskItem]) -> String {
-        guard !dayTasks.isEmpty else { return "No tasks" }
+        guard !dayTasks.isEmpty else { return tr("No tasks") }
         let done = dayTasks.filter(\.isCompleted).count
-        return "\(dayTasks.count) \(dayTasks.count == 1 ? "task" : "tasks") · \(done) done"
+        return tr(dayTasks.count == 1 ? "%lld task · %lld done" : "%lld tasks · %lld done", dayTasks.count, done)
     }
 
     // Les tâches du jour, avec le repère « maintenant » inséré au bon endroit quand le jour sélectionné est aujourd'hui.

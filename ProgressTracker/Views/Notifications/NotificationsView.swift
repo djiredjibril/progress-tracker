@@ -26,8 +26,8 @@ struct NotificationsView: View {
                 if viewModel.notifications.isEmpty {
                     EmptyStateView(
                         systemImage: "bell",
-                        title: "You're all caught up",
-                        message: "Finish a task or a focus session and it will show up here."
+                        title: tr("You're all caught up"),
+                        message: tr("Finish a task or a focus session and it will show up here.")
                     )
                     .padding(.top, Spacing.section)
                 }

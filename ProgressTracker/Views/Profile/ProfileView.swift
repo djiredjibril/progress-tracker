@@ -15,6 +15,8 @@ struct ProfileView: View {
     @AppStorage(SettingsKey.dailyGoal) private var dailyGoal = SettingsOptions.defaultDailyGoal
     @AppStorage(SettingsKey.focusMinutes) private var focusMinutes = SettingsOptions.defaultFocusMinutes
     @AppStorage(SettingsKey.appearance) private var appearanceValue = AppearanceMode.system.rawValue
+    // ⚛️ React : ≈ `i18n.changeLanguage(...)` : le choix est écrit ici ; `AppFlowView` relit ce réglage et l'applique à toute l'app.
+    @AppStorage(SettingsKey.language) private var languageValue = AppLanguage.defaultLanguage.rawValue
 
     @State private var isConfirmingLogOut = false
     @State private var isEditingProfile = false
@@ -90,11 +92,11 @@ struct ProfileView: View {
 
     private var statsStrip: some View {
         HStack(spacing: 0) {
-            stat(value: "\(stats.tasksDone)", label: "Tasks Done")
+            stat(value: "\(stats.tasksDone)", label: tr("Tasks Done"))
             divider
-            stat(value: "\(stats.focusHours)h \(stats.focusMinutes)m", label: "Focus Time")
+            stat(value: tr("%lldh %lldm", stats.focusHours, stats.focusMinutes), label: tr("Focus Time"))
             divider
-            stat(value: "\(stats.streakDays)", label: "Day Streak")
+            stat(value: "\(stats.streakDays)", label: tr("Day Streak"))
         }
         .padding(.vertical, Spacing.m + 2)
         .glassCard(cornerRadius: Radius.stat)
@@ -126,7 +128,7 @@ struct ProfileView: View {
                 systemImage: "bell",
                 iconForeground: .appPrimaryStrong,
                 iconBackground: .tabPill,
-                title: "Notifications",
+                title: tr("Notifications"),
                 showsTopDivider: false
             ) {
                 // ⚛️ React : ≈ `<Switch value onValueChange />`, branché par `Binding` sur le réglage persisté.
@@ -148,7 +150,7 @@ struct ProfileView: View {
                     systemImage: "target",
                     iconForeground: .appPrimaryStrong,
                     iconBackground: .tabPill,
-                    title: "Daily goal"
+                    title: tr("Daily goal")
                 ) { SettingsValueTrailing(value: SettingsOptions.dailyGoalLabel(dailyGoal)) }
             }
             .accessibilityValue(SettingsOptions.dailyGoalLabel(dailyGoal))
@@ -164,7 +166,7 @@ struct ProfileView: View {
                     systemImage: "clock",
                     iconForeground: .settingsBlueForeground,
                     iconBackground: .settingsBlueFill,
-                    title: "Focus session"
+                    title: tr("Focus session")
                 ) { SettingsValueTrailing(value: SettingsOptions.focusLabel(focusMinutes)) }
             }
             .accessibilityValue(SettingsOptions.focusLabel(focusMinutes))
@@ -182,10 +184,27 @@ struct ProfileView: View {
                     systemImage: AppearanceMode(storedValue: appearanceValue).systemImage,
                     iconForeground: .settingsCoralForeground,
                     iconBackground: .settingsCoralFill,
-                    title: "Appearance"
+                    title: tr("Appearance")
                 ) { SettingsValueTrailing(value: AppearanceMode(storedValue: appearanceValue).title) }
             }
             .accessibilityValue(AppearanceMode(storedValue: appearanceValue).title)
+
+            // Langue de l'app : français par défaut, anglais au choix. Le nom de chaque langue reste dans cette langue.
+            Menu {
+                Picker("Language", selection: $languageValue) {
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(language.title).tag(language.rawValue)
+                    }
+                }
+            } label: {
+                SettingsRow(
+                    systemImage: "globe",
+                    iconForeground: .settingsBlueForeground,
+                    iconBackground: .settingsBlueFill,
+                    title: tr("Language")
+                ) { SettingsValueTrailing(value: AppLanguage(storedValue: languageValue).title) }
+            }
+            .accessibilityValue(AppLanguage(storedValue: languageValue).title)
         }
     }
 
@@ -196,7 +215,7 @@ struct ProfileView: View {
                     systemImage: "play.circle",
                     iconForeground: .appPrimaryStrong,
                     iconBackground: .tabPill,
-                    title: "Replay introduction",
+                    title: tr("Replay introduction"),
                     showsTopDivider: false
                 ) {
                     Image(systemName: "chevron.right")
@@ -213,7 +232,7 @@ struct ProfileView: View {
                     systemImage: "questionmark.circle",
                     iconForeground: .textPrimary,
                     iconBackground: .closeFill,
-                    title: "Help & Support"
+                    title: tr("Help & Support")
                 ) {
                     Image(systemName: "chevron.right")
                         .font(.appLinkChevron)
@@ -228,7 +247,7 @@ struct ProfileView: View {
                     systemImage: "rectangle.portrait.and.arrow.right",
                     iconForeground: .destructive,
                     iconBackground: .settingsDestructiveFill,
-                    title: "Log out",
+                    title: tr("Log out"),
                     titleFont: .appRowLabel.weight(.semibold),
                     titleColor: .destructive
                 ) { EmptyView() }

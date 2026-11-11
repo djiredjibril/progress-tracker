@@ -14,10 +14,10 @@ enum AppTab: String, CaseIterable, Identifiable {
         // ⚛️ React : ce `switch` doit couvrir TOUS les cas : si on ajoute un onglet, le compilateur signale
         // chaque `switch` à compléter (un `Record<Tab, string>` TypeScript fait la même vérification).
         switch self {
-        case .home: "Home"
-        case .calendar: "Calendar"
-        case .analytics: "Analytics"
-        case .profile: "Profile"
+        case .home: tr("Home")
+        case .calendar: tr("Calendar")
+        case .analytics: tr("Analytics")
+        case .profile: tr("Profile")
         }
     }
 

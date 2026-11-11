@@ -6,17 +6,17 @@ private enum OnboardingPage: Int, CaseIterable {
 
     var title: String {
         switch self {
-        case .plan: "Plan your day with ease"
-        case .focus: "Stay in the zone"
-        case .progress: "Watch your progress grow"
+        case .plan: tr("Plan your day with ease")
+        case .focus: tr("Stay in the zone")
+        case .progress: tr("Watch your progress grow")
         }
     }
 
     var message: String {
         switch self {
-        case .plan: "Organize your tasks, set a time for each one and see your whole day at a glance."
-        case .focus: "Start focus sessions, take breaks at the right time and track the hours you spend on what matters."
-        case .progress: "Build streaks, reach your daily goals and see how far you have come each week."
+        case .plan: tr("Organize your tasks, set a time for each one and see your whole day at a glance.")
+        case .focus: tr("Start focus sessions, take breaks at the right time and track the hours you spend on what matters.")
+        case .progress: tr("Build streaks, reach your daily goals and see how far you have come each week.")
         }
     }
 
@@ -124,7 +124,7 @@ struct OnboardingView: View {
         VStack(spacing: Spacing.section + Spacing.xs) {
             pageDots
             VStack(spacing: Spacing.s) {
-                Button(page == .progress ? "Get Started" : "Next") { advance() }
+                Button(page == .progress ? tr("Get Started") : tr("Next")) { advance() }
                     .buttonStyle(.primary)
                 // Même emplacement sur toutes les pages : le bouton ne saute pas quand le lien apparaît.
                 Button { onExit(.logIn) } label: {
@@ -154,7 +154,7 @@ struct OnboardingView: View {
         .animation(.snappy, value: page)
         // « Step 1 of 3 » : un seul élément pour VoiceOver.
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Step \(page.rawValue + 1) of \(OnboardingPage.allCases.count)")
+        .accessibilityLabel(tr("Step %lld of %lld", page.rawValue + 1, OnboardingPage.allCases.count))
     }
 
     private func advance() {

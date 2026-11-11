@@ -25,7 +25,7 @@ struct SearchView: View {
                     } else if results.isEmpty {
                         emptyState
                     } else {
-                        Text(results.count == 1 ? "1 result" : "\(results.count) results")
+                        Text(results.count == 1 ? tr("1 result") : tr("%lld results", results.count))
                             .font(.appFieldLabel)
                             .foregroundStyle(Color.textSecondary)
                             .padding(.bottom, Spacing.xs)
@@ -159,7 +159,7 @@ private struct SearchResultRow: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(task.title), \(task.dueDate.dueLabel()), \(task.category.title)")
-        .accessibilityValue(task.isCompleted ? "Done" : "")
+        .accessibilityValue(task.isCompleted ? tr("Done") : "")
         .accessibilityHint("Opens this day in the calendar")
     }
 }
