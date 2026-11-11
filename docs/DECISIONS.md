@@ -213,3 +213,13 @@ Toutes les icônes utilisent SF Symbols.
 - Les chiffres « tâches faites sur prévues » (9/12, 38/50, 410/520), la meilleure série (12 jours) et la répartition par catégorie sont des valeurs mock par période : elles ne sont pas déduites des tâches réelles, trop peu nombreuses.
 - `PillSegmentedControl` gagne un style `.glass` (piste en verre, texte violet) pour le sélecteur de période. `AttributedString.stat` accepte des polices réglables (28/16 ici, 22/14 sur Home).
 - Limite connue : en vue Year, l'infobulle de la barre courante peut chevaucher la barre voisine (plus haute).
+
+### D-039 : Étape 13 : Profile et réglages
+**Choix :**
+- Trois réglages persistés avec `@AppStorage` (clés dans `SettingsKey`) : **Notifications** (défaut activé), **Daily goal** (1 à 10 tâches, défaut 5) et **Focus session** (15, 25, 45 ou 60 min, défaut 25). Daily goal et Focus session se choisissent par un `Menu` + `Picker`.
+- Les réglages ont un **effet réel** : la durée de focus choisie pilote `FocusSessionConfig(focusMinutes:)` donc le minuteur de Focus Session ; désactiver les notifications masque le point de la cloche sur Home. Le « Daily goal » est enregistré et affiché mais ne pilote pas encore la carte objectif de Home (dont la progression reste mock).
+- **Appearance** affiche « Light » sans proposer d'autre choix : le dark mode est un bonus (D-014). La ligne n'est pas interactive.
+- **Log out** demande confirmation (`confirmationDialog`) puis appelle `onLogOut`, qui est un no-op dans `RootView` jusqu'à l'étape 14 (le flux d'entrée n'existe pas encore).
+- « Edit profile » (✎) et « Help & Support » sont des actions mock : le design ne détaille pas ces écrans.
+- `User` gagne `email` (mock « alex@example.com »). Tant que Home n'a pas chargé, Profile réutilise le squelette `redacted` avec les données mock.
+- Composants : `SettingsRow<Trailing>`, `SettingsValueTrailing` et `SettingsGroup` (verre) ; l'avatar a un liseré blanc de 4 pt et une ombre violette.

@@ -471,3 +471,21 @@ Format d'une entrée :
 - **React/RN :** `groupBy`, `reduce` et un `Map` indexé par date
 - **Différence clé :** l'historique est indexé par jour une seule fois. La valeur d'aujourd'hui n'y figure pas : elle est passée à chaque appel, car elle vient de Home et change en direct quand on termine une session de focus.
 - **Vu à :** étape 12, `ViewModels/AnalyticsViewModel.swift`
+
+### app-storage · `@AppStorage` (réglages persistés)
+- **Swift :** `@AppStorage(SettingsKey.focusMinutes) private var focusMinutes = 25`, `Toggle(…, isOn: $notificationsEnabled)`
+- **React/RN :** `useState` + `AsyncStorage` (ou `react-native-mmkv`) lu au démarrage et écrit à chaque changement
+- **Différence clé :** une seule ligne : la valeur est relue au lancement, écrite à chaque modification, et TOUTE vue qui utilise la même clé (Profile et `RootView`) se met à jour. C'est synchrone, sans `await` ni provider. Les clés sont regroupées en constantes (`SettingsKey`) pour éviter une faute de frappe qui ne sauvegarderait jamais. Ne fonctionne que dans une vue : un `@Observable` ne peut pas porter un `@AppStorage`.
+- **Vu à :** étape 13, `Views/Profile/ProfileView.swift`, `App/RootView.swift`, `Models/SettingsOptions.swift`
+
+### confirmation-dialog · `confirmationDialog`
+- **Swift :** `.confirmationDialog("Log out of FocusApp?", isPresented: $flag, titleVisibility: .visible) { Button("Log out", role: .destructive) { … }; Button("Cancel", role: .cancel) {} }`
+- **React/RN :** `Alert.alert(title, message, [{ text, style: 'destructive' }, { text: 'Cancel', style: 'cancel' }])`
+- **Différence clé :** déclaratif, piloté par un booléen d'état (`isPresented`) ; sur iPhone c'est une feuille d'actions qui monte du bas, l'action `.destructive` est en rouge.
+- **Vu à :** étape 13, `Views/Profile/ProfileView.swift`
+
+### settings-row · Lignes de réglage génériques (`SettingsRow<Trailing>`, `SettingsGroup`)
+- **Swift :** `SettingsRow(systemImage:…, title:…) { SettingsValueTrailing(value: "5 tasks") }` dans un `Menu { Picker … } label: { … }`
+- **React/RN :** un composant `<Row icon title right={…} />` avec une prop render `right`
+- **Différence clé :** le contenu de droite est un `@ViewBuilder` (interrupteur, valeur + chevron, rien) et la même ligne sert de label à un `Menu` ou à un `Button`. Le trait de séparation est porté par la ligne (`showsTopDivider`).
+- **Vu à :** étape 13, `Views/Profile/SettingsRow.swift`

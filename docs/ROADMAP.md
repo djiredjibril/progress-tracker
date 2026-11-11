@@ -76,7 +76,7 @@ Sélecteur Week / Month / Year, graphe de focus par jour (barre du jour en dégr
 - **Concepts :** **Swift Charts** (`Chart`, `BarMark`), `Picker` segmenté, données agrégées dans le ViewModel
 - **Fini quand :** les trois périodes affichent des données mock cohérentes et les agrégats sont testés.
 
-## [ ] Étape 13 — Profile et réglages
+## [x] Étape 13 — Profile et réglages
 Avatar, e-mail, trois stats, interrupteur Notifications, lignes Daily goal / Focus session / Appearance, Help & Support, « Log out » (destructif).
 - **Concepts :** `Toggle`, `@AppStorage`, `Stepper` / `Picker`, groupes de lignes réutilisables
 - **Fini quand :** les réglages sont persistés entre deux lancements et « Log out » est branché (le flux d'entrée arrive à l'étape 14).

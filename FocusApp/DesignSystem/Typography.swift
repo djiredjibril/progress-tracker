@@ -43,6 +43,10 @@ extension Font {
     static let appHeadline = Font.system(size: 17, weight: .semibold)   // mois, numéro de jour
     static let appTag = Font.system(size: 11, weight: .semibold)        // pastille de catégorie
 
+    // Profil et réglages
+    static let appProfileValue = Font.system(size: 18, weight: .bold)
+    static let appRowLabel = Font.system(size: 15, weight: .medium)
+
     // Analytics
     static let appChartValue = Font.system(size: 28, weight: .bold)
     static let appChartUnit = Font.system(size: 16, weight: .semibold)

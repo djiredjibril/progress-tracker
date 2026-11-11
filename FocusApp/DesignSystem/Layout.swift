@@ -51,6 +51,9 @@ enum Size {
     static let notificationIcon: CGFloat = 40
     static let dayDot: CGFloat = 5          // point « il y a des tâches ce jour-là »
     static let chartHeight: CGFloat = 140
+    static let profileAvatar: CGFloat = 92
+    static let settingsRow: CGFloat = 52
+    static let settingsIcon: CGFloat = 32
     static let miniRing: CGFloat = 56       // anneau « Tasks done »
     static let miniRingStroke: CGFloat = 8
     static let streakIcon: CGFloat = 44
@@ -74,5 +77,7 @@ enum Shadow {
     static let segmentRadius: CGFloat = 5   // pastille sélectionnée d'un contrôle segmenté
     static let segmentY: CGFloat = 4
     static let controlRadius: CGFloat = 20  // bouton principal du minuteur
+    static let avatarRadius: CGFloat = 14   // avatar de la page Profil
+    static let avatarY: CGFloat = 8
     static let controlY: CGFloat = 12
 }

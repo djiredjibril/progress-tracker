@@ -99,4 +99,16 @@ extension Color {
     static let chartBarFuture = Color.textPrimary.opacity(0.08)
     static let categoryTrack = Color.textPrimary.opacity(0.07)
     static let miniRingTrack = Color.appPrimary.opacity(0.18)
+
+    // MARK: - Profil et réglages
+
+    static let avatarBorder = Color.white.opacity(0.90)
+    static let avatarShadow = Color.appPrimary.opacity(0.25)
+    static let rowDivider = Color.textPrimary.opacity(0.06)
+    static let statDivider = Color.textPrimary.opacity(0.08)
+    static let settingsBlueFill = Color.statFocusDark.opacity(0.18)
+    static let settingsBlueForeground = Color(hex: 0x2E55B8)
+    static let settingsCoralFill = Color.statStreakDark.opacity(0.18)
+    static let settingsCoralForeground = Color(hex: 0xA63D28)
+    static let settingsDestructiveFill = Color.destructive.opacity(0.10)
 }

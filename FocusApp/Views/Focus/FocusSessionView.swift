@@ -10,11 +10,13 @@ struct FocusSessionView: View {
 
     init(
         task: TaskItem?,
+        focusMinutes: Int = SettingsOptions.defaultFocusMinutes,
         baseFocusToday: TimeInterval,
         onFocusLogged: @escaping (TimeInterval) -> Void
     ) {
         _viewModel = State(initialValue: FocusSessionViewModel(
             task: task,
+            config: FocusSessionConfig(focusMinutes: focusMinutes),
             baseFocusToday: baseFocusToday,
             onFocusLogged: onFocusLogged
         ))

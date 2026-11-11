@@ -20,6 +20,10 @@ struct RootView: View {
     @State private var analyticsViewModel = AnalyticsViewModel()
     @State private var isAddingTask = false
 
+    // Réglages persistés (voir ProfileView) : `RootView` les relit pour qu'ils aient un effet réel ailleurs dans l'app.
+    @AppStorage(SettingsKey.notificationsEnabled) private var notificationsEnabled = true
+    @AppStorage(SettingsKey.focusMinutes) private var focusMinutes = SettingsOptions.defaultFocusMinutes
+
     // ⚛️ voir CONCEPTS.md#state : on reçoit un *provider* pour que les `#Preview` injectent un service instantané ;
     // `_viewModel = State(initialValue:)` initialise le `@State` depuis un paramètre.
     init(provider: HomeDataProviding = MockHomeDataProvider()) {
@@ -67,7 +71,8 @@ struct RootView: View {
             // ⚛️ React : ≈ `display: 'none'` plutôt que `{tab === 'home' && <Home />}` (qui démonte le composant).
             HomeView(
                 viewModel: viewModel,
-                hasUnreadNotifications: notificationsViewModel.hasUnread,
+                // Notifications désactivées dans Profile : plus de point sur la cloche.
+                hasUnreadNotifications: notificationsViewModel.hasUnread && notificationsEnabled,
                 onNotifications: { path.append(.notifications) },
                 onFocusTime: { path.append(.focusSession) },
                 onGoalDetails: { select(.analytics) },
@@ -78,7 +83,7 @@ struct RootView: View {
             .accessibilityHidden(selectedTab != .home)
 
             // ⚛️ React : un `switch` sur l'onglet ≈ `switch (tab) { case 'calendar': return <Calendar /> … }`. Home est déjà
-            // montée plus haut ; Profile reste provisoire jusqu'à l'étape 13.
+            // montée plus haut ; Tous les onglets sont maintenant faits.
             switch selectedTab {
             case .home:
                 EmptyView()
@@ -87,10 +92,25 @@ struct RootView: View {
             case .analytics:
                 AnalyticsView(viewModel: analyticsViewModel, todayFocus: viewModel.data?.stats.focusTime ?? 0)
             case .profile:
-                PlaceholderScreen(tab: selectedTab)
+                profile
             }
         }
     }
+
+    // Profile : tant que Home n'a pas chargé, on réutilise le squelette `redacted` avec les données mock.
+    @ViewBuilder
+    private var profile: some View {
+        if let data = viewModel.data {
+            ProfileView(user: data.user, stats: data.stats, onLogOut: logOut)
+        } else {
+            ProfileView(user: MockData.user, stats: MockData.stats, onLogOut: logOut)
+                .redacted(reason: .placeholder)
+                .allowsHitTesting(false)
+        }
+    }
+
+    // Branché au flux d'entrée à l'étape 14 : l'écran de connexion n'existe pas encore.
+    private func logOut() {}
 
     @ViewBuilder
     private func destination(for route: AppRoute) -> some View {
@@ -109,6 +129,7 @@ struct RootView: View {
             // La tâche proposée est la prochaine à faire ; le temps de focus réalisé s'ajoute au total de Home.
             FocusSessionView(
                 task: viewModel.nextTask,
+                focusMinutes: focusMinutes,
                 baseFocusToday: viewModel.data?.stats.focusTime ?? 0,
                 onFocusLogged: { viewModel.addFocusTime($0) }
             )

@@ -3,7 +3,7 @@ import Foundation
 // ⚛️ React : `enum` sans case = espace de noms (voir Layout.swift). Ici il regroupe des données de test,
 // ≈ un fichier `mocks/homeData.ts`. Il sert au service mock ET à tous les `#Preview` (voir D-009).
 enum MockData {
-    static let user = User(firstName: "Alex", avatarName: "Avatar")
+    static let user = User(firstName: "Alex", avatarName: "Avatar", email: "alex@example.com")
 
     // 6 h 24 min = 23 040 s
     static let stats = UserStats(tasksDone: 12, focusTime: 23_040, streakDays: 5)

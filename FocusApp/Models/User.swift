@@ -6,4 +6,5 @@ struct User {
     // sauf que le type porte aussi son initialiseur (`User(firstName:avatarName:)` est généré automatiquement).
     var firstName: String
     var avatarName: String      // nom de l'asset dans Assets.xcassets : "Avatar"
+    var email: String
 }
