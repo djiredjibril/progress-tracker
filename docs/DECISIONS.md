@@ -119,3 +119,11 @@ Toutes les icônes utilisent SF Symbols.
 - Zone tactile de la case agrandie avec `contentShape` (8 pt de marge). La case a `accessibilityLabel` (titre), `accessibilityValue` (Completed / Not completed) et un hint.
 - Tokens ajoutés : `Font.appLinkChevron`, `Font.appCheckmark` et `Size.menuButton` (32).
 - iOS récent insère une espace fine insécable (U+202F) avant AM/PM : `DateFormattingTests` la normalise avant de comparer.
+
+### D-026 : Étape 6 : tab bar et navigation
+**Choix :**
+- `RootView` garde `HomeView` montée et la masque (`opacity` + `allowsHitTesting` + `accessibilityHidden`) quand un autre onglet est actif, au lieu d'un `switch` qui la détruirait. Sans ça, retourner sur Home recréerait le ViewModel, rechargerait les données et perdrait les tâches cochées. Les autres onglets affichent `PlaceholderScreen` (monté à la demande).
+- `CustomTabBar` est posée avec `safeAreaInset(edge: .bottom)`, avec `Size.fabRaise` de marge haute pour le bouton + qui dépasse. L'onglet actif est signalé par une pastille `matchedGeometryEffect` (`Color.tabPill`, `Radius.tabItem`).
+- Le bouton + (`onAdd`) est un no-op : la feuille d'ajout est un bonus de la roadmap.
+- Tokens ajoutés : `Color.fabShadow`, `Color.tabPill`, `Font.appTabIcon`, `Font.appFabIcon`, `Radius.tabItem` (20), `Size.fabRaise` (20), `Shadow.fabRadius` (16) et `fabY` (8).
+- `AppTab` expose `title` et `systemImage`, testés par `AppTabTests`.

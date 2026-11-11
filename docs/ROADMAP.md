@@ -35,7 +35,7 @@ Fond d'écran (dégradé + taches floues), `CircleIconButton` (recherche, notifi
 - **Concepts :** `ForEach` (≈ `.map` + `key`), closures passées en props, `withAnimation`, `contentTransition`, `.sensoryFeedback` (haptique), `Menu` pour ⋮ (actions mock), `Date.FormatStyle`
 - **Fini quand :** cocher et décocher fonctionne avec une animation, et le compteur « Tasks Done » suit.
 
-## [ ] Étape 6 — Tab bar et navigation
+## [x] Étape 6 — Tab bar et navigation
 `AppTab` (enum), `CustomTabBar`, bouton + flottant, `RootView` qui bascule entre `HomeView` et des `PlaceholderScreen`.
 - **Concepts :** `@Binding` (≈ `value` + `onChange`), `enum` + `CaseIterable`, `safeAreaInset(edge: .bottom)`, `matchedGeometryEffect` pour la pastille de l'onglet actif
 - **Fini quand :** le changement d'onglet fonctionne, le bouton + est surélevé et le contenu n'est pas masqué par la barre.

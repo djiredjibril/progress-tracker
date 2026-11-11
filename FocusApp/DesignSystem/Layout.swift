@@ -17,6 +17,7 @@ enum Radius {
     static let stat: CGFloat = 22
     static let task: CGFloat = 20
     static let tabBar: CGFloat = 28
+    static let tabItem: CGFloat = 20    // pastille de l'onglet actif
 }
 
 enum Size {
@@ -32,6 +33,7 @@ enum Size {
     static let avatarOverlap: CGFloat = 24  // de combien l'avatar descend sur les cartes de stats
     static let progressBar: CGFloat = 8
     static let menuButton: CGFloat = 32     // zone du menu ⋮ d'une tâche
+    static let fabRaise: CGFloat = 20       // de combien le bouton + dépasse de la tab bar
 }
 
 // Ombres (voir DESIGN_SYSTEM.md > Ombres)
@@ -40,4 +42,6 @@ enum Shadow {
     static let cardY: CGFloat = 8
     static let goalRadius: CGFloat = 24     // carte objectif
     static let goalY: CGFloat = 12
+    static let fabRadius: CGFloat = 16      // bouton +
+    static let fabY: CGFloat = 8
 }

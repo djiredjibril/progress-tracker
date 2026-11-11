@@ -267,3 +267,39 @@ Format d'une entrée :
 - **React/RN :** `hitSlop`, `alignItems: 'baseline'`
 - **Différence clé :** on agrandit la zone tactile au-delà de la forme visible (inset négatif). La ligne de base aligne un gros titre et un petit lien sur la même ligne d'écriture.
 - **Vu à :** étape 5, `TaskRowView.swift`, `SectionHeaderView.swift`
+
+### binding · `@Binding`
+- **Swift :** `@Binding var selection: AppTab` ; le parent le passe avec `$selectedTab`
+- **React/RN :** passer `value` ET `onChange` en props, regroupés en un seul objet
+- **Différence clé :** le parent possède l'état (`@State`), l'enfant peut le lire ET l'écrire (`selection = tab`) et le parent se re-rend. `$` crée le binding depuis le `@State`.
+- **Vu à :** étape 6, `Views/Shared/CustomTabBar.swift`, `App/RootView.swift`
+
+### enum-caseiterable · `enum` + `CaseIterable` + propriétés calculées
+- **Swift :** `enum AppTab: String, CaseIterable, Identifiable { case home … ; var title: String { switch self { … } } }`
+- **React/RN :** `type Tab = 'home' | 'calendar'…` + `Object.values(Tab)` + un `Record<Tab, string>`
+- **Différence clé :** l'enum porte ses propres propriétés calculées. `allCases` donne la liste dans l'ordre de déclaration. Chaque `switch` doit couvrir tous les cas : ajouter un onglet fait signaler par le compilateur tous les endroits à compléter.
+- **Vu à :** étape 6, `Views/Shared/AppTab.swift`
+
+### safe-area-inset · `safeAreaInset(edge: .bottom)`
+- **Swift :** `.safeAreaInset(edge: .bottom) { CustomTabBar(…) }`
+- **React/RN :** `contentContainerStyle={{ paddingBottom }}` + une vue `position: 'absolute'`
+- **Différence clé :** on réserve la place ET on la déclare au contenu : le `ScrollView` ajoute tout seul sa marge basse, sans calculer la hauteur de la barre.
+- **Vu à :** étape 6, `App/RootView.swift`
+
+### matched-geometry · `@Namespace` + `matchedGeometryEffect`
+- **Swift :** `.matchedGeometryEffect(id: "activeTabPill", in: pillNamespace)` dans un `withAnimation`
+- **React/RN :** mesurer chaque onglet avec `onLayout` puis animer une pastille à la main (Reanimated)
+- **Différence clé :** deux vues avec le même `id` dans le même namespace sont considérées comme LA MÊME : SwiftUI la fait glisser de l'une à l'autre au lieu de la supprimer puis de la recréer.
+- **Vu à :** étape 6, `Views/Shared/CustomTabBar.swift`
+
+### keep-mounted · Garder une vue montée vs la démonter
+- **Swift :** `HomeView().opacity(selected ? 1 : 0).allowsHitTesting(selected).accessibilityHidden(!selected)`
+- **React/RN :** `display: 'none'` plutôt que `{tab === 'home' && <Home />}`
+- **Différence clé :** un `switch` détruit la vue et donc son `@State` (ViewModel, tâches cochées). Masquer la vue conserve l'état entre les onglets.
+- **Vu à :** étape 6, `App/RootView.swift`
+
+### previewable · `@Previewable` et piège de `Color.clear`
+- **Swift :** `#Preview { @Previewable @State var selection = AppTab.home … }`, `Color.clear.frame(width: 64, height: 0)`
+- **React/RN :** un `useState` dans une story ; un `<View style={{ flex: 1 }} />` sans hauteur
+- **Différence clé :** `@Previewable` rend le `Binding` modifiable dans le canevas. Une vue « couleur » est flexible dans les deux sens : sans `height: 0`, un simple espace réservé s'étire sur tout l'écran.
+- **Vu à :** étape 6, `Views/Shared/CustomTabBar.swift`

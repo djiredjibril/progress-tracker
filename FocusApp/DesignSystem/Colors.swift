@@ -41,6 +41,8 @@ extension Color {
     static let textOnAccentSecondary = Color.white.opacity(0.85)    // sous-titre de la carte objectif
     static let progressTrack = Color.white.opacity(0.30)            // piste de la barre de progression
     static let goalShadow = Color.goalGradientStart.opacity(0.30)
+    static let fabShadow = Color.appPrimary.opacity(0.40)           // ombre du bouton +
+    static let tabPill = Color.appPrimary.opacity(0.12)             // pastille de l'onglet actif
 
     // MARK: - Carte objectif (dégradé du bas-gauche vers le haut-droite)
 
