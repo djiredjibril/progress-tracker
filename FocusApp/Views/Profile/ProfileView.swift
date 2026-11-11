@@ -18,6 +18,8 @@ struct ProfileView: View {
 
     @State private var isConfirmingLogOut = false
     @State private var isEditingProfile = false
+    // ⚛️ React : ≈ `const [visible, setVisible] = useState(false)` d'un `<Modal presentationStyle="fullScreen">`.
+    @State private var isReplayingIntro = false
 
     var body: some View {
         ScrollView {
@@ -36,6 +38,12 @@ struct ProfileView: View {
         .background { AppBackground() }
         .sheet(isPresented: $isEditingProfile) {
             EditProfileView(user: user, onSave: onSaveProfile)
+        }
+        // ⚛️ React : `fullScreenCover` ≈ un `<Modal presentationStyle="fullScreen">` : il recouvre TOUT l'écran (tab bar comprise),
+        // contrairement à `sheet` qui laisse voir l'écran dessous. On réutilise `OnboardingView` tel quel : seul son POINT DE SORTIE
+        // change. Au premier lancement `onExit` mène à Sign Up / Log In ; ici, quelle que soit la sortie, on referme simplement.
+        .fullScreenCover(isPresented: $isReplayingIntro) {
+            OnboardingView { _ in isReplayingIntro = false }
         }
         // ⚛️ React : `confirmationDialog` ≈ `Alert.alert(title, message, [{ text, style: 'destructive' }, { style: 'cancel' }])`.
         // Sur iPhone c'est une feuille d'actions qui monte du bas ; l'action `.destructive` est en rouge.
@@ -183,14 +191,29 @@ struct ProfileView: View {
 
     private var support: some View {
         SettingsGroup {
+            Button { isReplayingIntro = true } label: {
+                SettingsRow(
+                    systemImage: "play.circle",
+                    iconForeground: .appPrimaryStrong,
+                    iconBackground: .tabPill,
+                    title: "Replay introduction",
+                    showsTopDivider: false
+                ) {
+                    Image(systemName: "chevron.right")
+                        .font(.appLinkChevron)
+                        .foregroundStyle(Color.textSecondary)
+                        .accessibilityHidden(true)
+                }
+            }
+            .buttonStyle(.plain)
+
             // Action mock : pas d'écran d'aide dans le design.
             Button {} label: {
                 SettingsRow(
                     systemImage: "questionmark.circle",
                     iconForeground: .textPrimary,
                     iconBackground: .closeFill,
-                    title: "Help & Support",
-                    showsTopDivider: false
+                    title: "Help & Support"
                 ) {
                     Image(systemName: "chevron.right")
                         .font(.appLinkChevron)

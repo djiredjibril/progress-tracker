@@ -292,3 +292,6 @@ Toutes les icônes utilisent SF Symbols.
 - **Les données restent sur l'appareil à la déconnexion** (un seul utilisateur local) ; une autre personne qui se connecte voit les mêmes tâches. À revoir si un vrai compte arrive.
 - Analytics relit le stockage à l'ouverture de l'onglet ; Home recalcule après chaque action.
 - Limite : la persistance entre deux lancements est testée sur la base SwiftData en mémoire (même code) ; le fichier sur disque n'a pas été relancé à la main depuis le CLI.
+
+### D-048 : Étape 21 : « Replay introduction »
+**Choix :** première ligne du groupe Support de Profile ; elle ouvre `OnboardingView` en `fullScreenCover`. Les trois sorties (Skip, Get Started, « I already have an account ») ferment simplement la couverture : l'utilisateur est déjà connecté, donc aucune ne mène à Sign Up / Log In. La session et `hasSeenOnboarding` ne sont pas modifiés.

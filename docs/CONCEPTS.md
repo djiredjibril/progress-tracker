@@ -585,3 +585,9 @@ Format d'une entrée :
 - **React/RN :** des *selectors* (Reselect) plutôt qu'un état dérivé dupliqué dans `useState`
 - **Différence clé :** on stocke les FAITS (une tâche, une session de focus) et on recalcule le total, la série, l'objectif et les graphiques. Rien ne peut se désynchroniser, et les tests se limitent à des tableaux et une date injectée.
 - **Vu à :** étape 20, `Models/LocalStats.swift`
+
+### full-screen-cover · `fullScreenCover` et réutilisation d'un écran
+- **Swift :** `.fullScreenCover(isPresented: $flag) { OnboardingView { _ in flag = false } }`
+- **React/RN :** `<Modal presentationStyle="fullScreen" visible={flag}>` qui contient un écran déjà existant
+- **Différence clé :** `sheet` laisse voir l'écran dessous et se ferme au glissement ; `fullScreenCover` recouvre tout et ne se ferme que par code. L'écran réutilisé ne sait pas où il est : il reçoit un `onExit` (une closure) et le parent décide de la suite (aller vers Sign Up au premier lancement, simplement refermer ici).
+- **Vu à :** étape 21, `Views/Profile/ProfileView.swift`

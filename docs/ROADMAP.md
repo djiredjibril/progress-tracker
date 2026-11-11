@@ -122,7 +122,7 @@ Tâches, historique de focus et notifications sont stockés sur l'appareil (**Sw
 - **Concepts :** `@Model`, `ModelContainer` / `ModelContext`, un protocole de stockage (SwiftData en prod, mémoire en test), données calculées, états vides
 - **Fini quand :** les tâches survivent au relancement, une installation neuve démarre sans donnée avec des états vides soignés, et les agrégats sont testés.
 
-## [ ] Étape 21 — Revoir l'introduction
+## [x] Étape 21 — Revoir l'introduction
 Une ligne « Replay introduction » dans Profile rouvre l'onboarding sans se déconnecter.
 - **Concepts :** `fullScreenCover`, réutilisation d'un écran avec un autre point de sortie
 - **Fini quand :** l'onboarding s'ouvre depuis Profile et se ferme proprement.
@@ -131,8 +131,8 @@ Une ligne « Replay introduction » dans Profile rouvre l'onboarding sans se dé
 
 ## Bonus (au choix, après validation)
 - [x] Bouton + : une `sheet` pour ajouter une tâche → devenu l'étape 8
-- [ ] Persistance avec **SwiftData** (`@Model`, `@Query`) en remplacement du mock
-- [ ] Dark mode (tokens adaptatifs)
+- [x] Persistance avec **SwiftData** (`@Model`, `@Query`) en remplacement du mock → étape 20
+- [x] Dark mode (tokens adaptatifs) → étape 19
 - [ ] Dynamic Type complet
 - [ ] Passage en Swift 6 language mode
 - [x] Navigation « See All » avec `NavigationStack` → intégré aux étapes 9 et 11
