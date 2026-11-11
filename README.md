@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/screenshots/app-icon-springboard.png" alt="Icône FocusApp" width="96" />
+<img src="docs/readme/icon.png" alt="Icône FocusApp" width="96" />
 
 # FocusApp
 
@@ -15,14 +15,14 @@
 
 </div>
 
-> **Projet d'apprentissage.** Il a été écrit pour apprendre **Swift et SwiftUI** quand on vient de React / React Native. Chaque concept est expliqué dans le code par un commentaire `// ⚛️ React :` qui le compare à son équivalent côté React. Les écrans reproduisent un design réalisé sur un canvas Claude Design.
+> **Projet d'apprentissage.** Il a été écrit pour apprendre **Swift et SwiftUI** quand on vient de React / React Native. Chaque concept est expliqué dans le code par un commentaire `// ⚛️ React :` qui le compare à son équivalent côté React. Les écrans reproduisent fidèlement un design de référence.
 
 <p align="center">
-  <img src="docs/screenshots/step-14-home-logged-in.png" alt="Home" width="19%" />
-  <img src="docs/screenshots/step-11-calendar.png" alt="Calendar" width="19%" />
-  <img src="docs/screenshots/step-10-focus.png" alt="Focus Session" width="19%" />
-  <img src="docs/screenshots/step-12-analytics.png" alt="Analytics" width="19%" />
-  <img src="docs/screenshots/step-13-profile.png" alt="Profile" width="19%" />
+  <img src="docs/readme/home.png" alt="Home" width="19%" />
+  <img src="docs/readme/calendar.png" alt="Calendar" width="19%" />
+  <img src="docs/readme/focus.png" alt="Focus Session" width="19%" />
+  <img src="docs/readme/analytics.png" alt="Analytics" width="19%" />
+  <img src="docs/readme/profile.png" alt="Profile" width="19%" />
 </p>
 
 ## Fonctionnalités
@@ -45,18 +45,18 @@ Les données restent **sur l'appareil** (SwiftData). Au premier lancement l'app 
 <summary><b>Plus de captures</b> (parcours d'entrée, recherche, mode sombre)</summary>
 
 <p align="center">
-  <img src="docs/screenshots/step-14-onboarding-1.png" alt="Onboarding" width="19%" />
-  <img src="docs/screenshots/step-14-login.png" alt="Log In" width="19%" />
-  <img src="docs/screenshots/step-17-search.png" alt="Recherche" width="19%" />
-  <img src="docs/screenshots/step-8-sheet.png" alt="Nouvelle tâche" width="19%" />
-  <img src="docs/screenshots/step-9-notifications.png" alt="Notifications" width="19%" />
+  <img src="docs/readme/onboarding.png" alt="Onboarding" width="19%" />
+  <img src="docs/readme/login.png" alt="Log In" width="19%" />
+  <img src="docs/readme/search.png" alt="Recherche" width="19%" />
+  <img src="docs/readme/newtask.png" alt="Nouvelle tâche" width="19%" />
+  <img src="docs/readme/notifications.png" alt="Notifications" width="19%" />
 </p>
 <p align="center">
-  <img src="docs/screenshots/step-19-dark-home.png" alt="Home, mode sombre" width="19%" />
-  <img src="docs/screenshots/step-19-dark-calendar.png" alt="Calendar, mode sombre" width="19%" />
-  <img src="docs/screenshots/step-19-dark-analytics.png" alt="Analytics, mode sombre" width="19%" />
-  <img src="docs/screenshots/step-19-dark-profile.png" alt="Profile, mode sombre" width="19%" />
-  <img src="docs/screenshots/step-19-dark-newtask.png" alt="Nouvelle tâche, mode sombre" width="19%" />
+  <img src="docs/readme/dark-home.png" alt="Home, mode sombre" width="19%" />
+  <img src="docs/readme/dark-calendar.png" alt="Calendar, mode sombre" width="19%" />
+  <img src="docs/readme/dark-analytics.png" alt="Analytics, mode sombre" width="19%" />
+  <img src="docs/readme/dark-profile.png" alt="Profile, mode sombre" width="19%" />
+  <img src="docs/readme/dark-newtask.png" alt="Nouvelle tâche, mode sombre" width="19%" />
 </p>
 
 </details>
