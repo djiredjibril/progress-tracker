@@ -174,3 +174,14 @@ Toutes les icônes utilisent SF Symbols.
 **Choix :** l'icône est l'artboard « App Icon » du canvas (anneau de progression à 75 %, coche blanche, dégradé `#A58DF0` → `#6B70E6` → `#4E60D9` avec un halo clair en haut à gauche et un halo sombre en bas à droite). Elle a été redessinée en SVG (`docs/reference/AppIcon.svg`), rendue en PNG 1024×1024 avec `qlmanage`, puis son canal alpha a été retiré (l'App Store refuse une icône transparente). Elle est enregistrée dans `AppIcon.appiconset` comme icône unique `1024x1024` (iOS génère toutes les tailles).
 **Pourquoi :** sans image, iOS affichait l'icône générique. Le rendu du flou peut différer très légèrement du canvas (de faibles bandes dans le coin bas-droit) ; pour l'améliorer, exporter le PNG depuis le canvas et remplacer `AppIcon-1024.png`.
 **Aussi :** l'étape 15 de la roadmap ne garde que le launch screen.
+
+### D-035 : Étape 9 : navigation secondaire et Notifications
+**Choix :**
+- `RootView` contient un `NavigationStack(path:)` avec une route typée `AppRoute` (`.notifications`, `.focusSession`). La tab bar fait partie du contenu racine de la pile : un écran empilé la recouvre, comme dans le canvas.
+- Les liens du prototype : la cloche empile Notifications, la carte Focus Time empile Focus Session (écran provisoire avec bouton retour, remplacé à l'étape 10), la flèche de l'objectif bascule sur l'onglet Analytics, « See All » sur l'onglet Calendar. Ces deux onglets sont encore des écrans provisoires. Un toucher sur « Weekly report is ready » dépile tout et ouvre Analytics.
+- `HomeView` reçoit ces actions en callbacks et `hasUnreadNotifications` en valeur : elle ne connaît pas la pile. Le point de la cloche suit désormais l'état réel des notifications (il disparaît avec « Mark all as read »).
+- `NotificationsViewModel` (possédé par `RootView`, comme `HomeViewModel`) porte la liste, les groupes « Today / Earlier » (jour courant, sinon plus ancien, groupe vide masqué), le marquage lu / non lu et les libellés d'âge (`Date.relativeLabel`). L'heure est injectable. Contrairement à Home, les notifications sont fournies directement par `MockData` (mock synchrone, pas de protocole de service) : rien à charger de façon asynchrone pour l'instant.
+- Les dates du mock sont relatives à « maintenant », donc les libellés restent cohérents. Le message « Daily goal reached » cite le jour de la semaine réel au lieu d'un « Monday » fixe.
+- `.glassCard` accepte un voile, un liseré et une option d'ombre : une notification lue est plus discrète (voile 50 %, pas d'ombre).
+- `PlaceholderScreen` prend un titre et une icône (et un bouton retour optionnel) ; `PlaceholderScreen(tab:)` reste disponible.
+- Nom du modèle : `AppNotification` (`Notification` est pris par Foundation, voir D-007).

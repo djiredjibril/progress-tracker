@@ -375,3 +375,33 @@ Format d'une entrée :
 - **React/RN :** l'option `icon` d'`app.json` (Expo) / les mipmaps et `AppIcon` générés par `expo prebuild`
 - **Différence clé :** une seule image carrée suffit, sans coins arrondis : iOS génère toutes les tailles et applique lui-même le masque et l'effet de verre. Elle doit être **opaque** (sans canal alpha) pour être acceptée par l'App Store.
 - **Vu à :** entre les étapes 8 et 9, `Resources/Assets.xcassets/AppIcon.appiconset`
+
+### navigation-stack · `NavigationStack(path:)`, `navigationDestination(for:)`, route typée
+- **Swift :** `@State var path: [AppRoute] = []`, `NavigationStack(path: $path) { … .navigationDestination(for: AppRoute.self) { route in … } }`, `path.append(.notifications)`, `path.removeAll()`
+- **React/RN :** `<Stack.Navigator>` de React Navigation, `navigation.navigate('Notifications')`, `popToTop()`, et le type `RootStackParamList`
+- **Différence clé :** l'état de navigation est un simple tableau que l'on possède. `AppRoute` est un `enum` : un `case` par écran (il peut porter des paramètres), et le `switch` du `navigationDestination` est exhaustif. SwiftUI met le tableau à jour quand l'utilisateur revient en arrière.
+- **Vu à :** étape 9, `App/RootView.swift`, `App/AppRoute.swift`
+
+### hidden-nav-bar · Barre de navigation masquée et en-tête maison
+- **Swift :** `.toolbar(.hidden, for: .navigationBar)`, `@Environment(\.dismiss)` pour le bouton retour
+- **React/RN :** `headerShown: false` et un `<Header>` personnalisé
+- **Différence clé :** on dessine son propre en-tête (bouton retour en verre) mais le balayage depuis le bord gauche pour revenir en arrière continue de fonctionner. Si la tab bar est dans le contenu RACINE du `NavigationStack`, un écran empilé la recouvre naturellement.
+- **Vu à :** étape 9, `Views/Notifications/NotificationsView.swift`, `Views/Shared/PlaceholderScreen.swift`
+
+### callbacks-navigation · La navigation décidée par le parent
+- **Swift :** `HomeView(onNotifications: { path.append(.notifications) }, onGoalDetails: { select(.analytics) })`
+- **React/RN :** passer `onPress={() => navigation.navigate(...)}` en props plutôt que d'appeler `useNavigation` dans l'écran
+- **Différence clé :** l'écran ne connaît ni la pile ni les onglets : il remonte des intentions. Un écran reste donc testable et prévisualisable seul.
+- **Vu à :** étape 9, `Views/Home/HomeView.swift`, `App/RootView.swift`
+
+### any-shape-style · `AnyShapeStyle` et effacement de type
+- **Swift :** `private var iconFill: AnyShapeStyle { switch kind { … AnyShapeStyle(LinearGradient(…)) … AnyShapeStyle(Color.tabPill) } }`
+- **React/RN :** une union `Color | Gradient` en TypeScript
+- **Différence clé :** un `switch` doit renvoyer UN seul type ; `AnyShapeStyle` « efface » le type concret pour pouvoir renvoyer tantôt une couleur, tantôt un dégradé.
+- **Vu à :** étape 9, `Views/Notifications/NotificationRowView.swift`
+
+### text-styling · `textCase`, `tracking`, `lineSpacing`, `fixedSize`
+- **Swift :** `.textCase(.uppercase).tracking(0.6)`, `.lineSpacing(2)`, `.fixedSize(horizontal: false, vertical: true)`
+- **React/RN :** `textTransform: 'uppercase'`, `letterSpacing`, `lineHeight`, et un texte qui grandit avec son contenu
+- **Différence clé :** `fixedSize` empêche un texte multiligne d'être tronqué ou compressé par son parent : la hauteur suit le contenu.
+- **Vu à :** étape 9, `Views/Notifications/NotificationRowView.swift`, `NotificationsView.swift`

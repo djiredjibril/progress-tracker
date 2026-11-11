@@ -56,7 +56,7 @@ Tokens mis à jour (D-029), puis `TaskItem` étendu (catégorie, priorité, dur�
 - **Concepts :** `.sheet`, `@FocusState`, validation de formulaire, `Picker`, `Toggle`, `DatePicker`, `presentationDetents`
 - **Fini quand :** le bouton + ouvre la feuille, « Create Task » est désactivé tant que le titre est vide, et la nouvelle tâche apparaît dans « My Tasks » (testé).
 
-## [ ] Étape 9 — Navigation secondaire et écran Notifications
+## [x] Étape 9 — Navigation secondaire et écran Notifications
 `NavigationStack` avec une route typée : cloche → Notifications, carte Focus Time → Focus Session (écran provisoire), flèche de l'objectif → onglet Analytics, « See All » → onglet Calendar. Écran Notifications : groupes « Today / Earlier », points non lus, « Mark all as read ».
 - **Concepts :** `NavigationStack`, `navigationDestination`, `@Environment(\.dismiss)`, sections groupées
 - **Fini quand :** chaque lien du prototype mène au bon écran et « Mark all as read » met à jour l'état (testé).

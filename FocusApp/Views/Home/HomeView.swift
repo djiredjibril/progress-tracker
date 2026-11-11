@@ -7,6 +7,14 @@ struct HomeView: View {
     // tâches. Un simple `let` suffit : la classe est @Observable, la vue suit les propriétés qu'elle lit.
     let viewModel: HomeViewModel
 
+    // ⚛️ React : la navigation est décidée par le PARENT : l'écran reçoit des callbacks (`onNotifications`…) comme les
+    // `navigation.navigate(...)` qu'on passerait en props. HomeView ne connaît ni la pile ni les onglets.
+    let hasUnreadNotifications: Bool
+    let onNotifications: () -> Void
+    let onFocusTime: () -> Void
+    let onGoalDetails: () -> Void
+    let onSeeAll: () -> Void
+
     var body: some View {
         // ⚛️ React : `ScrollView` ≈ `<ScrollView>` RN. `VStack` ≈ `<View>` avec `flexDirection: 'column'`
         // (détaillé à l'étape 2).
@@ -88,9 +96,9 @@ struct HomeView: View {
                 greeting: viewModel.greeting,
                 firstName: data.user.firstName,
                 avatarName: data.user.avatarName,
-                hasUnreadNotifications: true,   // pas encore dans le modèle : valeur fixe pour la maquette
-                onSearch: {},                   // actions mock : rien à brancher pour l'instant
-                onNotifications: {}
+                hasUnreadNotifications: hasUnreadNotifications,
+                onSearch: {},                   // action mock : la recherche n'est pas dans le design
+                onNotifications: onNotifications
             )
             // ⚛️ React : `zIndex` ≈ `zIndex` de RN. Dans un VStack, les vues suivantes se dessinent par-dessus les
             // précédentes ; sans `zIndex(1)`, les cartes de stats masqueraient le bas de l'avatar qui déborde.
@@ -104,12 +112,18 @@ struct HomeView: View {
                     value: .stat([(data.stats.tasksDone, "")]),
                     label: "Tasks Done"
                 )
-                StatCardView(
-                    icon: "clock",
-                    iconColors: [Color.statFocusLight, Color.statFocusDark],
-                    value: .stat([(data.stats.focusHours, "h"), (data.stats.focusMinutes, "m")]),
-                    label: "Focus Time"
-                )
+                // ⚛️ React : ≈ envelopper la carte dans un `<Pressable onPress>`. `.plain` garde l'apparence de la carte ;
+                // le hint dit à VoiceOver où mène le toucher (la carte seule est annoncée comme une statistique).
+                Button(action: onFocusTime) {
+                    StatCardView(
+                        icon: "clock",
+                        iconColors: [Color.statFocusLight, Color.statFocusDark],
+                        value: .stat([(data.stats.focusHours, "h"), (data.stats.focusMinutes, "m")]),
+                        label: "Focus Time"
+                    )
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Opens your focus session")
                 StatCardView(
                     icon: "flame.fill",
                     iconColors: [Color.statStreakLight, Color.statStreakDark],
@@ -122,10 +136,10 @@ struct HomeView: View {
                 title: data.goal.title,
                 progress: data.goal.progress,
                 percent: data.goal.progressPercent,
-                onTap: {}       // action mock : la navigation viendra plus tard
+                onTap: onGoalDetails
             )
 
-            SectionHeaderView(title: "My Tasks", actionTitle: "See All", onAction: {})
+            SectionHeaderView(title: "My Tasks", actionTitle: "See All", onAction: onSeeAll)
                 .padding(.top, Spacing.m)       // 12 (VStack) + 12 = 24 = Spacing.section entre les grands blocs
 
             // ⚛️ React : `ForEach` ≈ `tasks.map(task => <Row key={task.id} />)` : grâce à `Identifiable`,
@@ -148,5 +162,12 @@ struct HomeView: View {
 
 #Preview {
     // Service instantané : la preview affiche directement les données chargées.
-    HomeView(viewModel: HomeViewModel(provider: MockHomeDataProvider(delay: .zero)))
+    HomeView(
+        viewModel: HomeViewModel(provider: MockHomeDataProvider(delay: .zero)),
+        hasUnreadNotifications: true,
+        onNotifications: {},
+        onFocusTime: {},
+        onGoalDetails: {},
+        onSeeAll: {}
+    )
 }

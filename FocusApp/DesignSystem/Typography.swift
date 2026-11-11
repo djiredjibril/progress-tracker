@@ -36,4 +36,8 @@ extension Font {
     static let appChip = Font.system(size: 14, weight: .semibold)       // pastille sélectionnée
     static let appButton = Font.system(size: 16, weight: .bold)
     static let appSheetTitle = Font.system(size: 18, weight: .bold)
+
+    // Lignes riches (notifications)
+    static let appRowTitle = Font.system(size: 15, weight: .semibold)
+    static let appCaption = Font.system(size: 12, weight: .regular)
 }

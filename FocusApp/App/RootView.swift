@@ -7,10 +7,15 @@ struct RootView: View {
     // `CustomTabBar` la reçoit en `@Binding` (voir CustomTabBar.swift).
     @State private var selectedTab: AppTab = .home
 
-    // ⚛️ voir CONCEPTS.md#state : le ViewModel est créé et possédé ICI, à la racine, pour être partagé entre Home et
-    // la feuille « New Task » (et, plus tard, Calendar et Analytics). ≈ un store global / un contexte React placé
-    // tout en haut de l'arbre (D-033).
+    // ⚛️ React : le tableau des écrans EMPILÉS par-dessus les onglets (≈ l'état de navigation d'un stack navigator).
+    // `append(.notifications)` ≈ `navigation.navigate('Notifications')`, `removeAll()` ≈ `popToTop()`. SwiftUI le met
+    // à jour tout seul quand l'utilisateur revient en arrière (bouton ou balayage depuis le bord gauche).
+    @State private var path: [AppRoute] = []
+
+    // ⚛️ voir CONCEPTS.md#state : les ViewModels sont créés et possédés ICI, à la racine, pour être partagés entre
+    // plusieurs écrans. ≈ un store global / un contexte React placé tout en haut de l'arbre (D-033, D-035).
     @State private var viewModel: HomeViewModel
+    @State private var notificationsViewModel = NotificationsViewModel()
     @State private var isAddingTask = false
 
     // ⚛️ voir CONCEPTS.md#state : on reçoit un *provider* pour que les `#Preview` injectent un service instantané ;
@@ -22,26 +27,22 @@ struct RootView: View {
     // ⚛️ React : `body` ≈ le `return (...)` du composant. SwiftUI le rappelle quand l'état change.
     // `some View` = « un type de vue précis, que le compilateur déduit » (≈ `JSX.Element`, mais vérifié statiquement).
     var body: some View {
-        ZStack {
-            // HomeView reste montée même quand on change d'onglet : on la masque au lieu de la retirer, sinon son
-            // `@State` (le ViewModel et les tâches cochées) serait détruit puis rechargé à chaque retour (D-026).
-            // ⚛️ React : ≈ `display: 'none'` plutôt que `{tab === 'home' && <Home />}` (qui démonte le composant).
-            HomeView(viewModel: viewModel)
-                .opacity(selectedTab == .home ? 1 : 0)
-                .allowsHitTesting(selectedTab == .home)
-                .accessibilityHidden(selectedTab != .home)
-
-            if selectedTab != .home {
-                PlaceholderScreen(tab: selectedTab)
-            }
-        }
-        // ⚛️ React : `safeAreaInset(edge: .bottom)` réserve de la place en bas ET la déclare au contenu : le
-        // `ScrollView` de HomeView ajoute tout seul une marge, donc la dernière tâche n'est pas cachée par la barre.
-        // ≈ `contentContainerStyle={{ paddingBottom }}` + une vue en `position: 'absolute'`, mais sans calculer la hauteur.
-        .safeAreaInset(edge: .bottom) {
-            CustomTabBar(selection: $selectedTab, onAdd: { isAddingTask = true })
-                .padding(.horizontal, Spacing.screen)
-                .padding(.top, Size.fabRaise)                   // place pour le bouton + qui dépasse
+        // ⚛️ React : `NavigationStack(path:)` ≈ `<Stack.Navigator>` de React Navigation. Tout ce qu'il contient (les
+        // onglets ET la tab bar) est l'écran racine : un écran empilé par-dessus recouvre donc aussi la tab bar,
+        // comme dans le canvas (Notifications et Focus Session n'ont pas de tab bar).
+        NavigationStack(path: $path) {
+            tabs
+                .safeAreaInset(edge: .bottom) {
+                    CustomTabBar(selection: $selectedTab, onAdd: { isAddingTask = true })
+                        .padding(.horizontal, Spacing.screen)
+                        .padding(.top, Size.fabRaise)           // place pour le bouton + qui dépasse
+                }
+                // ⚛️ React : `navigationDestination(for:)` ≈ déclarer les écrans du navigator : pour chaque valeur
+                // `AppRoute` ajoutée au chemin, SwiftUI appelle cette closure et affiche la vue renvoyée.
+                .navigationDestination(for: AppRoute.self) { route in
+                    destination(for: route)
+                }
+                .toolbar(.hidden, for: .navigationBar)          // on dessine nos propres en-têtes
         }
         // ⚛️ React : `.sheet(isPresented:)` ≈ `<Modal visible={isAddingTask}>` : la feuille s'affiche quand le booléen
         // passe à vrai, et SwiftUI le remet à faux tout seul quand on la ferme (`$` = binding en lecture ET écriture).
@@ -54,6 +55,53 @@ struct RootView: View {
         // ⚛️ React : ≈ `userInterfaceStyle: 'light'` d'Expo : on ignore le mode sombre du téléphone (D-014).
         // Posé à la racine, il s'applique à toute l'app.
         .preferredColorScheme(.light)
+    }
+
+    // Le contenu des onglets.
+    private var tabs: some View {
+        ZStack {
+            // HomeView reste montée même quand on change d'onglet : on la masque au lieu de la retirer, sinon son
+            // `@State` (le ViewModel et les tâches cochées) serait détruit puis rechargé à chaque retour (D-026).
+            // ⚛️ React : ≈ `display: 'none'` plutôt que `{tab === 'home' && <Home />}` (qui démonte le composant).
+            HomeView(
+                viewModel: viewModel,
+                hasUnreadNotifications: notificationsViewModel.hasUnread,
+                onNotifications: { path.append(.notifications) },
+                onFocusTime: { path.append(.focusSession) },
+                onGoalDetails: { select(.analytics) },
+                onSeeAll: { select(.calendar) }
+            )
+            .opacity(selectedTab == .home ? 1 : 0)
+            .allowsHitTesting(selectedTab == .home)
+            .accessibilityHidden(selectedTab != .home)
+
+            if selectedTab != .home {
+                PlaceholderScreen(tab: selectedTab)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func destination(for route: AppRoute) -> some View {
+        // ⚛️ React : `switch` exhaustif sur la route : ajouter un `case` à `AppRoute` fait signaler ici (et partout où
+        // on la traite) le cas à compléter.
+        switch route {
+        case .notifications:
+            NotificationsView(
+                viewModel: notificationsViewModel,
+                onOpenAnalytics: {
+                    path.removeAll()                            // revient à la racine, puis bascule d'onglet
+                    select(.analytics)
+                }
+            )
+        case .focusSession:
+            PlaceholderScreen(title: "Focus Session", systemImage: "timer", showsBackButton: true)
+                .toolbar(.hidden, for: .navigationBar)
+        }
+    }
+
+    private func select(_ tab: AppTab) {
+        withAnimation(.snappy) { selectedTab = tab }
     }
 }
 

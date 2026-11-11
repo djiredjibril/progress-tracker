@@ -6,6 +6,7 @@ import SwiftUI
 enum Spacing {
     static let screen: CGFloat = 20
     static let section: CGFloat = 24
+    static let row: CGFloat = 14        // padding d'une ligne riche (notification)
     static let l: CGFloat = 16          // padding horizontal d'un champ de formulaire
     static let m: CGFloat = 12
     static let s: CGFloat = 8
@@ -45,6 +46,7 @@ enum Size {
     static let chip: CGFloat = 40           // hauteur d'une pastille de choix
     static let primaryButton: CGFloat = 56
     static let segmentHeight: CGFloat = 38
+    static let notificationIcon: CGFloat = 40
 }
 
 // Ombres (voir DESIGN_SYSTEM.md > Ombres)

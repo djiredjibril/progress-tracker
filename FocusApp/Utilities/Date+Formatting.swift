@@ -20,3 +20,22 @@ extension Date {
         return "\(formatted(.dateTime.month(.abbreviated).day().locale(locale))), \(time)"
     }
 }
+
+extension Date {
+    // Âge d'une notification : « Just now », « 12m ago », « 2h ago » (même jour), « Yesterday », puis « Mon ».
+    // `now` et `calendar` sont injectables, comme pour `dueLabel`.
+    func relativeLabel(now: Date = .now, calendar: Calendar = .current) -> String {
+        let seconds = now.timeIntervalSince(self)
+        if seconds < 60 { return "Just now" }
+
+        if calendar.isDate(self, inSameDayAs: now) {
+            let minutes = Int(seconds / 60)
+            return minutes < 60 ? "\(minutes)m ago" : "\(minutes / 60)h ago"
+        }
+        if let yesterday = calendar.date(byAdding: .day, value: -1, to: now),
+           calendar.isDate(self, inSameDayAs: yesterday) {
+            return "Yesterday"
+        }
+        return formatted(.dateTime.weekday(.abbreviated).locale(Locale(identifier: "en_US")))
+    }
+}

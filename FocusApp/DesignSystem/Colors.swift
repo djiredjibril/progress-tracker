@@ -77,4 +77,10 @@ extension Color {
     static let segmentTrack = Color.textPrimary.opacity(0.05)
     static let closeFill = Color.textPrimary.opacity(0.06)
     static let selectedChipFill = Color.appPrimary.opacity(0.12)
+
+    // MARK: - Notifications (non lue : plus opaque, avec ombre ; lue : plus discrète)
+
+    static let notificationUnreadFill = Color.white.opacity(0.75)
+    static let notificationUnreadStroke = Color.white.opacity(0.90)
+    static let notificationReadFill = Color.white.opacity(0.50)
 }
