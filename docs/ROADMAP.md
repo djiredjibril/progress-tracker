@@ -40,7 +40,7 @@ Fond d'écran (dégradé + taches floues), `CircleIconButton` (recherche, notifi
 - **Concepts :** `@Binding` (≈ `value` + `onChange`), `enum` + `CaseIterable`, `safeAreaInset(edge: .bottom)`, `matchedGeometryEffect` pour la pastille de l'onglet actif
 - **Fini quand :** le changement d'onglet fonctionne, le bouton + est surélevé et le contenu n'est pas masqué par la barre.
 
-## [ ] Étape 7 — Finitions
+## [x] Étape 7 — Finitions
 Comparaison fine avec la maquette, animations d'apparition, états de chargement soignés (`redacted(reason: .placeholder)`), pull-to-refresh (`.refreshable`), passe d'accessibilité (VoiceOver).
 - **Concepts :** `.transition`, `.animation(_:value:)`, `.redacted`, `.refreshable`
 - **Fini quand :** le développeur valide la fidélité visuelle.

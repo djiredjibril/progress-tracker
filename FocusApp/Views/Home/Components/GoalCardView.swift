@@ -7,6 +7,8 @@ struct GoalCardView: View {
     let percent: Int            // affiché en texte
     let onTap: () -> Void
 
+    @Environment(\.redactionReasons) private var redactionReasons
+
     // Réglages de la maquette : la montagne occupe ~75 % de la hauteur de la carte, légèrement translucide.
     private let mountainHeightRatio: CGFloat = 0.75
     private let mountainOpacity: Double = 0.9
@@ -14,9 +16,18 @@ struct GoalCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             VStack(alignment: .leading, spacing: Spacing.xs) {
-                Label("Today's Goal", systemImage: "target")
-                    .font(.appCardEyebrow)
-                    .foregroundStyle(Color.textOnAccentSecondary)
+                // La maquette entoure la cible d'un petit disque blanc (écart signalé à l'étape 4, corrigé ici).
+                HStack(spacing: Spacing.s) {
+                    Image(systemName: "target")
+                        .font(.appEyebrowIcon)
+                        .foregroundStyle(Color.appPrimary)
+                        .frame(width: Size.eyebrowIcon, height: Size.eyebrowIcon)
+                        .background(Circle().fill(Color.textOnAccent))
+                        .accessibilityHidden(true)
+                    Text("Today's Goal")
+                        .font(.appCardEyebrow)
+                        .foregroundStyle(Color.textOnAccentSecondary)
+                }
                 Text(title)
                     .font(.appCardTitle)
                     .foregroundStyle(Color.textOnAccent)
@@ -27,12 +38,16 @@ struct GoalCardView: View {
             }
             // On réserve la place du bouton › pour que le texte ne passe jamais dessous.
             .padding(.trailing, Size.goalArrow + Spacing.s)
+            // Accessibilité : VoiceOver lit « Today's Goal, Keep Going!, You're 70% closer… » d'un seul tenant.
+            .accessibilityElement(children: .combine)
 
             HStack(spacing: Spacing.m) {
                 ProgressBarView(progress: progress)
                 Text("\(percent)%")
                     .font(.appCardEyebrow)
                     .foregroundStyle(Color.textOnAccentSecondary)
+                    // Doublon : la barre annonce déjà « Progress, 70 percent ».
+                    .accessibilityHidden(true)
             }
             .padding(.top, Spacing.m)
         }
@@ -56,20 +71,25 @@ struct GoalCardView: View {
                 )
             )
             .overlay {
-                // Ici le GeometryReader sert à connaître la hauteur de la carte pour dimensionner la montagne.
-                GeometryReader { proxy in
-                    Image("GoalMountain")
-                        .resizable()
-                        // ⚛️ React : `scaledToFit` ≈ `resizeMode="contain"` : l'image garde ses proportions.
-                        .scaledToFit()
-                        .frame(height: proxy.size.height * mountainHeightRatio)
-                        .opacity(mountainOpacity)
-                        // On agrandit le cadre à toute la carte pour pouvoir coller la montagne en haut à droite.
-                        .frame(width: proxy.size.width, height: proxy.size.height, alignment: .topTrailing)
+                // ⚛️ React : `@Environment` ≈ un `useContext` : SwiftUI y expose des valeurs système (ici les « raisons de
+                // masquage »). Pendant le squelette (`.redacted`), une image devient un gros rectangle gris : pour une
+                // image purement décorative, on préfère ne rien dessiner.
+                if !redactionReasons.contains(.placeholder) {
+                    // Ici le GeometryReader sert à connaître la hauteur de la carte pour dimensionner la montagne.
+                    GeometryReader { proxy in
+                        Image("GoalMountain")
+                            .resizable()
+                            // ⚛️ React : `scaledToFit` ≈ `resizeMode="contain"` : l'image garde ses proportions.
+                            .scaledToFit()
+                            .frame(height: proxy.size.height * mountainHeightRatio)
+                            .opacity(mountainOpacity)
+                            // On agrandit le cadre à toute la carte pour pouvoir coller la montagne en haut à droite.
+                            .frame(width: proxy.size.width, height: proxy.size.height, alignment: .topTrailing)
+                    }
+                    .clipShape(shape)
+                    // Décoratif : l'image n'apporte aucune information à VoiceOver.
+                    .accessibilityHidden(true)
                 }
-                .clipShape(shape)
-                // Décoratif : l'image n'apporte aucune information à VoiceOver.
-                .accessibilityHidden(true)
             }
             .shadow(color: Color.goalShadow, radius: Shadow.goalRadius, y: Shadow.goalY)
     }

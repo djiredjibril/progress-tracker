@@ -34,6 +34,7 @@ enum Size {
     static let progressBar: CGFloat = 8
     static let menuButton: CGFloat = 32     // zone du menu ⋮ d'une tâche
     static let fabRaise: CGFloat = 20       // de combien le bouton + dépasse de la tab bar
+    static let eyebrowIcon: CGFloat = 22    // disque blanc derrière la cible de « Today's Goal »
 }
 
 // Ombres (voir DESIGN_SYSTEM.md > Ombres)

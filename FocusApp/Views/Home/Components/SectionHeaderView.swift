@@ -13,6 +13,7 @@ struct SectionHeaderView: View {
             Text(title)
                 .font(.appSectionTitle)
                 .foregroundStyle(Color.textPrimary)
+                .accessibilityAddTraits(.isHeader)
             Spacer()
             Button(action: onAction) {
                 HStack(spacing: Spacing.xs) {
@@ -25,6 +26,8 @@ struct SectionHeaderView: View {
                 .foregroundStyle(Color.textSecondary)
             }
             .buttonStyle(.plain)
+            // « See All » seul est ambigu en navigation VoiceOver : on annonce « See All My Tasks ».
+            .accessibilityLabel("\(actionTitle) \(title)")
         }
     }
 }

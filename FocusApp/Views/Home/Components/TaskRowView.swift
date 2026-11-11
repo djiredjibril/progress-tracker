@@ -19,6 +19,8 @@ struct TaskRowView: View {
                     .font(.appTaskSubtitle)
                     .foregroundStyle(Color.textSecondary)
             }
+            // Titre et échéance sont déjà annoncés par la case à cocher (voir son label) : on évite le doublon.
+            .accessibilityHidden(true)
             Spacer(minLength: 0)
             menu
         }
@@ -55,7 +57,7 @@ struct TaskRowView: View {
         // ⚛️ React : ≈ `expo-haptics` (`Haptics.selectionAsync()`), mais déclaratif : le retour haptique se
         // déclenche tout seul à chaque CHANGEMENT de `trigger`, pas à un appel impératif dans le handler.
         .sensoryFeedback(.selection, trigger: task.isCompleted)
-        .accessibilityLabel(task.title)
+        .accessibilityLabel("\(task.title), \(task.dueDate.dueLabel())")
         // ⚛️ React : ≈ `accessibilityState={{ checked }}` : VoiceOver annonce « coché / non coché ».
         .accessibilityValue(task.isCompleted ? "Completed" : "Not completed")
         .accessibilityHint("Double-tap to toggle")
@@ -77,7 +79,7 @@ struct TaskRowView: View {
                 .rotationEffect(.degrees(90))
                 .frame(width: Size.menuButton, height: Size.menuButton)
         }
-        .accessibilityLabel("Task options")
+        .accessibilityLabel("Options for \(task.title)")
     }
 }
 

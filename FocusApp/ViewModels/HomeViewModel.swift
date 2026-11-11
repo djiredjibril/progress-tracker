@@ -60,6 +60,18 @@ final class HomeViewModel {
         }
     }
 
+    // ⚛️ React : ≈ `refetch()` de React Query, appelée par le pull-to-refresh. Différence avec `load()` : on ne repasse
+    // PAS par `.loading` (le squelette ne doit pas remplacer l'écran pendant que le spinner du geste tourne), et un
+    // échec ne vide pas les données déjà affichées.
+    func refresh() async {
+        do {
+            data = try await provider.fetchHomeData()
+            state = .loaded
+        } catch {
+            if data == nil { state = .failed(error.localizedDescription) }
+        }
+    }
+
     // ⚛️ React : le `_` signifie « pas de label à l'appel » : `toggle(task)` et non `toggle(task: task)`.
     func toggle(_ task: TaskItem) {
         guard var current = data,

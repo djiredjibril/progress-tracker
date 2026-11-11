@@ -64,11 +64,64 @@ struct HomeViewModelTests {
         #expect(makeViewModel(hour: hour).greeting == expected)
     }
 
+    // MARK: - échecs et refresh
+
+    @Test func loadFailureSetsFailedState() async {
+        let viewModel = HomeViewModel(provider: FlakyProvider(shouldFail: true))
+        await viewModel.load()
+
+        guard case .failed = viewModel.state else {
+            Issue.record("expected .failed, got \(viewModel.state)")
+            return
+        }
+        #expect(viewModel.data == nil)
+    }
+
+    @Test func refreshFailureKeepsExistingData() async {
+        let provider = FlakyProvider()
+        let viewModel = HomeViewModel(provider: provider)
+        await viewModel.load()
+
+        provider.shouldFail = true
+        await viewModel.refresh()
+
+        #expect(viewModel.state == .loaded)
+        #expect(viewModel.data != nil)
+    }
+
+    @Test func refreshReplacesDataWithServerValues() async throws {
+        let viewModel = makeViewModel()
+        await viewModel.load()
+        let initialDone = try #require(viewModel.data).stats.tasksDone
+        let pending = try #require(viewModel.data?.tasks.first { !$0.isCompleted })
+
+        viewModel.toggle(pending)
+        #expect(viewModel.data?.stats.tasksDone == initialDone + 1)
+
+        await viewModel.refresh()
+        #expect(viewModel.data?.stats.tasksDone == initialDone)
+    }
+
     // MARK: - UserStats
 
     @Test func focusTimeIsSplitIntoHoursAndMinutes() {
         let stats = UserStats(tasksDone: 0, focusTime: 23_040, streakDays: 0)
         #expect(stats.focusHours == 6)
         #expect(stats.focusMinutes == 24)
+    }
+}
+
+// ⚛️ React : ≈ un `jest.fn()` / faux service dont on contrôle le comportement : il réussit, puis on peut le faire échouer.
+private final class FlakyProvider: HomeDataProviding {
+    struct Failure: Error {}
+    var shouldFail: Bool
+
+    init(shouldFail: Bool = false) {
+        self.shouldFail = shouldFail
+    }
+
+    func fetchHomeData() async throws -> HomeData {
+        if shouldFail { throw Failure() }
+        return MockData.homeData
     }
 }

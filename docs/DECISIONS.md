@@ -127,3 +127,13 @@ Toutes les icônes utilisent SF Symbols.
 - Le bouton + (`onAdd`) est un no-op : la feuille d'ajout est un bonus de la roadmap.
 - Tokens ajoutés : `Color.fabShadow`, `Color.tabPill`, `Font.appTabIcon`, `Font.appFabIcon`, `Radius.tabItem` (20), `Size.fabRaise` (20), `Shadow.fabRadius` (16) et `fabY` (8).
 - `AppTab` expose `title` et `systemImage`, testés par `AppTabTests`.
+
+### D-027 : Étape 7 : finitions
+**Choix :**
+- Le `ProgressView` de l'étape 1 est remplacé par un squelette : `HomeView` réaffiche le vrai écran avec `MockData` et `.redacted(reason: .placeholder)`, non interactif, annoncé « Loading » à VoiceOver. L'image de la montagne n'est pas dessinée pendant le squelette (sinon : gros rectangle gris).
+- Apparition : `.animation(.smooth, value: viewModel.state)` sur le conteneur et `.transition(.opacity + offset)` sur le contenu chargé.
+- `.refreshable` appelle `HomeViewModel.refresh()`, distinct de `load()` : il ne repasse pas par `.loading`, et un échec ne vide pas les données déjà affichées (sauf s'il n'y en a pas encore). Un rafraîchissement remet les données du service : avec le mock, les tâches cochées reviennent à leur état d'origine.
+- État d'échec : le message plus un bouton « Try again ».
+- Accessibilité : titres marqués `isHeader`, une seule annonce par ligne de tâche (titre + échéance), pourcentage de la carte masqué (doublon avec la barre), « See All My Tasks ».
+- Écart de la maquette corrigé : la cible de « Today's Goal » est dans un disque blanc (`Size.eyebrowIcon`, `Font.appEyebrowIcon`).
+- Écarts connus restants : la barre de progression est un peu plus fine que sur la maquette (`Size.progressBar` = 8), et la maquette est en perspective, donc comparée aux proportions et non au pixel.

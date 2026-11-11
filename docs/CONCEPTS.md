@@ -303,3 +303,33 @@ Format d'une entrée :
 - **React/RN :** un `useState` dans une story ; un `<View style={{ flex: 1 }} />` sans hauteur
 - **Différence clé :** `@Previewable` rend le `Binding` modifiable dans le canevas. Une vue « couleur » est flexible dans les deux sens : sans `height: 0`, un simple espace réservé s'étire sur tout l'écran.
 - **Vu à :** étape 6, `Views/Shared/CustomTabBar.swift`
+
+### redacted · `.redacted(reason: .placeholder)` (skeleton)
+- **Swift :** `loadedContent(MockData.homeData).redacted(reason: .placeholder).allowsHitTesting(false)`
+- **React/RN :** un composant skeleton écrit à la main (`react-native-skeleton-placeholder`)
+- **Différence clé :** SwiftUI remplace chaque texte et chaque image par un bloc gris, donc on réutilise le VRAI écran avec des données mock : le squelette a toujours la bonne forme, sans second composant à maintenir.
+- **Vu à :** étape 7, `Views/Home/HomeView.swift`
+
+### environment · `@Environment(\.redactionReasons)`
+- **Swift :** `@Environment(\.redactionReasons) private var redactionReasons` puis `redactionReasons.contains(.placeholder)`
+- **React/RN :** `useContext`
+- **Différence clé :** SwiftUI expose des valeurs système (taille de texte, mode clair/sombre, mode squelette…) que n'importe quelle vue peut lire. Utile pour masquer une image décorative qui deviendrait un gros rectangle gris.
+- **Vu à :** étape 7, `Views/Home/Components/GoalCardView.swift`
+
+### refreshable · `.refreshable`
+- **Swift :** `.refreshable { await viewModel.refresh() }`
+- **React/RN :** `<RefreshControl refreshing onRefresh>` avec un état `refreshing` à gérer
+- **Différence clé :** pas d'état à gérer : le spinner reste affiché tant que la closure `async` n'est pas terminée.
+- **Vu à :** étape 7, `Views/Home/HomeView.swift`
+
+### transition-animation-value · `.transition` et `.animation(_:value:)`
+- **Swift :** `.transition(.opacity.combined(with: .offset(y: 24)))` et `.animation(.smooth, value: viewModel.state)`
+- **React/RN :** `entering={FadeIn}` de Reanimated, et une `LayoutAnimation` déclenchée par un changement
+- **Différence clé :** `transition` décrit COMMENT une vue entre/sort, mais ne joue que si l'insertion a lieu dans une animation. `animation(_:value:)` attache l'animation à UNE valeur précise : plus prévisible que `withAnimation`, qui anime tout ce qui change dans son bloc.
+- **Vu à :** étape 7, `Views/Home/HomeView.swift`
+
+### a11y-pass · Passe VoiceOver (`isHeader`, labels, doublons)
+- **Swift :** `.accessibilityAddTraits(.isHeader)`, `.accessibilityLabel(…)`, `.accessibilityHidden(true)` sur les doublons
+- **React/RN :** `accessibilityRole="header"`, `accessibilityLabel`
+- **Différence clé :** on décide ce que VoiceOver lit : un label par ligne de tâche (titre + échéance) plutôt que trois éléments, pas de « waving hand » après le prénom, et « See All My Tasks » plutôt que « See All » seul.
+- **Vu à :** étape 7, `HomeHeaderView.swift`, `SectionHeaderView.swift`, `TaskRowView.swift`, `GoalCardView.swift`

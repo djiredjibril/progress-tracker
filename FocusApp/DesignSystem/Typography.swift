@@ -28,4 +28,5 @@ extension Font {
     static let appCheckmark = Font.system(size: 13, weight: .bold)      // coche dans le cercle d'une tâche
     static let appTabIcon = Font.system(size: 20, weight: .medium)      // icône d'un onglet
     static let appFabIcon = Font.system(size: 26, weight: .semibold)    // + du bouton central
+    static let appEyebrowIcon = Font.system(size: 12, weight: .bold)    // cible de « Today's Goal »
 }

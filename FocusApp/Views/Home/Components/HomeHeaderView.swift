@@ -40,6 +40,10 @@ struct HomeHeaderView: View {
                         // ⚛️ React : ≈ `numberOfLines={1}` + `adjustsFontSizeToFit` : le titre rétrécit au lieu de passer à la ligne.
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
+                        // ⚛️ React : ≈ `accessibilityRole="header"` : VoiceOver permet de sauter de titre en titre.
+                        // Le label remplace le texte lu, pour ne pas prononcer « waving hand » après le prénom.
+                        .accessibilityAddTraits(.isHeader)
+                        .accessibilityLabel("Hello, \(firstName)")
                     // Saut de ligne explicite pour reproduire la coupe de la maquette (2 lignes).
                     Text("Make today productive\nand achieve your goals.")
                         .font(.appBody)
