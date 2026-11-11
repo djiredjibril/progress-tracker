@@ -10,6 +10,9 @@ struct GlassCard: ViewModifier {
     var fill: Color = .glassFill
     var stroke: Color = .glassStroke
     var hasShadow = true
+    var shadowColor: Color = .cardShadow
+    var shadowRadius: CGFloat = Shadow.cardRadius
+    var shadowY: CGFloat = Shadow.cardY
 
     // ⚛️ React : `content` est la vue à envelopper (≈ `children`). `Content` est un type fourni par SwiftUI.
     func body(content: Content) -> some View {
@@ -24,7 +27,7 @@ struct GlassCard: ViewModifier {
                 .overlay(shape.fill(fill))
                 .overlay(shape.strokeBorder(stroke, lineWidth: 1))
                 // ⚛️ React : ≈ `shadowColor/shadowRadius/shadowOffset` (iOS), mais valable partout et en un seul appel.
-                .shadow(color: hasShadow ? Color.cardShadow : Color.clear, radius: Shadow.cardRadius, y: Shadow.cardY)
+                .shadow(color: hasShadow ? shadowColor : Color.clear, radius: shadowRadius, y: shadowY)
         }
     }
 }
@@ -36,8 +39,14 @@ extension View {
         cornerRadius: CGFloat = Radius.card,
         fill: Color = .glassFill,
         stroke: Color = .glassStroke,
-        hasShadow: Bool = true
+        hasShadow: Bool = true,
+        shadowColor: Color = .cardShadow,
+        shadowRadius: CGFloat = Shadow.cardRadius,
+        shadowY: CGFloat = Shadow.cardY
     ) -> some View {
-        modifier(GlassCard(cornerRadius: cornerRadius, fill: fill, stroke: stroke, hasShadow: hasShadow))
+        modifier(GlassCard(
+            cornerRadius: cornerRadius, fill: fill, stroke: stroke, hasShadow: hasShadow,
+            shadowColor: shadowColor, shadowRadius: shadowRadius, shadowY: shadowY
+        ))
     }
 }

@@ -11,8 +11,8 @@ struct HomeHeaderView: View {
     var body: some View {
         // ⚛️ React : `VStack` ≈ `<View style={{ flexDirection: 'column' }}>`, `HStack` ≈ `flexDirection: 'row'`.
         // `alignment` ≈ `alignItems` (ici sur l'axe transversal), `spacing` ≈ `gap`.
-        VStack(alignment: .leading, spacing: Spacing.m) {
-            HStack(spacing: Spacing.s) {
+        VStack(alignment: .leading, spacing: Spacing.l) {
+            HStack(spacing: Spacing.s + 2) {
                 // ⚛️ React : `Spacer` ≈ `<View style={{ flex: 1 }} />` : il prend tout l'espace libre et pousse
                 // les boutons à droite (≈ `justifyContent: 'flex-end'`).
                 Spacer()
@@ -30,12 +30,13 @@ struct HomeHeaderView: View {
             }
 
             HStack(alignment: .top, spacing: Spacing.m) {
-                VStack(alignment: .leading, spacing: Spacing.xs) {
+                VStack(alignment: .leading, spacing: 6) {
                     Text(greeting)
                         .font(.appGreeting)
                         .foregroundStyle(Color.textSecondary)
                     Text("Hello, \(firstName) 👋")
                         .font(.appLargeTitle)
+                        .tracking(-0.5)
                         .foregroundStyle(Color.textPrimary)
                         // ⚛️ React : ≈ `numberOfLines={1}` + `adjustsFontSizeToFit` : le titre rétrécit au lieu de passer à la ligne.
                         .lineLimit(1)
@@ -50,6 +51,7 @@ struct HomeHeaderView: View {
                         .foregroundStyle(Color.textSecondary)
                         .padding(.top, Spacing.xs)
                 }
+                .padding(.top, Spacing.xs)
                 Spacer(minLength: 0)
                 avatar
             }
@@ -67,9 +69,9 @@ struct HomeHeaderView: View {
             // ⚛️ React : `clipShape(Circle())` ≈ `borderRadius: size / 2` + `overflow: 'hidden'`.
             // Important : le `frame` est posé AVANT le clip, sinon on découperait l'image non redimensionnée.
             .clipShape(Circle())
-            // ⚛️ React : `offset` ≈ `transform: [{ translateY }]` : il déplace le dessin SANS changer la place
-            // réservée dans la mise en page. L'avatar déborde donc sur les cartes de stats (voir `zIndex` dans HomeView).
-            .offset(y: Size.avatarOverlap)
+            // Ombre violette du canvas (0 12 28 rgba(108,108,245,.25)). L'avatar ne chevauche plus les cartes de stats :
+            // le canvas les place 16 pt plus bas (D-042).
+            .shadow(color: Color.avatarShadow, radius: Shadow.avatarRadius, y: Shadow.heroAvatarY)
             // Décoratif : VoiceOver l'ignore.
             .accessibilityHidden(true)
     }

@@ -9,9 +9,9 @@ struct TaskRowView: View {
     let onDelete: () -> Void
 
     var body: some View {
-        HStack(spacing: Spacing.m) {
+        HStack(spacing: Spacing.row) {
             checkbox
-            VStack(alignment: .leading, spacing: Spacing.xs) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(task.title)
                     .font(.appTaskTitle)
                     .foregroundStyle(Color.textPrimary)
@@ -24,9 +24,13 @@ struct TaskRowView: View {
             Spacer(minLength: 0)
             menu
         }
-        .padding(Spacing.m)
+        // Padding du canvas : 12 en haut et en bas, 16 à gauche, 8 à droite (le menu ⋮ a sa propre zone de 36 × 44 pt).
+        .padding(.vertical, Spacing.m)
+        .padding(.leading, Spacing.l)
+        .padding(.trailing, Spacing.s)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .glassCard(cornerRadius: Radius.task)
+        // Pas d'ombre sur les lignes de tâche dans le canvas (seules les grandes cartes en ont une).
+        .glassCard(cornerRadius: Radius.task, hasShadow: false)
     }
 
     private var checkbox: some View {
@@ -34,7 +38,7 @@ struct TaskRowView: View {
             // Deux états superposés : le disque plein + la coche apparaissent quand `isCompleted` passe à vrai.
             ZStack {
                 Circle()
-                    .strokeBorder(Color.textTertiary, lineWidth: 1.5)
+                    .strokeBorder(Color.textTertiary, lineWidth: 2)
                 Circle()
                     .fill(Color.appPrimary)
                     // ⚛️ React : `opacity` et `scaleEffect` sont des propriétés ANIMABLES. Quand l'état change à
@@ -73,11 +77,11 @@ struct TaskRowView: View {
         } label: {
             Image(systemName: "ellipsis")
                 .font(.appIconButton)
-                .foregroundStyle(Color.textTertiary)
+                .foregroundStyle(Color.textSecondary)
                 // ⚛️ React : ≈ `transform: [{ rotate: '90deg' }]`. Comme `offset`, il ne change pas la mise en page :
                 // les ⋯ horizontaux deviennent des ⋮ verticaux.
                 .rotationEffect(.degrees(90))
-                .frame(width: Size.menuButton, height: Size.menuButton)
+                .frame(width: Size.taskMenuWidth, height: Size.taskMenuHeight)
         }
         .accessibilityLabel("Options for \(task.title)")
     }

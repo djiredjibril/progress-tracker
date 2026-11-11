@@ -10,22 +10,24 @@ struct StatCardView: View {
     let label: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.xs) {
+        // Rythme du canvas : 10 pt entre la puce et le texte, 2 pt entre la valeur et le libellé, 14 pt de padding.
+        VStack(alignment: .leading, spacing: Spacing.s + 2) {
             iconChip
-                .padding(.bottom, Spacing.s)
-            Text(value)
-                .foregroundStyle(Color.textPrimary)
-                // ⚛️ React : pas d'équivalent direct (il faudrait un compteur animé maison). `numericText` fait
-                // défiler les chiffres quand la valeur change à l'intérieur d'un `withAnimation`.
-                .contentTransition(.numericText())
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
-            Text(label)
-                .font(.appStatLabel)
-                .foregroundStyle(Color.textSecondary)
-                .lineLimit(1)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(value)
+                    .foregroundStyle(Color.textPrimary)
+                    // ⚛️ React : pas d'équivalent direct (il faudrait un compteur animé maison). `numericText` fait
+                    // défiler les chiffres quand la valeur change à l'intérieur d'un `withAnimation`.
+                    .contentTransition(.numericText())
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                Text(label)
+                    .font(.appStatLabel)
+                    .foregroundStyle(Color.textSecondary)
+                    .lineLimit(1)
+            }
         }
-        .padding(Spacing.m)
+        .padding(Spacing.row)
         // ⚛️ React : ≈ `flex: 1` : chaque carte prend une part ÉGALE de la largeur du HStack.
         // `alignment: .leading` recolle le contenu à gauche dans ce cadre élargi.
         .frame(maxWidth: .infinity, alignment: .leading)

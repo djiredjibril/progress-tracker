@@ -145,3 +145,11 @@ Onglets inactifs : `textSecondary` (et non `textTertiary`, trop pâle pour 4.5:1
 ### Espacements, rayons et tailles
 
 `Spacing.l` 16 (padding horizontal d'un champ). `Radius.field` 16, `Radius.button` 18, `Radius.segment` 12, `Radius.sheet` 32. `Size.field` 52, `Size.chip` 40, `Size.primaryButton` 56, `Size.segmentHeight` 38, `Size.fabRing` 4 (liseré de la couleur du fond autour du bouton +).
+
+## Alignement sur le canvas (D-042)
+
+- Carte objectif : hauteur 164, texte `textOnAccent` (blanc pur, pas 85 %), barre 10 pt (`Size.goalProgressBar`), dégradé `brandEnd` → `brandMid` (55 %) → `brandStart`, ombre `brandEnd` à 30 %. Le bouton › est à 52 pt du haut, icône `brandEnd`, ombre noire à 12 %.
+- L'avatar de Home ne chevauche **pas** les cartes de stats (la note « Header » plus haut décrit la maquette d'origine) ; il porte `avatarShadow` (rayon 14, y 12).
+- Rythme vertical de Home : 16 pt entre les blocs ; cartes de stats : padding 14, 10 pt puce → texte, 2 pt valeur → libellé ; lignes de tâche : padding 12 / 16 / 8, 8 pt entre lignes, sans ombre.
+- Tab bar : hauteur 72, fond `tabBarFill` (blanc 78 %), liseré `tabBarStroke`, ombre `tabBarShadow` ; pastille 48 × 30 derrière l'icône active ; bouton + remonté de 16 pt.
+- Fond : taches `backgroundBlobPrimary` (280 pt, 16 %, haut droite) et `backgroundBlobSecondary` (260 pt, 18 %, gauche), flou 70.

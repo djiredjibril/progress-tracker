@@ -19,10 +19,13 @@ struct HomeView: View {
         // ⚛️ React : `ScrollView` ≈ `<ScrollView>` RN. `VStack` ≈ `<View>` avec `flexDirection: 'column'`
         // (détaillé à l'étape 2).
         ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.m) {
+            VStack(alignment: .leading, spacing: Spacing.l) {
                 content
             }
-            .padding(Spacing.screen)
+            // Marges du canvas : 20 pt sur les côtés, peu d'espace en haut (la safe area dégage déjà l'encoche).
+            .padding(.horizontal, Spacing.screen)
+            .padding(.top, Spacing.s)
+            .padding(.bottom, Spacing.screen)
             // ⚛️ React : `.animation(_:value:)` ≈ une `LayoutAnimation` déclenchée quand `value` change : ici, à chaque
             // changement d'état de chargement, les vues qui apparaissent/disparaissent le font avec leur `transition`.
             // Différence avec `withAnimation` : il est attaché à UNE valeur précise, donc plus prévisible.
@@ -91,7 +94,8 @@ struct HomeView: View {
     // Un VStack (et non un `Group`) : la transition s'applique ainsi à TOUT le bloc, et le `zIndex` du header
     // continue de s'appliquer entre ses frères directs.
     private func loadedContent(_ data: HomeData) -> some View {
-        VStack(alignment: .leading, spacing: Spacing.m) {
+        // Rythme du canvas : 16 pt entre les grands blocs.
+        VStack(alignment: .leading, spacing: Spacing.l) {
             HomeHeaderView(
                 greeting: viewModel.greeting,
                 firstName: data.user.firstName,
@@ -100,9 +104,6 @@ struct HomeView: View {
                 onSearch: {},                   // action mock : la recherche n'est pas dans le design
                 onNotifications: onNotifications
             )
-            // ⚛️ React : `zIndex` ≈ `zIndex` de RN. Dans un VStack, les vues suivantes se dessinent par-dessus les
-            // précédentes ; sans `zIndex(1)`, les cartes de stats masqueraient le bas de l'avatar qui déborde.
-            .zIndex(1)
 
             // ⚛️ React : un `HStack` dont chaque enfant a `frame(maxWidth: .infinity)` ≈ trois enfants `flex: 1`.
             HStack(spacing: Spacing.m) {
@@ -139,22 +140,26 @@ struct HomeView: View {
                 onTap: onGoalDetails
             )
 
-            SectionHeaderView(title: "My Tasks", actionTitle: "See All", onAction: onSeeAll)
-                .padding(.top, Spacing.m)       // 12 (VStack) + 12 = 24 = Spacing.section entre les grands blocs
+            // En-tête (44 pt) puis les lignes : 4 pt entre eux, 8 pt entre les lignes (canvas).
+            VStack(alignment: .leading, spacing: Spacing.xs) {
+                SectionHeaderView(title: "My Tasks", actionTitle: "See All", onAction: onSeeAll)
 
-            // ⚛️ React : `ForEach` ≈ `tasks.map(task => <Row key={task.id} />)` : grâce à `Identifiable`,
-            // pas besoin de préciser la clé.
-            ForEach(data.tasks(on: viewModel.currentDate)) { task in
-                TaskRowView(
-                    task: task,
-                    // ⚛️ React : une closure passée en prop ≈ `onPress={() => toggle(task)}`. La vue envoie une
-                    // *intention* au ViewModel, elle ne modifie jamais les données elle-même.
-                    // `withAnimation` ≈ `LayoutAnimation.configureNext(...)` / `Animated.timing` : tout ce qui change
-                    // d'état dans ce bloc (coche, compteur « Tasks Done ») est animé. `.snappy` = ressort court et vif.
-                    onToggle: { withAnimation(.snappy) { viewModel.toggle(task) } },
-                    onEdit: {},         // actions mock du menu ⋮
-                    onDelete: {}
-                )
+                VStack(spacing: Spacing.s) {
+                    // ⚛️ React : `ForEach` ≈ `tasks.map(task => <Row key={task.id} />)` : grâce à `Identifiable`,
+                    // pas besoin de préciser la clé.
+                    ForEach(data.tasks(on: viewModel.currentDate)) { task in
+                        TaskRowView(
+                            task: task,
+                            // ⚛️ React : une closure passée en prop ≈ `onPress={() => toggle(task)}`. La vue envoie une
+                            // *intention* au ViewModel, elle ne modifie jamais les données elle-même.
+                            // `withAnimation` ≈ `LayoutAnimation.configureNext(...)` : tout ce qui change d'état dans ce
+                            // bloc (coche, compteur « Tasks Done ») est animé. `.snappy` = ressort court et vif.
+                            onToggle: { withAnimation(.snappy) { viewModel.toggle(task) } },
+                            onEdit: {},         // actions mock du menu ⋮ (voir la suite)
+                            onDelete: {}
+                        )
+                    }
+                }
             }
         }
     }

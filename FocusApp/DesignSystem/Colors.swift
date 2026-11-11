@@ -48,7 +48,7 @@ extension Color {
     static let textOnAccent = Color.white
     static let textOnAccentSecondary = Color.white.opacity(0.85)    // sous-titre de la carte objectif
     static let progressTrack = Color.white.opacity(0.30)            // piste de la barre de progression
-    static let goalShadow = Color.goalGradientStart.opacity(0.30)
+    static let goalShadow = Color(hex: 0x4E60D9, opacity: 0.30)
     static let fabShadow = Color.appPrimaryStrong.opacity(0.40)     // ombre du bouton +
     static let tabPill = Color.appPrimary.opacity(0.14)             // pastille de l'onglet actif
 
@@ -123,4 +123,14 @@ extension Color {
     static let onboardingBlobFocus = Color.statFocusDark.opacity(0.25)
     static let onboardingBlobProgress = Color.goalGradientEnd.opacity(0.30)
     static let pageDotInactive = Color.appPrimaryStrong.opacity(0.25)
+
+    // MARK: - Conformité au canvas (Home)
+
+    static let backgroundBlobPrimary = Color.appPrimary.opacity(0.16)
+    static let backgroundBlobSecondary = Color.goalGradientEnd.opacity(0.18)
+    static let eyebrowDisc = Color.white.opacity(0.9)
+    static let tabBarFill = Color.white.opacity(0.78)
+    static let tabBarStroke = Color.white.opacity(0.9)
+    static let tabBarShadow = Color.appPrimaryStrong.opacity(0.14)
+    static let arrowShadow = Color.black.opacity(0.12)
 }

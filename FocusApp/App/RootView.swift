@@ -44,7 +44,7 @@ struct RootView: View {
             tabs
                 .safeAreaInset(edge: .bottom) {
                     CustomTabBar(selection: $selectedTab, onAdd: { isAddingTask = true })
-                        .padding(.horizontal, Spacing.screen)
+                        .padding(.horizontal, Spacing.l)            // 16 pt des bords, comme le canvas
                         .padding(.top, Size.fabRaise)           // place pour le bouton + qui dépasse
                 }
                 // ⚛️ React : `navigationDestination(for:)` ≈ déclarer les écrans du navigator : pour chaque valeur

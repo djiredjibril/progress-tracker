@@ -14,25 +14,27 @@ struct AppBackground: View {
                 endPoint: .bottom
             )
 
-            // ⚛️ React : `frame(maxWidth: .infinity, maxHeight: .infinity, alignment:)` ≈ `flex: 1` + `alignSelf`.
-            // Le cadre prend toute la place, et `alignment` colle la tache dans un coin.
-            blob(Color.appPrimary.opacity(0.12))
+            // ⚛️ React : `frame(maxWidth: .infinity, maxHeight: .infinity, alignment:)` ≈ `flex: 1` + `alignSelf`, puis `offset`
+            // ≈ `top: -60, right: -80` : positions et tailles du canvas (280 pt en haut à droite, 260 pt à gauche).
+            blob(Color.backgroundBlobPrimary, size: Size.backgroundBlobPrimary)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
-            blob(Color.goalGradientEnd.opacity(0.12))
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                .offset(x: 80, y: -60)
+            blob(Color.backgroundBlobSecondary, size: Size.backgroundBlobSecondary)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .offset(x: -110, y: 420)
         }
         // ⚛️ React : par défaut SwiftUI respecte la safe area (≈ `SafeAreaView`). `ignoresSafeArea()` laisse le
         // fond passer derrière l'encoche et la barre d'accueil, comme un `StyleSheet.absoluteFill` plein écran.
         .ignoresSafeArea()
     }
 
-    private func blob(_ color: Color) -> some View {
+    private func blob(_ color: Color, size: CGFloat) -> some View {
         Circle()
             .fill(color)
-            .frame(width: Size.blob, height: Size.blob)
+            .frame(width: size, height: size)
             // ⚛️ React : `blur` ≈ `<BlurView>` / `filter: blur()`. Les modifiers s'appliquent DANS L'ORDRE :
             // ici on dessine le cercle, on le dimensionne, puis on le floute (inverser changerait le résultat).
-            .blur(radius: Size.blobBlur)
+            .blur(radius: Size.backgroundBlobBlur)
     }
 }
 

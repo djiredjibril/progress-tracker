@@ -27,10 +27,14 @@ struct CircleIconButton: View {
                 // ⚛️ React : `overlay(alignment:)` ≈ un enfant `position: 'absolute', top: 0, right: 0`.
                 .overlay(alignment: .topTrailing) {
                     if showsBadge {
+                        // Point violet de 8 pt cerné d'un anneau blanc de 2 pt (12 pt au total), à 9 pt du haut et 10 pt de la droite.
                         Circle()
                             .fill(Color.appPrimary)
                             .frame(width: Size.badge, height: Size.badge)
-                            .padding(Spacing.xs)
+                            .frame(width: Size.badgeRing, height: Size.badgeRing)
+                            .background(Circle().fill(Color.textOnAccent))
+                            .padding(.top, 9)
+                            .padding(.trailing, Spacing.row - Spacing.xs)
                     }
                 }
         }

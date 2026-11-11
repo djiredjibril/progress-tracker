@@ -3,6 +3,7 @@ import SwiftUI
 // Barre de progression : une piste claire et un remplissage dont la largeur suit `progress` (0...1).
 struct ProgressBarView: View {
     let progress: Double
+    var height: CGFloat = Size.progressBar
 
     // On borne la valeur : un `progress` de 1,4 ou de -0,2 ne doit jamais faire déborder la barre.
     private var clamped: Double { min(max(progress, 0), 1) }
@@ -25,7 +26,7 @@ struct ProgressBarView: View {
                     .frame(width: proxy.size.width * clamped)
             }
         }
-        .frame(height: Size.progressBar)
+        .frame(height: height)
         // VoiceOver annonce « Progress, 70 percent » plutôt que de lire des formes sans sens.
         .accessibilityElement()
         .accessibilityLabel("Progress")

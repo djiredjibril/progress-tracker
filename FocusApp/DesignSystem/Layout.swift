@@ -39,11 +39,21 @@ enum Size {
     static let badge: CGFloat = 8           // point de notification
     static let blob: CGFloat = 320          // taches floues du fond d'écran
     static let blobBlur: CGFloat = 80
-    static let avatarOverlap: CGFloat = 24  // de combien l'avatar descend sur les cartes de stats
     static let progressBar: CGFloat = 8
-    static let menuButton: CGFloat = 32     // zone du menu ⋮ d'une tâche
-    static let fabRaise: CGFloat = 20       // de combien le bouton + dépasse de la tab bar
-    static let eyebrowIcon: CGFloat = 22    // disque blanc derrière la cible de « Today's Goal »
+    static let fabRaise: CGFloat = 16       // de combien le bouton + dépasse de la tab bar (canvas)
+    static let tabBarHeight: CGFloat = 72
+    static let tabIconWidth: CGFloat = 48   // pastille de l'onglet actif : derrière l'icône seule
+    static let tabIconHeight: CGFloat = 30
+    static let goalCardHeight: CGFloat = 164
+    static let goalMountain: CGFloat = 128
+    static let goalProgressBar: CGFloat = 10
+    static let badgeRing: CGFloat = 12      // point de notification + anneau blanc de 2 pt
+    static let backgroundBlobPrimary: CGFloat = 280
+    static let backgroundBlobSecondary: CGFloat = 260
+    static let backgroundBlobBlur: CGFloat = 70
+    static let taskMenuWidth: CGFloat = 36
+    static let taskMenuHeight: CGFloat = 44
+    static let eyebrowIcon: CGFloat = 24    // disque blanc derrière la cible de « Today's Goal »
     static let fabRing: CGFloat = 4         // liseré du bouton + (couleur du fond)
     static let field: CGFloat = 52          // hauteur d'un champ de formulaire
     static let chip: CGFloat = 40           // hauteur d'une pastille de choix
@@ -85,5 +95,10 @@ enum Shadow {
     static let controlRadius: CGFloat = 20  // bouton principal du minuteur
     static let avatarRadius: CGFloat = 14   // avatar de la page Profil
     static let avatarY: CGFloat = 8
+    static let heroAvatarY: CGFloat = 12    // avatar de Home (plus haut que celui du profil)
+    static let arrowRadius: CGFloat = 7     // bouton › de la carte objectif
+    static let arrowY: CGFloat = 6
+    static let tabBarRadius: CGFloat = 15
+    static let tabBarY: CGFloat = 10
     static let controlY: CGFloat = 12
 }

@@ -239,3 +239,16 @@ Toutes les icônes utilisent SF Symbols.
 **Choix :** un `LaunchScreen.storyboard` affiche une image plein écran (`LaunchBackground`) : le dégradé `#A58DF0` → `#6B70E6` → `#4E60D9` et les deux halos du Splash, **sans le logo**, que le `SplashView` dessine ensuite. `UILaunchScreen_Generation` (écran blanc) est remplacé par `INFOPLIST_KEY_UILaunchStoryboardName`. L'image (1206×2622, `@3x`, source `docs/reference/LaunchBackground.svg`) est faite pour l'iPhone 17 Pro ; sur un autre modèle elle est recadrée (`scaleAspectFill`) avec une couleur de repli proche (`#6B70E6`).
 **Pourquoi :** la clé `UILaunchScreen` de l'Info.plist ne gère pas un dégradé plein écran. Le storyboard est écrit à la main (le `.xcodeproj` reste généré par XcodeGen, D-010).
 **Limite :** l'image est rendue à partir d'un SVG (`qlmanage`) : de très faibles bandes sont possibles dans les zones floues. Elle n'a pas été testée sur d'autres tailles d'écran ni en mode sombre.
+
+### D-042 : Home aligné sur le canvas (relecture après la phase 2)
+**Contexte :** le canvas Claude Design (inchangé, même version) a été relu écran Home contre écran Home. Plusieurs écarts venaient de la maquette d'origine ou d'approximations de la phase 1.
+**Corrigé (le canvas fait foi, D-028) :**
+- **Avatar :** il ne chevauche plus la 3e carte de stats (le canvas laisse 16 pt) et porte l'ombre violette du canvas. `Size.avatarOverlap` et le `zIndex` du header sont supprimés.
+- **Espacements :** 16 pt entre les grands blocs (12 avant), 10 pt entre les boutons du header, titre « Hello » avec `tracking(-0.5)`, marge haute réduite (la safe area dégage déjà l'encoche).
+- **Cartes de stats :** padding de 14 pt, 10 pt entre la puce et le texte, 2 pt entre la valeur et le libellé.
+- **Carte objectif :** 164 pt de haut, texte en **blanc pur** (le canvas n'utilise pas les 85 % de `DESIGN_SYSTEM.md`), barre de 10 pt, disque d'eyebrow de 24 pt, bouton › à 52 pt du haut avec icône `#4E60D9` et ombre, montagne de 128 pt, dégradé aux couleurs de la marque (`#4E60D9` → `#6B70E6` → `#A58DF0`) et ombre assortie.
+- **Lignes de tâche :** pas d'ombre, padding 12 / 16 / 8, cercle à 2 pt, ⋮ en `textSecondary` dans une zone de 36 × 44 pt, 8 pt entre les lignes ; l'en-tête « My Tasks » fait 44 pt de haut et est centré.
+- **Cloche :** point de 8 pt cerné de blanc (12 pt au total), à 9 pt du haut et 10 pt de la droite.
+- **Tab bar :** colonnes de même largeur, pastille derrière l'icône seule (48 × 30), fond blanc à 78 %, bouton + dépassant de 16 pt (20 avant), barre à 16 pt des bords.
+- **Fond d'écran :** taches de 280 pt (16 %) en haut à droite et de 260 pt (18 %) à gauche, flou 70, aux positions du canvas.
+**Écarts conservés :** SF Pro à la place d'Inter (D-030) ; le 👋 après « Hello » (D-031) ; les salutations suivent l'heure réelle (« Good Afternoon ») ; les tâches affichées sont celles du jour.

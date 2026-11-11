@@ -7,9 +7,9 @@ struct SectionHeaderView: View {
     let onAction: () -> Void
 
     var body: some View {
-        // ⚛️ React : `firstTextBaseline` ≈ `alignItems: 'baseline'` : le titre (20 pt) et le lien (14 pt) partagent
-        // la même ligne de base d'écriture, au lieu d'être centrés (ce qui les ferait paraître décalés).
-        HStack(alignment: .firstTextBaseline) {
+        // Hauteur minimale de 44 pt (zone tactile du lien « See All ») ; titre et lien sont centrés verticalement, comme
+        // dans le canvas.
+        HStack(alignment: .center) {
             Text(title)
                 .font(.appSectionTitle)
                 .foregroundStyle(Color.textPrimary)
@@ -29,6 +29,7 @@ struct SectionHeaderView: View {
             // « See All » seul est ambigu en navigation VoiceOver : on annonce « See All My Tasks ».
             .accessibilityLabel("\(actionTitle) \(title)")
         }
+        .frame(minHeight: Size.circleButton)
     }
 }
 
