@@ -103,3 +103,11 @@ Toutes les icônes utilisent SF Symbols.
 - Tokens ajoutés : `Color.cardShadow`, `Color.textOnAccent`, `Font.appStatIcon`, `Size.avatarOverlap` (24) et `enum Shadow` (rayon 20, y 8).
 - Le chevauchement de l'avatar est un `offset` dans `HomeHeaderView` plus un `zIndex(1)` sur le header dans `HomeView`.
 - Les boutons ronds du header gardent leur fond simple : `glassCard` est un modifier à coins arrondis, pas un cercle.
+
+### D-024 · Étape 4 : carte objectif
+**Choix :**
+- `GoalCardView` reçoit `title`, `progress`, `percent` et `onTap`. La phrase « You're 70% closer… » est dérivée de `percent` dans la carte.
+- `ProgressBarView` borne `progress` à 0...1 et expose `accessibilityLabel/Value`.
+- La montagne mesure 75 % de la hauteur de la carte à 0,9 d'opacité (constantes privées de la vue, tirées de `DESIGN_SYSTEM.md`). Elle est clippée aux coins de la carte, alors que l'ombre est posée sur la forme pour ne pas être coupée.
+- Tokens ajoutés : `Color.textOnAccentSecondary`, `progressTrack`, `goalShadow`, `Spacing.card` (20), `Size.progressBar` (8), `Shadow.goalRadius` (24) et `goalY` (12).
+- Écart accepté : l'eyebrow utilise `Label` avec l'icône `target` seule, alors que la maquette l'entoure d'un petit disque blanc.

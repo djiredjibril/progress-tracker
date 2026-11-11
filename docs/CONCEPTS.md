@@ -225,3 +225,21 @@ Format d'une entrée :
 - **React/RN :** `accessible={true}` sur le conteneur
 - **Différence clé :** fusionne les enfants en un seul élément : VoiceOver lit « 12, Tasks Done » d'un trait, et l'icône décorative est masquée.
 - **Vu à :** étape 3, `StatCardView.swift`
+
+### geometry-reader · `GeometryReader`
+- **Swift :** `GeometryReader { proxy in … proxy.size.width * progress … }`
+- **React/RN :** `onLayout` + un `useState` pour stocker la largeur
+- **Différence clé :** la taille est disponible dès le rendu, sans état ni second rendu. Attention : il s'étire pour remplir tout l'espace proposé, d'où le `frame(height:)` posé dessus.
+- **Vu à :** étape 4, `Views/Home/Components/ProgressBarView.swift`, `GoalCardView.swift`
+
+### capsule · `Capsule`, `Label`, `scaledToFit`
+- **Swift :** `Capsule().fill(…)`, `Label("Today's Goal", systemImage: "target")`, `Image("GoalMountain").resizable().scaledToFit()`
+- **React/RN :** `borderRadius` maximal, une icône + un texte dans un `<View row>`, `resizeMode="contain"`
+- **Différence clé :** `Capsule` adapte ses coins à la hauteur sans calcul. `Label` associe icône et texte et les aligne seul.
+- **Vu à :** étape 4, `ProgressBarView.swift`, `GoalCardView.swift`
+
+### layered-card · Carte en couches (`background` + `overlay` + `clipShape` + `shadow`)
+- **Swift :** `shape.fill(gradient).overlay { mountain.clipShape(shape) }.shadow(…)`
+- **React/RN :** un conteneur `overflow: 'hidden'` avec des enfants `position: 'absolute'`, et l'ombre sur un conteneur frère (car `overflow` coupe l'ombre en RN)
+- **Différence clé :** on clippe seulement la montagne puis on ajoute l'ombre sur la forme, donc l'ombre n'est pas coupée. Le bouton est un `overlay(alignment: .trailing)`, donc au-dessus de la montagne.
+- **Vu à :** étape 4, `Views/Home/Components/GoalCardView.swift`

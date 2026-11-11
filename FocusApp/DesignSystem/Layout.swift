@@ -9,6 +9,7 @@ enum Spacing {
     static let m: CGFloat = 12
     static let s: CGFloat = 8
     static let xs: CGFloat = 4
+    static let card: CGFloat = 20       // padding interne des grandes cartes
 }
 
 enum Radius {
@@ -29,10 +30,13 @@ enum Size {
     static let blob: CGFloat = 320          // taches floues du fond d'écran
     static let blobBlur: CGFloat = 80
     static let avatarOverlap: CGFloat = 24  // de combien l'avatar descend sur les cartes de stats
+    static let progressBar: CGFloat = 8
 }
 
-// Ombre des cartes claires (voir DESIGN_SYSTEM.md > Ombres)
+// Ombres (voir DESIGN_SYSTEM.md > Ombres)
 enum Shadow {
-    static let cardRadius: CGFloat = 20
+    static let cardRadius: CGFloat = 20     // cartes claires
     static let cardY: CGFloat = 8
+    static let goalRadius: CGFloat = 24     // carte objectif
+    static let goalY: CGFloat = 12
 }

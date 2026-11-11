@@ -38,6 +38,9 @@ extension Color {
 
     // Texte et icônes posés sur un fond coloré (puces de stats, carte objectif)
     static let textOnAccent = Color.white
+    static let textOnAccentSecondary = Color.white.opacity(0.85)    // sous-titre de la carte objectif
+    static let progressTrack = Color.white.opacity(0.30)            // piste de la barre de progression
+    static let goalShadow = Color.goalGradientStart.opacity(0.30)
 
     // MARK: - Carte objectif (dégradé du bas-gauche vers le haut-droite)
 

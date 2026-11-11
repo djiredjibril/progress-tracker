@@ -25,7 +25,7 @@ Fond d'écran (dégradé + taches floues), `CircleIconButton` (recherche, notifi
 - **Concepts :** composant paramétré (≈ props), `ViewModifier` et extension `View` (≈ HOC ou composant wrapper), `.ultraThinMaterial`, `frame(maxWidth: .infinity)`, concaténation de `Text` ou `AttributedString`, `zIndex` et offset
 - **Fini quand :** les trois cartes sont égales, l'effet verre est visible et l'avatar chevauche correctement.
 
-## [ ] Étape 4 — Carte « Today's Goal »
+## [x] Étape 4 — Carte « Today's Goal »
 `GoalCardView` + `ProgressBarView` : dégradé, image `GoalMountain` en calque, textes, barre de progression, bouton ›.
 - **Concepts :** `LinearGradient`, `GeometryReader` (largeur de la barre ≈ `onLayout`), `Capsule`, superposition dans un `ZStack`, `shadow`, interpolation de chaînes dans `Text`
 - **Fini quand :** la carte correspond à la maquette et la barre reflète `goal.progress`.

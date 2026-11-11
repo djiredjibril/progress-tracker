@@ -89,10 +89,12 @@ struct HomeView: View {
                 )
             }
 
-            // ⚛️ React : `\(...)` dans une chaîne ≈ un template literal `${...}`.
-            Text("\(data.goal.title) You're \(data.goal.progressPercent)% closer to your goal.")
-                .font(.appCardBody)
-                .padding(.top, Spacing.s)
+            GoalCardView(
+                title: data.goal.title,
+                progress: data.goal.progress,
+                percent: data.goal.progressPercent,
+                onTap: {}       // action mock : la navigation viendra plus tard
+            )
 
             Text("My Tasks")
                 .font(.appSectionTitle)
