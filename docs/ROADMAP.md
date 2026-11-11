@@ -30,7 +30,7 @@ Fond d'écran (dégradé + taches floues), `CircleIconButton` (recherche, notifi
 - **Concepts :** `LinearGradient`, `GeometryReader` (largeur de la barre ≈ `onLayout`), `Capsule`, superposition dans un `ZStack`, `shadow`, interpolation de chaînes dans `Text`
 - **Fini quand :** la carte correspond à la maquette et la barre reflète `goal.progress`.
 
-## [ ] Étape 5 — Liste de tâches interactive
+## [x] Étape 5 — Liste de tâches interactive
 `SectionHeaderView` (« My Tasks » + « See All ») et `TaskRowView` (cercle, textes, menu ⋮). Cocher une tâche met à jour le ViewModel, donc `tasksDone`. Formatage « Today, 10:00 AM ».
 - **Concepts :** `ForEach` (≈ `.map` + `key`), closures passées en props, `withAnimation`, `contentTransition`, `.sensoryFeedback` (haptique), `Menu` pour ⋮ (actions mock), `Date.FormatStyle`
 - **Fini quand :** cocher et décocher fonctionne avec une animation, et le compteur « Tasks Done » suit.

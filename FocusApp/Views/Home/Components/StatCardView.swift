@@ -15,6 +15,9 @@ struct StatCardView: View {
                 .padding(.bottom, Spacing.s)
             Text(value)
                 .foregroundStyle(Color.textPrimary)
+                // ⚛️ React : pas d'équivalent direct (il faudrait un compteur animé maison). `numericText` fait
+                // défiler les chiffres quand la valeur change à l'intérieur d'un `withAnimation`.
+                .contentTransition(.numericText())
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
             Text(label)

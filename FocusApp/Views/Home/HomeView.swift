@@ -96,23 +96,22 @@ struct HomeView: View {
                 onTap: {}       // action mock : la navigation viendra plus tard
             )
 
-            Text("My Tasks")
-                .font(.appSectionTitle)
-                .foregroundStyle(Color.textPrimary)
-                .padding(.top, Spacing.s)
+            SectionHeaderView(title: "My Tasks", actionTitle: "See All", onAction: {})
+                .padding(.top, Spacing.m)       // 12 (VStack) + 12 = 24 = Spacing.section entre les grands blocs
 
             // ⚛️ React : `ForEach` ≈ `tasks.map(task => <Row key={task.id} />)` : grâce à `Identifiable`,
             // pas besoin de préciser la clé.
             ForEach(data.tasks) { task in
-                // ⚛️ React : `Button { action } label: { vue }` ≈ `<Pressable onPress={action}>vue</Pressable>`.
-                // La vue envoie une *intention* au ViewModel, elle ne modifie jamais les données elle-même.
-                Button {
-                    viewModel.toggle(task)
-                } label: {
-                    Text("\(task.isCompleted ? "✅" : "⬜️") \(task.title) · \(task.dueDate.dueLabel())")
-                        .font(.appTaskTitle)
-                        .foregroundStyle(Color.textPrimary)
-                }
+                TaskRowView(
+                    task: task,
+                    // ⚛️ React : une closure passée en prop ≈ `onPress={() => toggle(task)}`. La vue envoie une
+                    // *intention* au ViewModel, elle ne modifie jamais les données elle-même.
+                    // `withAnimation` ≈ `LayoutAnimation.configureNext(...)` / `Animated.timing` : tout ce qui change
+                    // d'état dans ce bloc (coche, compteur « Tasks Done ») est animé. `.snappy` = ressort court et vif.
+                    onToggle: { withAnimation(.snappy) { viewModel.toggle(task) } },
+                    onEdit: {},         // actions mock du menu ⋮
+                    onDelete: {}
+                )
             }
         }
     }

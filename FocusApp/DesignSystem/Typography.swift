@@ -24,4 +24,6 @@ extension Font {
 
     static let appIconButton = Font.system(size: 18, weight: .medium)   // icône des boutons ronds
     static let appStatIcon = Font.system(size: 16, weight: .semibold)   // icône dans la puce d'une stat
+    static let appLinkChevron = Font.system(size: 11, weight: .semibold) // petit › à côté de « See All »
+    static let appCheckmark = Font.system(size: 13, weight: .bold)      // coche dans le cercle d'une tâche
 }

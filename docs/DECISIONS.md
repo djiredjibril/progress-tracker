@@ -111,3 +111,11 @@ Toutes les icônes utilisent SF Symbols.
 - La montagne mesure 75 % de la hauteur de la carte à 0,9 d'opacité (constantes privées de la vue, tirées de `DESIGN_SYSTEM.md`). Elle est clippée aux coins de la carte, alors que l'ombre est posée sur la forme pour ne pas être coupée.
 - Tokens ajoutés : `Color.textOnAccentSecondary`, `progressTrack`, `goalShadow`, `Spacing.card` (20), `Size.progressBar` (8), `Shadow.goalRadius` (24) et `goalY` (12).
 - Écart accepté : l'eyebrow utilise `Label` avec l'icône `target` seule, alors que la maquette l'entoure d'un petit disque blanc.
+
+### D-025 · Étape 5 : liste de tâches
+**Choix :**
+- `TaskRowView(task:onToggle:onEdit:onDelete:)` : le menu ⋮ propose « Edit » et « Delete » branchés sur des no-op depuis `HomeView`. Le ViewModel n'a pas encore ces actions.
+- L'animation est déclenchée par `withAnimation(.snappy)` dans `HomeView`, autour de `viewModel.toggle`. Elle anime la coche et le compteur « Tasks Done » (`contentTransition(.numericText())`).
+- Zone tactile de la case agrandie avec `contentShape` (8 pt de marge). La case a `accessibilityLabel` (titre), `accessibilityValue` (Completed / Not completed) et un hint.
+- Tokens ajoutés : `Font.appLinkChevron`, `Font.appCheckmark` et `Size.menuButton` (32).
+- iOS récent insère une espace fine insécable (U+202F) avant AM/PM : `DateFormattingTests` la normalise avant de comparer.

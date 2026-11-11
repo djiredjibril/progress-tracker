@@ -243,3 +243,27 @@ Format d'une entrée :
 - **React/RN :** un conteneur `overflow: 'hidden'` avec des enfants `position: 'absolute'`, et l'ombre sur un conteneur frère (car `overflow` coupe l'ombre en RN)
 - **Différence clé :** on clippe seulement la montagne puis on ajoute l'ombre sur la forme, donc l'ombre n'est pas coupée. Le bouton est un `overlay(alignment: .trailing)`, donc au-dessus de la montagne.
 - **Vu à :** étape 4, `Views/Home/Components/GoalCardView.swift`
+
+### with-animation · `withAnimation`, propriétés animables, `contentTransition`
+- **Swift :** `withAnimation(.snappy) { viewModel.toggle(task) }`, `.opacity(isCompleted ? 1 : 0)`, `.contentTransition(.numericText())`
+- **React/RN :** `LayoutAnimation.configureNext(...)` / `Animated.timing` avec une `Animated.Value`
+- **Différence clé :** pas d'`Animated.Value` à créer : tout ce qui change d'état dans le bloc `withAnimation` est interpolé automatiquement (opacity, scale, position…). `numericText` fait défiler les chiffres, sans équivalent RN direct.
+- **Vu à :** étape 5, `Views/Home/HomeView.swift`, `TaskRowView.swift`, `StatCardView.swift`
+
+### sensory-feedback · `.sensoryFeedback`
+- **Swift :** `.sensoryFeedback(.selection, trigger: task.isCompleted)`
+- **React/RN :** `Haptics.selectionAsync()` d'expo-haptics
+- **Différence clé :** déclaratif : le retour haptique se déclenche à chaque CHANGEMENT du `trigger`, pas par un appel impératif dans le handler. Sans effet dans le simulateur, à tester sur un vrai iPhone.
+- **Vu à :** étape 5, `Views/Home/Components/TaskRowView.swift`
+
+### menu · `Menu`, `Button(role:)`
+- **Swift :** `Menu { Button("Delete", systemImage: "trash", role: .destructive, action: onDelete) } label: { Image(systemName: "ellipsis") }`
+- **React/RN :** un `ActionSheet` / menu contextuel natif
+- **Différence clé :** menu natif iOS ancré sur le bouton. `role: .destructive` colore l'action en rouge. `rotationEffect(.degrees(90))` transforme ⋯ en ⋮ sans changer la mise en page.
+- **Vu à :** étape 5, `Views/Home/Components/TaskRowView.swift`
+
+### hit-area · `contentShape` et baseline
+- **Swift :** `.contentShape(Circle().inset(by: -Spacing.s))`, `HStack(alignment: .firstTextBaseline)`
+- **React/RN :** `hitSlop`, `alignItems: 'baseline'`
+- **Différence clé :** on agrandit la zone tactile au-delà de la forme visible (inset négatif). La ligne de base aligne un gros titre et un petit lien sur la même ligne d'écriture.
+- **Vu à :** étape 5, `TaskRowView.swift`, `SectionHeaderView.swift`

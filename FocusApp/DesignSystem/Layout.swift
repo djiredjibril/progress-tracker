@@ -31,6 +31,7 @@ enum Size {
     static let blobBlur: CGFloat = 80
     static let avatarOverlap: CGFloat = 24  // de combien l'avatar descend sur les cartes de stats
     static let progressBar: CGFloat = 8
+    static let menuButton: CGFloat = 32     // zone du menu ⋮ d'une tâche
 }
 
 // Ombres (voir DESIGN_SYSTEM.md > Ombres)
