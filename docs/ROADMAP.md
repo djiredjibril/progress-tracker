@@ -86,10 +86,10 @@ Splash animé (anneau qui se dessine, coche, nom et slogan), onboarding en 3 pag
 - **Concepts :** `TabView(.page)`, `TextField` / `SecureField`, `@FocusState`, `accessibilityReduceMotion`, protocole `AuthProviding` mock, `@AppStorage`
 - **Fini quand :** Splash → Onboarding → Sign Up / Log In → Home fonctionne, « Log out » ramène à Log In, et les règles de validation sont testées.
 
-## [ ] Étape 15 — Icône et launch screen
-`AppIcon` 1024×1024 (anneau + coche) dans l'asset catalog, launch screen statique au même dégradé que le Splash.
-- **Concepts :** `AppIcon` dans `Assets.xcassets`, `INFOPLIST_KEY_UILaunchScreen_*`
-- **Fini quand :** l'icône s'affiche sur l'écran d'accueil du simulateur, sans le warning d'icône vide.
+## [ ] Étape 15 — Launch screen
+L'icône `AppIcon` 1024×1024 est déjà faite (D-034). Reste le launch screen statique, au même dégradé que le Splash, pour que le passage lancement → Splash animé soit continu.
+- **Concepts :** `INFOPLIST_KEY_UILaunchScreen_*`, couleur et image de launch screen dans l'asset catalog
+- **Fini quand :** l'app démarre sur le dégradé (et non plus sur un écran blanc) avant d'afficher le Splash.
 
 ---
 

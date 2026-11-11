@@ -169,3 +169,8 @@ Toutes les icônes utilisent SF Symbols.
 - **D-029 appliqué :** `textSecondary` assombri, `appPrimaryStrong` pour l'onglet actif, onglets inactifs en `textSecondary`, dégradé du bouton + terminé en `appPrimaryStrong`. `DESIGN_SYSTEM.md` mis à jour.
 - **D-031 tranché :** avatar à 112 pt (valeur du canvas) et liseré de 4 pt autour du bouton + (`Size.fabRing`).
 - **Mock :** Home garde ses 3 tâches. Le « Team stand-up » de 13:00 que montre Calendar sera ajouté à l'étape 11, avec la décision sur ce que Home affiche alors.
+
+### D-034 : Icône de l'app (faite en avance sur l'étape 15)
+**Choix :** l'icône est l'artboard « App Icon » du canvas (anneau de progression à 75 %, coche blanche, dégradé `#A58DF0` → `#6B70E6` → `#4E60D9` avec un halo clair en haut à gauche et un halo sombre en bas à droite). Elle a été redessinée en SVG (`docs/reference/AppIcon.svg`), rendue en PNG 1024×1024 avec `qlmanage`, puis son canal alpha a été retiré (l'App Store refuse une icône transparente). Elle est enregistrée dans `AppIcon.appiconset` comme icône unique `1024x1024` (iOS génère toutes les tailles).
+**Pourquoi :** sans image, iOS affichait l'icône générique. Le rendu du flou peut différer très légèrement du canvas (de faibles bandes dans le coin bas-droit) ; pour l'améliorer, exporter le PNG depuis le canvas et remplacer `AppIcon-1024.png`.
+**Aussi :** l'étape 15 de la roadmap ne garde que le launch screen.

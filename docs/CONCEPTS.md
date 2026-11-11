@@ -369,3 +369,9 @@ Format d'une entrée :
 - **React/RN :** « lifting state up » : déplacer l'état dans le parent commun, ou dans un contexte/store global
 - **Différence clé :** une classe `@Observable` reçue en `let` suffit : la vue suit les propriétés qu'elle lit, sans `Binding` ni `useContext`.
 - **Vu à :** étape 8, `App/RootView.swift`, `Views/Home/HomeView.swift`
+
+### app-icon · Icône d'app dans l'asset catalog
+- **Swift / Xcode :** `Assets.xcassets/AppIcon.appiconset` avec un seul `AppIcon-1024.png` (`"size": "1024x1024"`) et `ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon` dans `project.yml`
+- **React/RN :** l'option `icon` d'`app.json` (Expo) / les mipmaps et `AppIcon` générés par `expo prebuild`
+- **Différence clé :** une seule image carrée suffit, sans coins arrondis : iOS génère toutes les tailles et applique lui-même le masque et l'effet de verre. Elle doit être **opaque** (sans canal alpha) pour être acceptée par l'App Store.
+- **Vu à :** entre les étapes 8 et 9, `Resources/Assets.xcassets/AppIcon.appiconset`

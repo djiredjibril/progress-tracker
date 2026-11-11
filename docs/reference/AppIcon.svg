@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1024" y2="1024">
+      <stop offset="0" stop-color="#A58DF0"/>
+      <stop offset="0.5" stop-color="#6B70E6"/>
+      <stop offset="1" stop-color="#4E60D9"/>
+    </linearGradient>
+    <filter id="blur120" filterUnits="userSpaceOnUse" x="-1500" y="-1500" width="4000" height="4000">
+      <feGaussianBlur stdDeviation="120"/>
+    </filter>
+    <filter id="blur130" filterUnits="userSpaceOnUse" x="-1500" y="-1500" width="4000" height="4000">
+      <feGaussianBlur stdDeviation="130"/>
+    </filter>
+    <clipPath id="frame"><rect width="1024" height="1024"/></clipPath>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <g clip-path="url(#frame)">
+    <circle cx="150" cy="90" r="350" fill="#FFFFFF" fill-opacity="0.18" filter="url(#blur120)"/>
+    <circle cx="944" cy="984" r="300" fill="#3C32BE" fill-opacity="0.35" filter="url(#blur130)"/>
+  </g>
+  <circle cx="512" cy="512" r="290" fill="none" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="72"/>
+  <circle cx="512" cy="512" r="290" fill="none" stroke="#FFFFFF" stroke-width="72" stroke-linecap="round" stroke-dasharray="1366.7 1822.1" transform="rotate(-90 512 512)"/>
+  <path d="M392 522 L478 606 L650 430" fill="none" stroke="#FFFFFF" stroke-width="76" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

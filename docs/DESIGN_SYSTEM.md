@@ -108,7 +108,7 @@ Utilise `Font.system(size:weight:)`. Le Dynamic Type est une amélioration bonus
 | `Avatar` | Avatar 3D détouré en cercle, fond violet inclus, PNG avec transparence | `Image("Avatar").resizable().scaledToFill()` dans un cadre de `Size.avatar`, `clipShape(Circle())` |
 | `GoalMountain` | Montagne enneigée, bords gauche et bas en fondu transparent | Calque à droite de la carte objectif, **derrière** le bouton ›, aligné en haut à droite, hauteur ≈ 75 % de la carte, opacité 0,9 |
 | `AccentColor` | `#6C6CF5` | Couleur d'accent globale |
-| `AppIcon` | vide (warning attendu) | à fournir plus tard |
+| `AppIcon` | Anneau de progression + coche blanche sur le dégradé violet-bleu, 1024×1024, sans canal alpha | Icône de l'app (source vectorielle : `docs/reference/AppIcon.svg`, D-034) |
 
 ## Notes de mise en page (lecture de la maquette)
 
