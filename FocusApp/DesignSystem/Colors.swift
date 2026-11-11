@@ -92,4 +92,11 @@ extension Color {
     static let categoryHealth = Color.statStreakDark
     static let categoryLearning = Color.ringGradientStart
     static let categoryPersonal = Color.statFocusDark
+
+    // MARK: - Analytics
+
+    static let chartBarPast = Color.appPrimary.opacity(0.28)
+    static let chartBarFuture = Color.textPrimary.opacity(0.08)
+    static let categoryTrack = Color.textPrimary.opacity(0.07)
+    static let miniRingTrack = Color.appPrimary.opacity(0.18)
 }

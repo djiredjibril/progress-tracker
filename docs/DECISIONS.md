@@ -204,3 +204,12 @@ Toutes les icônes utilisent SF Symbols.
 - **Home n'affiche plus que les tâches du jour** (`HomeData.tasks(on:)`). Le mock gagne 4 tâches sur d'autres jours de la semaine (lundi, mardi, jeudi, samedi) pour les points du bandeau ; celles qui tombent aujourd'hui sont écartées. `nextTask` ignore les tâches passées non faites.
 - **Écarts avec le canvas :** le « Team stand-up » de 13:00 n'est pas dans le mock : le canvas montre 3 tâches sur Home et 4 sur Calendar, et on privilégie des données cohérentes (le planning affiche « 3 tasks »). Il peut être ajouté par la feuille « New Task ». Le canvas colore deux tâches Work en violet et en bleu ; ici la couleur suit la **catégorie** (Work violet, Health corail, Learning blanc, Personal bleu). Les indicateurs d'état du planning sont en lecture seule, comme dans le canvas : on coche depuis Home.
 - Les libellés horaires séparent heure et période (`Date.clockParts`) et normalisent l'espace insécable fine d'iOS avant AM/PM.
+
+### D-038 : Étape 12 : Analytics
+**Choix :**
+- **Swift Charts** pour l'histogramme (D-032). Abscisse de type texte (le nom de chaque barre, unique) : une abscisse numérique donnait des barres invisibles. Barre « courante » en dégradé avec infobulle, barres passées en violet pâle, périodes à venir en petits traits gris.
+- Trois périodes : **Week** (7 barres lundi → dimanche), **Month** (paquets de 7 jours : W1 à W5) et **Year** (12 mois). Un historique mock de ~13 mois alimente les agrégations (`AnalyticsViewModel`, horloge et calendrier injectables).
+- **La barre d'aujourd'hui vient du vrai temps de focus de Home** (`stats.focusTime`), pas de l'historique : elle augmente quand on termine une session de Focus Session. Lundi et mardi de la semaine courante valent 4 h 12 et 5 h 06 : avec les 6 h 24 d'aujourd'hui, la semaine fait 15 h 42, comme le canvas (si on est un autre jour, les valeurs suivent).
+- Les chiffres « tâches faites sur prévues » (9/12, 38/50, 410/520), la meilleure série (12 jours) et la répartition par catégorie sont des valeurs mock par période : elles ne sont pas déduites des tâches réelles, trop peu nombreuses.
+- `PillSegmentedControl` gagne un style `.glass` (piste en verre, texte violet) pour le sélecteur de période. `AttributedString.stat` accepte des polices réglables (28/16 ici, 22/14 sur Home).
+- Limite connue : en vue Year, l'infobulle de la barre courante peut chevaucher la barre voisine (plus haute).

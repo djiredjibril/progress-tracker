@@ -65,6 +65,38 @@ enum MockData {
         ]
     }()
 
+    // Historique de focus (≈ 13 mois) et chiffres par période. Le temps d'aujourd'hui n'est pas dedans : il vient de Home.
+    // Les lundi et mardi de la semaine courante valent exactement 4 h 12 et 5 h 06 (comme le canvas) ; le reste varie un
+    // peu d'un jour à l'autre, de façon déterministe.
+    static let analytics: AnalyticsData = {
+        let calendar = Calendar.mondayFirst
+        let today = calendar.startOfDay(for: .now)
+        let weekStart = calendar.dateInterval(of: .weekOfYear, for: today)?.start ?? today
+        // Lundi → dimanche : 4h12, 5h06, 6h24, 4h40, 3h50, 2h20, 1h10.
+        let base: [TimeInterval] = [15_120, 18_360, 23_040, 16_800, 13_800, 8_400, 4_200]
+
+        let history = (1...400).compactMap { offset -> FocusDay? in
+            guard let day = calendar.date(byAdding: .day, value: -offset, to: today) else { return nil }
+            let weekdayIndex = (calendar.component(.weekday, from: day) + 5) % 7     // lundi = 0
+            let factor = day >= weekStart ? 1.0 : 0.85 + Double((offset * 37) % 11) / 33
+            return FocusDay(date: day, seconds: (base[weekdayIndex] * factor).rounded())
+        }
+
+        func shares(_ work: Int, _ health: Int, _ learning: Int) -> [CategoryShare] {
+            [CategoryShare(category: .work, percent: work),
+             CategoryShare(category: .health, percent: health),
+             CategoryShare(category: .learning, percent: learning)]
+        }
+        return AnalyticsData(
+            history: history,
+            summaries: [
+                .week: AnalyticsSummary(tasksDone: 9, tasksPlanned: 12, bestStreakDays: 12, shares: shares(55, 25, 20)),
+                .month: AnalyticsSummary(tasksDone: 38, tasksPlanned: 50, bestStreakDays: 12, shares: shares(50, 30, 20)),
+                .year: AnalyticsSummary(tasksDone: 410, tasksPlanned: 520, bestStreakDays: 12, shares: shares(48, 27, 25))
+            ]
+        )
+    }()
+
     // `day` : 0 = lundi de la semaine courante, 6 = dimanche.
     private static func inThisWeek(day: Int, hour: Int, minute: Int = 0) -> Date {
         let calendar = Calendar.mondayFirst

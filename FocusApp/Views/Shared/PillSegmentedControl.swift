@@ -9,6 +9,10 @@ struct PillSegmentedControl<Option: Hashable>: View {
     @Binding var selection: Option
     let options: [Option]
     let title: (Option) -> String
+    // `neutral` : piste grise (priorité d'une tâche). `glass` : piste en verre et texte violet (période d'Analytics).
+    var style: Style = .neutral
+
+    enum Style { case neutral, glass }
 
     // ⚛️ voir CONCEPTS.md#matched-geometry : la pastille blanche glisse d'une option à l'autre.
     @Namespace private var thumbNamespace
@@ -21,12 +25,20 @@ struct PillSegmentedControl<Option: Hashable>: View {
             }
         }
         .padding(Spacing.xs)
-        .background(
-            RoundedRectangle(cornerRadius: Radius.field, style: .continuous)
-                .fill(Color.segmentTrack)
-        )
+        .background(track)
         // Une seule annonce pour VoiceOver : « Priority » puis la valeur choisie.
         .accessibilityElement(children: .contain)
+    }
+
+    @ViewBuilder
+    private var track: some View {
+        let shape = RoundedRectangle(cornerRadius: Radius.field, style: .continuous)
+        switch style {
+        case .neutral:
+            shape.fill(Color.segmentTrack)
+        case .glass:
+            shape.fill(Color.glassFill).overlay(shape.strokeBorder(Color.glassStroke, lineWidth: 1))
+        }
     }
 
     private func segment(_ option: Option) -> some View {
@@ -36,7 +48,7 @@ struct PillSegmentedControl<Option: Hashable>: View {
         } label: {
             Text(title(option))
                 .font(isSelected ? .appChip : .appLink)
-                .foregroundStyle(isSelected ? Color.textPrimary : Color.textSecondary)
+                .foregroundStyle(isSelected ? (style == .glass ? Color.appPrimaryStrong : Color.textPrimary) : Color.textSecondary)
                 .frame(maxWidth: .infinity)
                 .frame(height: Size.segmentHeight)
                 .background {

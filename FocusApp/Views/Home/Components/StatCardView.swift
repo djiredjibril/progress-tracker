@@ -52,22 +52,27 @@ struct StatCardView: View {
 extension AttributedString {
     // Construit « 6h 24m » : chaque nombre en `appStatValue`, chaque unité en `appStatUnit`.
     // Une unité vide donne simplement « 12 ».
-    static func stat(_ parts: [(value: Int, unit: String)]) -> AttributedString {
+    // Les polices sont réglables : Home utilise 22/14, Analytics 28/16.
+    static func stat(
+        _ parts: [(value: Int, unit: String)],
+        valueFont: Font = .appStatValue,
+        unitFont: Font = .appStatUnit
+    ) -> AttributedString {
         var result = AttributedString()
         // ⚛️ React : `enumerated()` ≈ `.map((item, index) => …)` : on reçoit (index, élément).
         for (index, part) in parts.enumerated() {
             if index > 0 {
                 var space = AttributedString(" ")
-                space.font = .appStatUnit
+                space.font = unitFont
                 result += space
             }
             var number = AttributedString("\(part.value)")
-            number.font = .appStatValue
+            number.font = valueFont
             result += number
 
             if !part.unit.isEmpty {
                 var unit = AttributedString(part.unit)
-                unit.font = .appStatUnit
+                unit.font = unitFont
                 result += unit
             }
         }

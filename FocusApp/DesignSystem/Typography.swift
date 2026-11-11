@@ -43,6 +43,10 @@ extension Font {
     static let appHeadline = Font.system(size: 17, weight: .semibold)   // mois, numéro de jour
     static let appTag = Font.system(size: 11, weight: .semibold)        // pastille de catégorie
 
+    // Analytics
+    static let appChartValue = Font.system(size: 28, weight: .bold)
+    static let appChartUnit = Font.system(size: 16, weight: .semibold)
+
     // Minuteur
     // ⚛️ React : `monospacedDigit()` ≈ `fontVariant: ['tabular-nums']` : tous les chiffres ont la même largeur, donc
     // « 14:59 » → « 14:58 » ne fait pas trembler le texte à chaque seconde.

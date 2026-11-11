@@ -17,6 +17,7 @@ struct RootView: View {
     @State private var viewModel: HomeViewModel
     @State private var notificationsViewModel = NotificationsViewModel()
     @State private var calendarViewModel = CalendarViewModel()
+    @State private var analyticsViewModel = AnalyticsViewModel()
     @State private var isAddingTask = false
 
     // ⚛️ voir CONCEPTS.md#state : on reçoit un *provider* pour que les `#Preview` injectent un service instantané ;
@@ -77,13 +78,15 @@ struct RootView: View {
             .accessibilityHidden(selectedTab != .home)
 
             // ⚛️ React : un `switch` sur l'onglet ≈ `switch (tab) { case 'calendar': return <Calendar /> … }`. Home est déjà
-            // montée plus haut ; Analytics et Profile restent provisoires jusqu'aux étapes 12 et 13.
+            // montée plus haut ; Profile reste provisoire jusqu'à l'étape 13.
             switch selectedTab {
             case .home:
                 EmptyView()
             case .calendar:
                 CalendarView(viewModel: calendarViewModel, tasks: viewModel.data?.tasks ?? [])
-            case .analytics, .profile:
+            case .analytics:
+                AnalyticsView(viewModel: analyticsViewModel, todayFocus: viewModel.data?.stats.focusTime ?? 0)
+            case .profile:
                 PlaceholderScreen(tab: selectedTab)
             }
         }

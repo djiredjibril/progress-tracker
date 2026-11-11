@@ -50,6 +50,10 @@ enum Size {
     static let segmentHeight: CGFloat = 38
     static let notificationIcon: CGFloat = 40
     static let dayDot: CGFloat = 5          // point « il y a des tâches ce jour-là »
+    static let chartHeight: CGFloat = 140
+    static let miniRing: CGFloat = 56       // anneau « Tasks done »
+    static let miniRingStroke: CGFloat = 8
+    static let streakIcon: CGFloat = 44
     static let timeColumn: CGFloat = 52     // colonne des heures du planning
     static let nowLine: CGFloat = 2
     static let focusRing: CGFloat = 264     // anneau du minuteur

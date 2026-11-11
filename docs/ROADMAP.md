@@ -71,7 +71,7 @@ Titre + « Today », navigation de semaine, bandeau des 7 jours (jour sélection
 - **Concepts :** `Calendar` / `DateComponents`, `LazyVGrid`, sélection par `@State`, `Date.FormatStyle`
 - **Fini quand :** changer de jour met à jour la liste, et le calcul de semaine est testé.
 
-## [ ] Étape 12 — Analytics
+## [x] Étape 12 — Analytics
 Sélecteur Week / Month / Year, graphe de focus par jour (barre du jour en dégradé et infobulle), anneau 9/12, meilleure série, temps par catégorie.
 - **Concepts :** **Swift Charts** (`Chart`, `BarMark`), `Picker` segmenté, données agrégées dans le ViewModel
 - **Fini quand :** les trois périodes affichent des données mock cohérentes et les agrégats sont testés.

@@ -453,3 +453,21 @@ Format d'une entrée :
 - **React/RN :** `key={day}` ; animer une pastille qui glisse (Reanimated / `onLayout`)
 - **Différence clé :** une `Date` est `Hashable`, donc elle sert de clé sans `Identifiable`. La pastille du jour sélectionné glisse d'un jour à l'autre (même `id` dans le même namespace, voir CONCEPTS.md#matched-geometry).
 - **Vu à :** étape 11, `Views/Calendar/Components/WeekStripView.swift`
+
+### swift-charts · Swift Charts (`Chart`, `BarMark`, axes personnalisés)
+- **Swift :** `import Charts` puis `Chart(bars) { bar in BarMark(x: .value("Period", bar.name), y: .value("Focus", bar.seconds), width: .ratio(0.7)).foregroundStyle(…).cornerRadius(10).annotation(position: .top) { tooltip } }`, `.chartYScale(domain:)`, `.chartYAxis(.hidden)`, `.chartXAxis { AxisMarks(values:) { AxisValueLabel { … } } }`
+- **React/RN :** Victory / `react-native-chart-kit` / d3
+- **Différence clé :** déclaratif et natif (SDK Apple, zéro dépendance, D-011) : pour chaque donnée on décrit une marque et ses propriétés ; échelle, axes et animations sont calculés. Une abscisse de type TEXTE crée des « cases » de largeur égale (échelle `band` de d3) ; avec un nombre, la largeur d'une barre n'était pas définie et les barres disparaissaient. `annotation` ancre un tooltip à la barre. VoiceOver lit chaque marque grâce à `accessibilityLabel/Value`.
+- **Vu à :** étape 12, `Views/Analytics/FocusChartCard.swift`
+
+### bindable · `@Bindable`
+- **Swift :** `@Bindable var viewModel: AnalyticsViewModel` puis `PillSegmentedControl(selection: $viewModel.period, …)`
+- **React/RN :** passer `value` + `onChange` d'un store au composant
+- **Différence clé :** un objet `@Observable` reçu en paramètre n'offre pas de `$` par défaut : `@Bindable` permet de créer un `Binding` vers l'une de ses propriétés.
+- **Vu à :** étape 12, `Views/Analytics/AnalyticsView.swift`
+
+### aggregation · Agrégation d'un historique (dictionnaire, `reduce`, injection de `todayFocus`)
+- **Swift :** `Dictionary(history.map { (calendar.startOfDay(for: $0.date), $0.seconds) }, uniquingKeysWith: +)`, `days.reduce(0) { … }`
+- **React/RN :** `groupBy`, `reduce` et un `Map` indexé par date
+- **Différence clé :** l'historique est indexé par jour une seule fois. La valeur d'aujourd'hui n'y figure pas : elle est passée à chaque appel, car elle vient de Home et change en direct quand on termine une session de focus.
+- **Vu à :** étape 12, `ViewModels/AnalyticsViewModel.swift`
