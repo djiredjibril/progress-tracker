@@ -29,8 +29,10 @@ struct SplashView: View {
             VStack(spacing: Spacing.section + Spacing.xs) {
                 AppLogoView(size: Size.splashLogo, arcProgress: arc, checkScale: checkScale, checkOpacity: checkOpacity)
                 VStack(spacing: Spacing.s) {
-                    Text("FocusApp")
+                    Text("Progress Tracker")
                         .font(.appSplashTitle)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                         .tracking(-0.5)
                         .opacity(nameVisible ? 1 : 0)
                         .offset(y: nameVisible ? 0 : Spacing.m)
@@ -49,7 +51,7 @@ struct SplashView: View {
         // ⚛️ voir CONCEPTS.md#task-id : la séquence tourne dans un `.task` (annulé si la vue disparaît avant la fin).
         .task { await play() }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("FocusApp. Plan. Focus. Achieve.")
+        .accessibilityLabel("Progress Tracker. Plan. Focus. Achieve.")
         .accessibilityAddTraits(.isButton)
         .accessibilityHint("Double-tap to continue")
     }

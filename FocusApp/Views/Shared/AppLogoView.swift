@@ -32,7 +32,7 @@ struct AppLogoView: View {
         }
         .frame(width: size, height: size)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("FocusApp")
+        .accessibilityLabel("Progress Tracker")
     }
 }
 

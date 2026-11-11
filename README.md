@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/readme/icon.png" alt="Icône FocusApp" width="96" />
+<img src="docs/readme/icon.png" alt="Icône Progress Tracker" width="96" />
 
-# FocusApp
+# Progress Tracker
 
 **Une app de productivité iOS en SwiftUI : tâches, sessions de focus Pomodoro, calendrier et statistiques.**
 
@@ -76,7 +76,7 @@ Les données restent **sur l'appareil** (SwiftData). Au premier lancement l'app 
 
 ```bash
 brew install xcodegen xcbeautify     # xcbeautify est optionnel (logs lisibles)
-git clone <url-du-repo> && cd FocusApp
+git clone <url-du-repo> && cd FocusApp      # le dossier garde son nom technique
 xcodegen generate                    # génère FocusApp.xcodeproj
 open FocusApp.xcodeproj              # puis ⌘R dans Xcode
 ```

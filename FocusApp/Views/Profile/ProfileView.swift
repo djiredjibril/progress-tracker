@@ -47,7 +47,7 @@ struct ProfileView: View {
         }
         // ⚛️ React : `confirmationDialog` ≈ `Alert.alert(title, message, [{ text, style: 'destructive' }, { style: 'cancel' }])`.
         // Sur iPhone c'est une feuille d'actions qui monte du bas ; l'action `.destructive` est en rouge.
-        .confirmationDialog("Log out of FocusApp?", isPresented: $isConfirmingLogOut, titleVisibility: .visible) {
+        .confirmationDialog("Log out of Progress Tracker?", isPresented: $isConfirmingLogOut, titleVisibility: .visible) {
             Button("Log out", role: .destructive, action: onLogOut)
             Button("Cancel", role: .cancel) {}
         }
