@@ -97,7 +97,7 @@ L'icône `AppIcon` 1024×1024 est déjà faite (D-034). Reste le launch screen s
 
 Retours : la recherche, la suppression et l'édition de tâche, la modification du profil et le mode clair / sombre ne faisaient rien ; l'app repose entièrement sur des données mock ; l'onboarding n'est vu qu'une fois. Décisions associées : D-043 et suivantes.
 
-## [ ] Étape 16 — Édition et suppression de tâches
+## [x] Étape 16 — Édition et suppression de tâches
 Le menu ⋮ des lignes fait enfin quelque chose : **Edit** rouvre la feuille « New Task » préremplie, **Delete** demande confirmation puis supprime (et met à jour les statistiques).
 - **Concepts :** formulaire réutilisé en deux modes (création / édition), `confirmationDialog` sur un élément, mise à jour d'une collection par `id`
 - **Fini quand :** modifier le titre, l'heure, la catégorie… d'une tâche la met à jour partout (Home, Calendar, Analytics), supprimer la retire et les compteurs suivent (testé).

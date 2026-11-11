@@ -76,6 +76,58 @@ struct HomeViewModelTests {
         #expect(viewModel.data == nil)
     }
 
+    // MARK: - updateTask() et deleteTask()
+
+    @Test func updateTaskReplacesItByIdAndKeepsTheListSorted() async throws {
+        let viewModel = makeViewModel()
+        await viewModel.load()
+        let workout = try #require(viewModel.data?.tasks.first { $0.title == "Workout" })
+
+        var edited = workout
+        edited.title = "Evening run"
+        edited.dueDate = Self.date(atHour: 7)               // avant « Design » (10:00) : doit remonter en tête du jour
+
+        viewModel.updateTask(edited)
+
+        let today = try #require(viewModel.data).tasks(on: .now)
+        #expect(today.map(\.title) == ["Evening run", "Design new UI screens", "Read a book"])
+        #expect(viewModel.data?.tasks.filter { $0.id == workout.id }.count == 1)    // pas de doublon
+    }
+
+    @Test func updateTaskIgnoresUnknownTasks() async throws {
+        let viewModel = makeViewModel()
+        await viewModel.load()
+        let before = try #require(viewModel.data).tasks.count
+
+        viewModel.updateTask(TaskItem(title: "Ghost", dueDate: .now))
+
+        #expect(viewModel.data?.tasks.count == before)
+    }
+
+    @Test func deletingAPendingTaskRemovesItAndKeepsTasksDone() async throws {
+        let viewModel = makeViewModel()
+        await viewModel.load()
+        let initial = try #require(viewModel.data)
+        let pending = try #require(initial.tasks.first { !$0.isCompleted })
+
+        viewModel.deleteTask(pending)
+
+        #expect(viewModel.data?.tasks.contains { $0.id == pending.id } == false)
+        #expect(viewModel.data?.tasks.count == initial.tasks.count - 1)
+        #expect(viewModel.data?.stats.tasksDone == initial.stats.tasksDone)
+    }
+
+    @Test func deletingACompletedTaskLowersTasksDone() async throws {
+        let viewModel = makeViewModel()
+        await viewModel.load()
+        let initial = try #require(viewModel.data)
+        let done = try #require(initial.tasks.first { $0.isCompleted })
+
+        viewModel.deleteTask(done)
+
+        #expect(viewModel.data?.stats.tasksDone == initial.stats.tasksDone - 1)
+    }
+
     // MARK: - focus
 
     @Test func nextTaskIsTheFirstNotCompletedOne() async {

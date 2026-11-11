@@ -252,3 +252,10 @@ Toutes les icônes utilisent SF Symbols.
 - **Tab bar :** colonnes de même largeur, pastille derrière l'icône seule (48 × 30), fond blanc à 78 %, bouton + dépassant de 16 pt (20 avant), barre à 16 pt des bords.
 - **Fond d'écran :** taches de 280 pt (16 %) en haut à droite et de 260 pt (18 %) à gauche, flou 70, aux positions du canvas.
 **Écarts conservés :** SF Pro à la place d'Inter (D-030) ; le 👋 après « Hello » (D-031) ; les salutations suivent l'heure réelle (« Good Afternoon ») ; les tâches affichées sont celles du jour.
+
+### D-043 : Étape 16 : édition et suppression de tâches
+**Choix :**
+- Le menu ⋮ des lignes de Home fonctionne : **Edit** ouvre la feuille « New Task » préremplie (titre « Edit Task », bouton « Save Changes ») ; **Delete** demande confirmation (`confirmationDialog`) puis supprime.
+- Un seul formulaire pour les deux usages : `NewTaskDraft(editing:)` conserve l'`id` et l'état « fait » de la tâche ; `RootView` présente la feuille avec `sheet(item:)` (enum `TaskSheet`). Enregistrer appelle `HomeViewModel.updateTask` (remplacement par `id`, liste retriée par échéance, aucun doublon).
+- Supprimer une tâche déjà faite fait baisser « Tasks Done » (jamais sous 0). Supprimer une tâche en attente ne change pas les compteurs.
+- Limites : l'édition et la suppression se font depuis **Home** (les lignes du planning de Calendar restent en lecture seule, comme le canvas). La suppression n'est pas annulable (« This cannot be undone »). Les actions agissent sur les données en mémoire du mock tant que l'étape 20 (SwiftData) n'est pas faite : elles sont perdues au relancement.

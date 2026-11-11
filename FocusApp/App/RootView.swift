@@ -18,7 +18,9 @@ struct RootView: View {
     @State private var notificationsViewModel = NotificationsViewModel()
     @State private var calendarViewModel = CalendarViewModel()
     @State private var analyticsViewModel = AnalyticsViewModel()
-    @State private var isAddingTask = false
+    // ⚛️ React : UNE seule feuille pour deux usages (créer / modifier) : l'état dit laquelle est ouverte, et `sheet(item:)`
+    // la présente quand il n'est pas `nil` (≈ `<Modal visible={sheet !== null}>` avec les données de la feuille).
+    @State private var taskSheet: TaskSheet?
 
     // Réglages persistés (voir ProfileView) : `RootView` les relit pour qu'ils aient un effet réel ailleurs dans l'app.
     @AppStorage(SettingsKey.notificationsEnabled) private var notificationsEnabled = true
@@ -43,7 +45,7 @@ struct RootView: View {
         NavigationStack(path: $path) {
             tabs
                 .safeAreaInset(edge: .bottom) {
-                    CustomTabBar(selection: $selectedTab, onAdd: { isAddingTask = true })
+                    CustomTabBar(selection: $selectedTab, onAdd: { taskSheet = .create })
                         .padding(.horizontal, Spacing.l)            // 16 pt des bords, comme le canvas
                         .padding(.top, Size.fabRaise)           // place pour le bouton + qui dépasse
                 }
@@ -54,12 +56,19 @@ struct RootView: View {
                 }
                 .toolbar(.hidden, for: .navigationBar)          // on dessine nos propres en-têtes
         }
-        // ⚛️ React : `.sheet(isPresented:)` ≈ `<Modal visible={isAddingTask}>` : la feuille s'affiche quand le booléen
-        // passe à vrai, et SwiftUI le remet à faux tout seul quand on la ferme (`$` = binding en lecture ET écriture).
-        .sheet(isPresented: $isAddingTask) {
-            NewTaskView { task in
-                // `withAnimation` : la nouvelle ligne apparaît avec une transition (voir CONCEPTS.md#with-animation).
-                withAnimation(.snappy) { viewModel.addTask(task) }
+        // ⚛️ React : `.sheet(item:)` ≈ `<Modal visible={item !== null}>` : la feuille reçoit l'élément (ici « créer » ou « modifier
+        // cette tâche ») et SwiftUI remet `taskSheet` à `nil` quand on la ferme.
+        .sheet(item: $taskSheet) { sheet in
+            switch sheet {
+            case .create:
+                NewTaskView { task in
+                    // `withAnimation` : la nouvelle ligne apparaît avec une transition (voir CONCEPTS.md#with-animation).
+                    withAnimation(.snappy) { viewModel.addTask(task) }
+                }
+            case .edit(let task):
+                NewTaskView(editing: task) { updated in
+                    withAnimation(.snappy) { viewModel.updateTask(updated) }
+                }
             }
         }
         // ⚛️ React : ≈ `userInterfaceStyle: 'light'` d'Expo : on ignore le mode sombre du téléphone (D-014).
@@ -80,7 +89,8 @@ struct RootView: View {
                 onNotifications: { path.append(.notifications) },
                 onFocusTime: { path.append(.focusSession) },
                 onGoalDetails: { select(.analytics) },
-                onSeeAll: { select(.calendar) }
+                onSeeAll: { select(.calendar) },
+                onEditTask: { taskSheet = .edit($0) }
             )
             .opacity(selectedTab == .home ? 1 : 0)
             .allowsHitTesting(selectedTab == .home)
@@ -141,6 +151,20 @@ struct RootView: View {
 
     private func select(_ tab: AppTab) {
         withAnimation(.snappy) { selectedTab = tab }
+    }
+}
+
+// Les deux usages de la feuille de tâche. ⚛️ React : une union discriminée `{ type: 'create' } | { type: 'edit', task }`.
+// `Identifiable` est exigé par `sheet(item:)` : l'`id` change selon le cas, donc la feuille est recréée proprement.
+private enum TaskSheet: Identifiable {
+    case create
+    case edit(TaskItem)
+
+    var id: String {
+        switch self {
+        case .create: "create"
+        case .edit(let task): "edit-\(task.id.uuidString)"
+        }
     }
 }
 

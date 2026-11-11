@@ -68,6 +68,42 @@ struct NewTaskDraftTests {
         #expect(draft.makeTask().reminderMinutes == nil)
     }
 
+    // MARK: - édition
+
+    @Test func editingPrefillsTheFormAndKeepsIdentityAndDoneState() {
+        let original = TaskItem(
+            title: "Dentist",
+            dueDate: date(day: 14, hour: 9, minute: 30),
+            isCompleted: true,
+            category: .health,
+            priority: .high,
+            durationMinutes: 45,
+            reminderMinutes: nil
+        )
+        var draft = NewTaskDraft(editing: original)
+
+        #expect(draft.isEditing)
+        #expect(draft.title == "Dentist")
+        #expect(draft.category == .health)
+        #expect(draft.priority == .high)
+        #expect(draft.durationMinutes == 45)
+        #expect(!draft.remindsBeforeStart)
+        #expect(draft.dueDate(calendar: calendar) == original.dueDate)
+
+        draft.title = "Dentist (moved)"
+        draft.time = date(day: 1, hour: 11)
+        let saved = draft.makeTask(calendar: calendar)
+
+        #expect(saved.id == original.id)                  // même tâche, pas une copie
+        #expect(saved.isCompleted)                        // l'état « fait » est conservé
+        #expect(saved.title == "Dentist (moved)")
+        #expect(saved.dueDate == date(day: 14, hour: 11))
+    }
+
+    @Test func aNewDraftIsNotEditing() {
+        #expect(!NewTaskDraft().isEditing)
+    }
+
     // MARK: - libellés de durée
 
     @Test(arguments: [

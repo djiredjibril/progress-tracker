@@ -15,6 +15,11 @@ struct NewTaskDraft {
     var priority: TaskPriority = .medium
     var remindsBeforeStart = true
 
+    // Mode édition : on garde l'identité et l'état « fait » de la tâche modifiée (ni l'un ni l'autre n'est dans le formulaire).
+    private(set) var editingID: UUID?
+    private(set) var editingIsCompleted = false
+    var isEditing: Bool { editingID != nil }
+
     // Par défaut : la prochaine heure pleine (14:20 devient 15:00). Si elle passe minuit, le jour bascule aussi
     // sur demain, car `day` et `time` partent de la même date.
     init(now: Date = .now, calendar: Calendar = .current) {
@@ -25,6 +30,20 @@ struct NewTaskDraft {
         ) ?? now
         day = nextHour
         time = nextHour
+    }
+
+    // ⚛️ React : le MÊME formulaire sert à créer et à modifier : en modification, on le préremplit avec la tâche
+    // (≈ `defaultValues` d'un formulaire react-hook-form). `day` et `time` partent de la même échéance.
+    init(editing task: TaskItem) {
+        title = task.title
+        day = task.dueDate
+        time = task.dueDate
+        durationMinutes = task.durationMinutes
+        category = task.category
+        priority = task.priority
+        remindsBeforeStart = task.reminderMinutes != nil
+        editingID = task.id
+        editingIsCompleted = task.isCompleted
     }
 
     // ⚛️ React : une propriété calculée ≈ une valeur dérivée (`const isValid = title.trim().length > 0`) :
@@ -46,8 +65,10 @@ struct NewTaskDraft {
 
     func makeTask(calendar: Calendar = .current) -> TaskItem {
         TaskItem(
+            id: editingID ?? UUID(),
             title: title.trimmingCharacters(in: .whitespacesAndNewlines),
             dueDate: dueDate(calendar: calendar),
+            isCompleted: editingIsCompleted,
             category: category,
             priority: priority,
             durationMinutes: durationMinutes,

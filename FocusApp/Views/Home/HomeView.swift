@@ -14,6 +14,10 @@ struct HomeView: View {
     let onFocusTime: () -> Void
     let onGoalDetails: () -> Void
     let onSeeAll: () -> Void
+    let onEditTask: (TaskItem) -> Void
+
+    // La tâche dont l'utilisateur a demandé la suppression : tant qu'il n'a pas confirmé, rien n'est supprimé.
+    @State private var taskPendingDeletion: TaskItem?
 
     var body: some View {
         // ⚛️ React : `ScrollView` ≈ `<ScrollView>` RN. `VStack` ≈ `<View>` avec `flexDirection: 'column'`
@@ -34,6 +38,24 @@ struct HomeView: View {
         // ⚛️ React : ≈ le `onRefresh` + `refreshing` du `<RefreshControl>` de RN, mais sans état à gérer : le spinner
         // reste affiché tant que la closure `async` n'est pas terminée.
         .refreshable { await viewModel.refresh() }
+        // ⚛️ voir CONCEPTS.md#confirmation-dialog : `presenting:` transmet la tâche concernée à la boîte de dialogue.
+        // L'`isPresented` dérive de `taskPendingDeletion` : non `nil` = boîte ouverte, et la fermer le remet à `nil`.
+        .confirmationDialog(
+            "Delete this task?",
+            isPresented: Binding(
+                get: { taskPendingDeletion != nil },
+                set: { if !$0 { taskPendingDeletion = nil } }
+            ),
+            titleVisibility: .visible,
+            presenting: taskPendingDeletion
+        ) { task in
+            Button("Delete “\(task.title)”", role: .destructive) {
+                withAnimation(.snappy) { viewModel.deleteTask(task) }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: { _ in
+            Text("This cannot be undone.")
+        }
         .scrollIndicators(.hidden)
         // ⚛️ React : `.background { vue }` place une vue DERRIÈRE le ScrollView (voir CircleIconButton).
         .background { AppBackground() }
@@ -155,8 +177,8 @@ struct HomeView: View {
                             // `withAnimation` ≈ `LayoutAnimation.configureNext(...)` : tout ce qui change d'état dans ce
                             // bloc (coche, compteur « Tasks Done ») est animé. `.snappy` = ressort court et vif.
                             onToggle: { withAnimation(.snappy) { viewModel.toggle(task) } },
-                            onEdit: {},         // actions mock du menu ⋮ (voir la suite)
-                            onDelete: {}
+                            onEdit: { onEditTask(task) },
+                            onDelete: { taskPendingDeletion = task }
                         )
                     }
                 }
@@ -173,6 +195,7 @@ struct HomeView: View {
         onNotifications: {},
         onFocusTime: {},
         onGoalDetails: {},
-        onSeeAll: {}
+        onSeeAll: {},
+        onEditTask: { _ in }
     )
 }

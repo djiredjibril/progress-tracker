@@ -81,6 +81,24 @@ final class HomeViewModel {
         data = current
     }
 
+    // Remplace une tâche (même `id`) par sa version modifiée, puis garde la liste triée par échéance.
+    func updateTask(_ task: TaskItem) {
+        guard var current = data, let index = current.tasks.firstIndex(where: { $0.id == task.id }) else { return }
+        current.tasks[index] = task
+        current.tasks.sort { $0.dueDate < $1.dueDate }
+        data = current
+    }
+
+    // Supprime une tâche. Si elle était faite, le compteur « Tasks Done » baisse d'un cran (jamais sous 0).
+    func deleteTask(_ task: TaskItem) {
+        guard var current = data, let index = current.tasks.firstIndex(where: { $0.id == task.id }) else { return }
+        if current.tasks[index].isCompleted {
+            current.stats.tasksDone = max(0, current.stats.tasksDone - 1)
+        }
+        current.tasks.remove(at: index)
+        data = current
+    }
+
     // La prochaine tâche à faire (les tâches sont triées par échéance) : c'est celle que propose la session de focus.
     // Les tâches passées et non faites sont ignorées : on propose la prochaine, aujourd'hui ou plus tard.
     var nextTask: TaskItem? {

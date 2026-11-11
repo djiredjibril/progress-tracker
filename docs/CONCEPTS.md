@@ -525,3 +525,15 @@ Format d'une entrée :
 - **React/RN :** le `splash` d'`app.json` (Expo : `image`, `backgroundColor`, `resizeMode`)
 - **Différence clé :** le launch screen est affiché par iOS AVANT que le code de l'app ne tourne : il ne peut donc pas être animé ni écrit en SwiftUI. On y met le décor fixe (ici le dégradé et les halos), et le `SplashView` SwiftUI y dessine ensuite le logo : le passage est continu. La clé `UILaunchScreen` de l'Info.plist ne sait faire qu'une couleur unie et une image centrée, pas un dégradé plein écran.
 - **Vu à :** étape 15, `Resources/LaunchScreen.storyboard`, `Resources/Assets.xcassets/LaunchBackground.imageset`
+
+### sheet-item · `sheet(item:)` et un formulaire à deux modes
+- **Swift :** `@State var taskSheet: TaskSheet?` puis `.sheet(item: $taskSheet) { sheet in switch sheet { case .create: NewTaskView { … } case .edit(let task): NewTaskView(editing: task) { … } } }`
+- **React/RN :** `<Modal visible={sheet !== null}>` avec les données de la feuille, et des `defaultValues` pour préremplir un formulaire
+- **Différence clé :** une seule feuille pour créer ET modifier : l'`enum` à valeurs associées (`create` / `edit(TaskItem)`) dit laquelle est ouverte et porte la tâche. Le brouillon (`NewTaskDraft(editing:)`) garde l'`id` et l'état « fait » de la tâche, donc enregistrer MET À JOUR la tâche au lieu d'en créer une copie.
+- **Vu à :** étape 16, `App/RootView.swift`, `Models/NewTaskDraft.swift`, `Views/Home/NewTaskView.swift`
+
+### confirm-item · `confirmationDialog(presenting:)` sur un élément
+- **Swift :** `.confirmationDialog("Delete this task?", isPresented: Binding(get: { pending != nil }, set: { if !$0 { pending = nil } }), presenting: pending) { task in … }`
+- **React/RN :** `Alert.alert` ouvert depuis le handler d'une ligne, avec la ligne en closure
+- **Différence clé :** on mémorise la tâche « en attente » dans un `@State` ; la boîte s'ouvre tant qu'il est non `nil` et le remet à `nil` en se fermant. Rien n'est supprimé avant la confirmation.
+- **Vu à :** étape 16, `Views/Home/HomeView.swift`

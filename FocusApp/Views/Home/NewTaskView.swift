@@ -1,9 +1,10 @@
 import SwiftUI
 
 // Feuille « New Task » : un formulaire dont l'état local est un `NewTaskDraft`. À la validation, elle remonte une
-// `TaskItem` par `onCreate` (comme un `onSubmit` en React) : elle ne connaît pas le ViewModel.
+// `TaskItem` par `onSubmit` (comme un `onSubmit` en React) : elle ne connaît pas le ViewModel.
 struct NewTaskView: View {
-    let onCreate: (TaskItem) -> Void
+    let editing: TaskItem?
+    let onSubmit: (TaskItem) -> Void
 
     // ⚛️ React : `@Environment(\.dismiss)` ≈ la fonction `navigation.goBack()` / `onClose` : elle ferme la feuille
     // courante, sans qu'on la reçoive en prop. On l'appelle comme une fonction : `dismiss()`.
@@ -11,12 +12,20 @@ struct NewTaskView: View {
 
     // ⚛️ voir CONCEPTS.md#state : l'état du formulaire (≈ `useState({ title: '', … })`). Chaque champ s'y branche
     // avec `$draft.title`, `$draft.priority`… (un `Binding` sur UNE propriété de la struct).
-    @State private var draft = NewTaskDraft()
+    @State private var draft: NewTaskDraft
     @State private var isPickingDate = false
 
     // ⚛️ React : `@FocusState` ≈ un `ref` sur l'input + `ref.focus()` / `onFocus` : il dit quel champ a le focus et
     // permet de le changer par code. Ici il pilote l'aspect « focus » du champ (liseré violet + halo).
     @FocusState private var isTitleFocused: Bool
+
+    // ⚛️ React : `editing == nil` crée une tâche, sinon le formulaire est prérempli avec elle. `State(initialValue:)` fixe
+    // l'état de départ (≈ `useState(() => …)`) ; la valeur n'est utilisée qu'à la création de la vue.
+    init(editing: TaskItem? = nil, onSubmit: @escaping (TaskItem) -> Void) {
+        self.editing = editing
+        self.onSubmit = onSubmit
+        _draft = State(initialValue: editing.map { NewTaskDraft(editing: $0) } ?? NewTaskDraft())
+    }
 
     var body: some View {
         // ⚛️ React : `ScrollView` + bouton fixé en bas ≈ `KeyboardAvoidingView` : `safeAreaInset` garde « Create Task »
@@ -39,7 +48,7 @@ struct NewTaskView: View {
         .safeAreaInset(edge: .bottom) {
             // ⚛️ React : `.disabled(true)` ≈ `disabled` d'un `Pressable`. `PrimaryButtonStyle` le lit via
             // `@Environment(\.isEnabled)` et pâlit tout seul : on ne passe aucune prop de plus.
-            Button("Create Task", action: create)
+            Button(draft.isEditing ? "Save Changes" : "Create Task", action: submit)
                 .buttonStyle(.primary)
                 .disabled(!draft.isValid)
                 .padding(.horizontal, Spacing.screen)
@@ -65,7 +74,7 @@ struct NewTaskView: View {
         // ⚛️ React : `ZStack` centre le titre sur TOUTE la largeur, indépendamment du bouton de gauche (avec un
         // `HStack`, le titre serait décalé par la largeur du bouton).
         ZStack {
-            Text("New Task")
+            Text(draft.isEditing ? "Edit Task" : "New Task")
                 .font(.appSheetTitle)
                 .foregroundStyle(Color.textPrimary)
                 .accessibilityAddTraits(.isHeader)
@@ -238,8 +247,8 @@ struct NewTaskView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private func create() {
-        onCreate(draft.makeTask())
+    private func submit() {
+        onSubmit(draft.makeTask())
         dismiss()
     }
 }
