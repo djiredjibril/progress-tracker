@@ -555,3 +555,15 @@ Format d'une entrée :
 - **React/RN :** un callback `onSave` qui remonte à un store, puis un `useEffect` qui resynchronise l'état local
 - **Différence clé :** la session persistée est la source de vérité ; Home et Profile la reçoivent sans que l'app soit recréée (`.id(appID)` ne change qu'à la connexion / déconnexion), donc les tâches ne sont pas perdues. `AvatarImage` choisit la photo locale ou l'avatar par défaut.
 - **Vu à :** étape 18, `App/RootView.swift`, `Views/Entry/AppFlowView.swift`, `Views/Shared/AvatarImage.swift`
+
+### adaptive-colors · Couleurs adaptatives et `preferredColorScheme`
+- **Swift :** `Color(uiColor: UIColor { traits in traits.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light) })` (aide `Color.adaptive(light:dark:)`), `.preferredColorScheme(mode.colorScheme)` avec `nil` = « le système décide »
+- **React/RN :** un thème `{ light, dark }` choisi par `useColorScheme()` et un `ThemeProvider`
+- **Différence clé :** iOS résout la couleur AU MOMENT DU DESSIN : quand le mode change, tout se met à jour sans re-render ni contexte à propager. Une couleur DÉRIVÉE (`Color.textPrimary.opacity(0.1)`) reste adaptative parce qu'elle suit sa base : on ne définit en double (clair / sombre) que les tokens de base. Les matériaux (`.ultraThinMaterial`) et les contrôles système s'adaptent seuls. Les dégradés de la marque, les puces et l'icône ne changent pas.
+- **Vu à :** étape 19, `DesignSystem/Colors.swift`, `DesignSystem/CategoryStyle.swift`, `Views/Entry/AppFlowView.swift`
+
+### picker-enum · Un réglage à trois états (`AppearanceMode`)
+- **Swift :** `enum AppearanceMode: String, CaseIterable { case system, light, dark }`, `@AppStorage` d'un `String`, `init(storedValue:)` qui retombe sur `.system`
+- **React/RN :** `'light' | 'dark' | 'system'` dans `AsyncStorage`
+- **Différence clé :** on stocke le `rawValue` (une chaîne) et on le reconvertit avec une valeur de repli : un réglage illisible ne casse jamais l'app. Le `Picker` met à jour ce `String`, et `AppFlowView` le relit pour l'appliquer à toute l'app.
+- **Vu à :** étape 19, `Models/AppearanceMode.swift`, `Views/Profile/ProfileView.swift`

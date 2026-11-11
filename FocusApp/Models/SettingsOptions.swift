@@ -7,6 +7,7 @@ enum SettingsKey {
     static let notificationsEnabled = "settings.notificationsEnabled"
     static let dailyGoal = "settings.dailyGoal"
     static let focusMinutes = "settings.focusMinutes"
+    static let appearance = "settings.appearance"
 }
 
 // Valeurs proposées et libellés des réglages (testables sans aucune vue).

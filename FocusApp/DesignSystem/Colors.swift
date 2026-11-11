@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 // ⚛️ React : une `extension` ajoute des membres à un type existant (ici le `Color` d'Apple) sans le modifier.
 // Proche d'une augmentation de module TypeScript, ou d'un `theme` branché sur un objet qu'on ne possède pas.
@@ -15,6 +16,15 @@ extension Color {
         )
     }
 
+    // ⚛️ React : ≈ un thème `{ light, dark }` résolu par `useColorScheme()`, mais calculé PAR iOS au moment du dessin :
+    // la couleur se met à jour toute seule quand le mode change, sans re-render ni contexte à propager. Les couleurs
+    // DÉRIVÉES (`Color.textPrimary.opacity(0.1)`) restent adaptatives : elles suivent leur base.
+    static func adaptive(light: Color, dark: Color) -> Color {
+        Color(uiColor: UIColor { traits in
+            traits.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light)
+        })
+    }
+
     // MARK: - Accent
 
     // ⚛️ React : `static let` ≈ une constante exportée d'un fichier de thème (`export const colors = { … }`).
@@ -22,27 +32,27 @@ extension Color {
     static let appPrimary = Color(hex: 0x6C6CF5)
     static let appPrimaryLight = Color(hex: 0x8E8CF7)
     // Variantes plus foncées du canvas (contraste 4.5:1, D-029) : onglet actif, liens, bouton principal.
-    static let appPrimaryStrong = Color(hex: 0x5552E0)
-    static let appPrimaryDeep = Color(hex: 0x3F3BC0)        // texte d'une pastille sélectionnée
+    static let appPrimaryStrong = Color.adaptive(light: Color(hex: 0x5552E0), dark: Color(hex: 0x8E8CF7))
+    static let appPrimaryDeep = Color.adaptive(light: Color(hex: 0x3F3BC0), dark: Color(hex: 0xC9C7FF))        // texte d'une pastille sélectionnée
     static let buttonGradientStart = Color(hex: 0x6D6BEE)
     static let buttonGradientEnd = Color(hex: 0x4F4BD8)
     static let buttonShadow = Color.appPrimaryStrong.opacity(0.35)
-    static let destructive = Color(hex: 0xB4322A)           // « Log out », actions de suppression
+    static let destructive = Color.adaptive(light: Color(hex: 0xB4322A), dark: Color(hex: 0xFF8A80))           // « Log out », actions de suppression
 
     // MARK: - Texte
 
-    static let textPrimary = Color(hex: 0x0F1328)
-    static let textSecondary = Color(hex: 0x5F6479)         // assombri depuis #6B7088 (D-029)
-    static let textTertiary = Color(hex: 0x9A9EB2)
-    static let textPlaceholder = Color(hex: 0x6E7389)
+    static let textPrimary = Color.adaptive(light: Color(hex: 0x0F1328), dark: Color(hex: 0xF2F3FA))
+    static let textSecondary = Color.adaptive(light: Color(hex: 0x5F6479), dark: Color(hex: 0xA9AEC6))         // assombri depuis #6B7088 (D-029)
+    static let textTertiary = Color.adaptive(light: Color(hex: 0x9A9EB2), dark: Color(hex: 0x7C819A))
+    static let textPlaceholder = Color.adaptive(light: Color(hex: 0x6E7389), dark: Color(hex: 0x8C91A8))
 
     // MARK: - Fond
 
-    static let backgroundTop = Color(hex: 0xE6ECFB)
-    static let backgroundBottom = Color(hex: 0xF3F1FC)
-    static let glassFill = Color.white.opacity(0.55)
-    static let glassStroke = Color.white.opacity(0.70)
-    static let cardShadow = Color.appPrimary.opacity(0.08)
+    static let backgroundTop = Color.adaptive(light: Color(hex: 0xE6ECFB), dark: Color(hex: 0x12162B))
+    static let backgroundBottom = Color.adaptive(light: Color(hex: 0xF3F1FC), dark: Color(hex: 0x1A1630))
+    static let glassFill = Color.adaptive(light: Color.white.opacity(0.55), dark: Color.white.opacity(0.08))
+    static let glassStroke = Color.adaptive(light: Color.white.opacity(0.70), dark: Color.white.opacity(0.14))
+    static let cardShadow = Color.adaptive(light: Color(hex: 0x6C6CF5, opacity: 0.08), dark: Color.black.opacity(0.30))
 
     // Texte et icônes posés sur un fond coloré (puces de stats, carte objectif)
     static let textOnAccent = Color.white
@@ -50,7 +60,7 @@ extension Color {
     static let progressTrack = Color.white.opacity(0.30)            // piste de la barre de progression
     static let goalShadow = Color(hex: 0x4E60D9, opacity: 0.30)
     static let fabShadow = Color.appPrimaryStrong.opacity(0.40)     // ombre du bouton +
-    static let tabPill = Color.appPrimary.opacity(0.14)             // pastille de l'onglet actif
+    static let tabPill = Color.adaptive(light: Color(hex: 0x6C6CF5, opacity: 0.14), dark: Color(hex: 0x8E8CF7, opacity: 0.28))             // pastille de l'onglet actif
 
     // MARK: - Carte objectif (dégradé du bas-gauche vers le haut-droite)
 
@@ -69,24 +79,24 @@ extension Color {
 
     // MARK: - Formulaires et feuilles
 
-    static let sheetTop = Color(hex: 0xF7F6FE)
-    static let sheetBottom = Color(hex: 0xF1F0FC)
-    static let fieldFill = Color.white
+    static let sheetTop = Color.adaptive(light: Color(hex: 0xF7F6FE), dark: Color(hex: 0x191C33))
+    static let sheetBottom = Color.adaptive(light: Color(hex: 0xF1F0FC), dark: Color(hex: 0x151830))
+    static let fieldFill = Color.adaptive(light: Color.white, dark: Color(hex: 0x1F2340))
     static let fieldBorder = Color.textPrimary.opacity(0.10)
-    static let focusRing = Color.appPrimary.opacity(0.12)
+    static let focusRing = Color.adaptive(light: Color(hex: 0x6C6CF5, opacity: 0.12), dark: Color(hex: 0x8E8CF7, opacity: 0.30))
     static let segmentTrack = Color.textPrimary.opacity(0.05)
     static let closeFill = Color.textPrimary.opacity(0.06)
-    static let selectedChipFill = Color.appPrimary.opacity(0.12)
+    static let selectedChipFill = Color.adaptive(light: Color(hex: 0x6C6CF5, opacity: 0.12), dark: Color(hex: 0x8E8CF7, opacity: 0.26))
 
     // MARK: - Notifications (non lue : plus opaque, avec ombre ; lue : plus discrète)
 
-    static let notificationUnreadFill = Color.white.opacity(0.75)
-    static let notificationUnreadStroke = Color.white.opacity(0.90)
-    static let notificationReadFill = Color.white.opacity(0.50)
+    static let notificationUnreadFill = Color.adaptive(light: Color.white.opacity(0.75), dark: Color.white.opacity(0.12))
+    static let notificationUnreadStroke = Color.adaptive(light: Color.white.opacity(0.90), dark: Color.white.opacity(0.18))
+    static let notificationReadFill = Color.adaptive(light: Color.white.opacity(0.50), dark: Color.white.opacity(0.05))
 
     // MARK: - Minuteur et catégories
 
-    static let ringTrack = Color.appPrimary.opacity(0.15)
+    static let ringTrack = Color.adaptive(light: Color(hex: 0x6C6CF5, opacity: 0.15), dark: Color(hex: 0x8E8CF7, opacity: 0.28))
     static let ringGradientStart = Color(hex: 0xA58DF0)
     static let categoryWork = Color.appPrimaryStrong
     static let categoryHealth = Color.statStreakDark
@@ -95,21 +105,21 @@ extension Color {
 
     // MARK: - Analytics
 
-    static let chartBarPast = Color.appPrimary.opacity(0.28)
+    static let chartBarPast = Color.adaptive(light: Color(hex: 0x6C6CF5, opacity: 0.28), dark: Color(hex: 0x8E8CF7, opacity: 0.42))
     static let chartBarFuture = Color.textPrimary.opacity(0.08)
     static let categoryTrack = Color.textPrimary.opacity(0.07)
-    static let miniRingTrack = Color.appPrimary.opacity(0.18)
+    static let miniRingTrack = Color.adaptive(light: Color(hex: 0x6C6CF5, opacity: 0.18), dark: Color(hex: 0x8E8CF7, opacity: 0.30))
 
     // MARK: - Profil et réglages
 
-    static let avatarBorder = Color.white.opacity(0.90)
+    static let avatarBorder = Color.adaptive(light: Color.white.opacity(0.90), dark: Color.white.opacity(0.30))
     static let avatarShadow = Color.appPrimary.opacity(0.25)
     static let rowDivider = Color.textPrimary.opacity(0.06)
     static let statDivider = Color.textPrimary.opacity(0.08)
     static let settingsBlueFill = Color.statFocusDark.opacity(0.18)
-    static let settingsBlueForeground = Color(hex: 0x2E55B8)
+    static let settingsBlueForeground = Color.adaptive(light: Color(hex: 0x2E55B8), dark: Color(hex: 0xB8CBFF))
     static let settingsCoralFill = Color.statStreakDark.opacity(0.18)
-    static let settingsCoralForeground = Color(hex: 0xA63D28)
+    static let settingsCoralForeground = Color.adaptive(light: Color(hex: 0xA63D28), dark: Color(hex: 0xFFB4A4))
     static let settingsDestructiveFill = Color.destructive.opacity(0.10)
 
     // MARK: - Marque (Splash, icône) et parcours d'entrée
@@ -129,8 +139,8 @@ extension Color {
     static let backgroundBlobPrimary = Color.appPrimary.opacity(0.16)
     static let backgroundBlobSecondary = Color.goalGradientEnd.opacity(0.18)
     static let eyebrowDisc = Color.white.opacity(0.9)
-    static let tabBarFill = Color.white.opacity(0.78)
-    static let tabBarStroke = Color.white.opacity(0.9)
+    static let tabBarFill = Color.adaptive(light: Color.white.opacity(0.78), dark: Color(hex: 0x1B1F36, opacity: 0.86))
+    static let tabBarStroke = Color.adaptive(light: Color.white.opacity(0.90), dark: Color.white.opacity(0.12))
     static let tabBarShadow = Color.appPrimaryStrong.opacity(0.14)
     static let arrowShadow = Color.black.opacity(0.12)
 }

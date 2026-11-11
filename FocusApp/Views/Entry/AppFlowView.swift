@@ -13,6 +13,9 @@ struct AppFlowView: View {
     // le profil est modifié.
     @State private var appID = UUID()
 
+    // ⚛️ voir CONCEPTS.md#app-storage : le mode d'apparence choisi dans Profile, relu ici pour toute l'app.
+    @AppStorage(SettingsKey.appearance) private var appearanceValue = AppearanceMode.system.rawValue
+
     // ⚛️ React : le ViewModel est créé DANS l'`init` (et non en valeur par défaut) : `AuthViewModel` est isolé au thread
     // principal, et une valeur par défaut serait évaluée ailleurs. `nil` = « utilise la vraie persistance ».
     init(auth: AuthViewModel? = nil) {
@@ -32,7 +35,9 @@ struct AppFlowView: View {
         // ⚛️ voir CONCEPTS.md#transition-animation-value : les changements d'écran se font en fondu.
         .animation(.smooth, value: auth.isLoggedIn)
         .animation(.smooth, value: step)
-        .preferredColorScheme(.light)
+        // ⚛️ React : ≈ `<ThemeProvider>` à la racine. `nil` (mode System) laisse iOS décider ; posé ici, il s'applique à TOUT :
+        // onglets, feuilles, écrans empilés. Il remplace le mode clair forcé de D-014.
+        .preferredColorScheme(AppearanceMode(storedValue: appearanceValue).colorScheme)
     }
 
     // MARK: - L'app connectée

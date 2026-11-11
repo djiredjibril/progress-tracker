@@ -86,9 +86,7 @@ struct RootView: View {
         .onChange(of: user) { _, newUser in
             if let newUser { viewModel.updateUser(newUser) }
         }
-        // ⚛️ React : ≈ `userInterfaceStyle: 'light'` d'Expo : on ignore le mode sombre du téléphone (D-014).
-        // Posé à la racine, il s'applique à toute l'app.
-        .preferredColorScheme(.light)
+        // Le mode d'apparence est appliqué à la racine par `AppFlowView` (réglage Profile > Appearance, D-046).
     }
 
     // Le contenu des onglets.

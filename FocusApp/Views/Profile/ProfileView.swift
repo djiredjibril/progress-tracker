@@ -14,6 +14,7 @@ struct ProfileView: View {
     @AppStorage(SettingsKey.notificationsEnabled) private var notificationsEnabled = true
     @AppStorage(SettingsKey.dailyGoal) private var dailyGoal = SettingsOptions.defaultDailyGoal
     @AppStorage(SettingsKey.focusMinutes) private var focusMinutes = SettingsOptions.defaultFocusMinutes
+    @AppStorage(SettingsKey.appearance) private var appearanceValue = AppearanceMode.system.rawValue
 
     @State private var isConfirmingLogOut = false
     @State private var isEditingProfile = false
@@ -160,14 +161,23 @@ struct ProfileView: View {
             }
             .accessibilityValue(SettingsOptions.focusLabel(focusMinutes))
 
-            // Mode clair uniquement pour l'instant (D-014) : la ligne affiche la valeur mais ne propose pas d'autre choix.
-            SettingsRow(
-                systemImage: "sun.max",
-                iconForeground: .settingsCoralForeground,
-                iconBackground: .settingsCoralFill,
-                title: "Appearance"
-            ) { SettingsValueTrailing(value: "Light") }
-                .accessibilityElement(children: .combine)
+            // ⚛️ Même mécanisme que les deux lignes précédentes : `@AppStorage` + `Menu` + `Picker`. `AppFlowView` relit ce
+            // réglage et applique le mode à toute l'app : le changement est immédiat.
+            Menu {
+                Picker("Appearance", selection: $appearanceValue) {
+                    ForEach(AppearanceMode.allCases) { mode in
+                        Label(mode.title, systemImage: mode.systemImage).tag(mode.rawValue)
+                    }
+                }
+            } label: {
+                SettingsRow(
+                    systemImage: AppearanceMode(storedValue: appearanceValue).systemImage,
+                    iconForeground: .settingsCoralForeground,
+                    iconBackground: .settingsCoralFill,
+                    title: "Appearance"
+                ) { SettingsValueTrailing(value: AppearanceMode(storedValue: appearanceValue).title) }
+            }
+            .accessibilityValue(AppearanceMode(storedValue: appearanceValue).title)
         }
     }
 

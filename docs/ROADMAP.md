@@ -112,7 +112,7 @@ Le bouton ✎ ouvre une feuille : prénom et e-mail (validés), avatar choisi da
 - **Concepts :** `PhotosPicker`, mise à jour d'une session persistée, validation d'un formulaire réutilisée
 - **Fini quand :** changer le prénom change « Hello, … » immédiatement et après un relancement.
 
-## [ ] Étape 19 — Apparence : clair, sombre, système
+## [x] Étape 19 — Apparence : clair, sombre, système
 La ligne Appearance propose Light / Dark / System, persisté. Les tokens de couleur deviennent **adaptatifs** (palette sombre dérivée du clair), et `.preferredColorScheme(.light)` est retiré.
 - **Concepts :** couleurs adaptatives (`UIColor` dynamique), `@AppStorage` + `preferredColorScheme`, `colorScheme` de l'environnement, matériaux en mode sombre
 - **Fini quand :** les 14 écrans sont lisibles dans les deux modes (captures comparées) et le choix survit au relancement.

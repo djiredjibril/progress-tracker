@@ -273,3 +273,11 @@ Toutes les icônes utilisent SF Symbols.
 - `AuthViewModel.updateProfile` met à jour la session ET les réglages persistés. La photo est réduite (600 px max), enregistrée en JPEG dans Application Support/Avatars (`AvatarStore`), et l'ancienne photo est supprimée du disque quand elle est remplacée, retirée ou à la déconnexion. Si l'image choisie est illisible, la photo actuelle est conservée.
 - `User` gagne `avatarURL` ; `AvatarImage` affiche la photo locale ou l'avatar par défaut sur Home et Profile. Home reçoit le nouvel utilisateur par `HomeViewModel.updateUser` sans recréer l'app : `RootView` n'est recréée (`.id(appID)`) qu'à une connexion ou une déconnexion, ce qui change l'ancien `.id(email)`.
 - Le changement d'e-mail n'est pas « vérifié » (authentification fictive, D-032).
+
+### D-046 : Étape 19 : mode clair, sombre ou système (remplace D-014)
+**Choix :**
+- La ligne **Appearance** de Profile propose Light / Dark / System (`Menu` + `Picker`), persisté (`SettingsKey.appearance`). **Le défaut est System** : l'app suit le téléphone. `AppFlowView` applique `.preferredColorScheme(mode.colorScheme)` à toute l'app (le mode clair forcé de D-014 est supprimé).
+- Les **couleurs de base** sont adaptatives (`Color.adaptive(light:dark:)`) : fonds, textes, verre et liserés, champs, feuilles, notifications, tab bar, pistes d'anneau et de graphique, couleurs du planning, rouge destructif. Les couleurs dérivées suivent leur base. Inchangés : dégradés de la marque, puces de statistiques, icône, texte sur fond coloré.
+- **Palette sombre dérivée par moi** (le canvas n'a pas de dessin sombre) : fond `#12162B` → `#1A1630`, texte `#F2F3FA` / `#A9AEC6`, violet fort `#8E8CF7` (le `#5552E0` clair manquait de contraste), cartes en verre blanc à 8 % sur matériau sombre, ombres noires. Les valeurs sont à ajuster si tu as une maquette sombre.
+- Vérifié sur capture en mode sombre : Home, Calendar, Analytics, Profile, Notifications, feuille « New Task » et Log In.
+- Limites : le launch screen et le Splash gardent leur dégradé de marque dans les deux modes (voulu) ; les écrans Onboarding, Focus Session, Search et Edit Profile n'ont pas été vérifiés visuellement en mode sombre.
