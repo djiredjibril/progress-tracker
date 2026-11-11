@@ -28,4 +28,11 @@ enum Size {
     static let badge: CGFloat = 8           // point de notification
     static let blob: CGFloat = 320          // taches floues du fond d'écran
     static let blobBlur: CGFloat = 80
+    static let avatarOverlap: CGFloat = 24  // de combien l'avatar descend sur les cartes de stats
+}
+
+// Ombre des cartes claires (voir DESIGN_SYSTEM.md > Ombres)
+enum Shadow {
+    static let cardRadius: CGFloat = 20
+    static let cardY: CGFloat = 8
 }

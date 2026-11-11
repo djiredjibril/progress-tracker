@@ -195,3 +195,33 @@ Format d'une entrée :
 - **React/RN :** `userInterfaceStyle: 'light'` d'Expo
 - **Différence clé :** posé à la racine, il s'applique à toute l'app et ignore le mode sombre du téléphone (D-014).
 - **Vu à :** étape 2, `App/RootView.swift`
+
+### view-modifier · `ViewModifier` + `extension View`
+- **Swift :** `struct GlassCard: ViewModifier { func body(content: Content) -> some View { … } }` + `extension View { func glassCard() … }`
+- **React/RN :** un HOC `withGlass(Component)` ou un composant wrapper `<GlassCard>{children}</GlassCard>`
+- **Différence clé :** `content` joue le rôle de `children`. L'extension de `View` rend le modifier disponible sur TOUTES les vues, donc il s'enchaîne comme `.padding()` au lieu d'imbriquer des composants.
+- **Vu à :** étape 3, `DesignSystem/GlassCard.swift`
+
+### material · `.ultraThinMaterial`, `shadow`, `RoundedRectangle(style: .continuous)`
+- **Swift :** `shape.fill(.ultraThinMaterial).overlay(shape.fill(Color.glassFill)).shadow(color:radius:y:)`
+- **React/RN :** `<BlurView>` d'expo-blur, `shadow*` / `elevation`, `borderCurve: 'continuous'`
+- **Différence clé :** le matériau floute ce qui est DERRIÈRE la carte et s'adapte tout seul au clair/sombre. `.continuous` donne les coins « squircle » d'iOS.
+- **Vu à :** étape 3, `DesignSystem/GlassCard.swift`
+
+### attributed-string · `AttributedString` (texte riche)
+- **Swift :** `var n = AttributedString("6"); n.font = .appStatValue; result += n; Text(result)`
+- **React/RN :** du texte imbriqué `<Text><Text style={big}>6</Text><Text style={small}>h</Text></Text>`
+- **Différence clé :** on construit des « runs » avec chacun leur police, concaténés dans UN seul texte (alignés sur la ligne de base). `Text + Text` existe mais est déprécié dans les SDK récents.
+- **Vu à :** étape 3, `Views/Home/Components/StatCardView.swift`
+
+### zindex-offset · `offset` et `zIndex`
+- **Swift :** `.offset(y: Size.avatarOverlap)` et `.zIndex(1)`
+- **React/RN :** `transform: [{ translateY }]` et `zIndex`
+- **Différence clé :** `offset` déplace le dessin SANS changer la place réservée dans la mise en page, donc la vue déborde sur ses voisines. Dans un stack, les vues suivantes se dessinent par-dessus, d'où le `zIndex` pour garder l'avatar au-dessus.
+- **Vu à :** étape 3, `HomeHeaderView.swift`, `HomeView.swift`
+
+### a11y-combine · `accessibilityElement(children: .combine)`
+- **Swift :** `.accessibilityElement(children: .combine)`, `.accessibilityHidden(true)`
+- **React/RN :** `accessible={true}` sur le conteneur
+- **Différence clé :** fusionne les enfants en un seul élément : VoiceOver lit « 12, Tasks Done » d'un trait, et l'icône décorative est masquée.
+- **Vu à :** étape 3, `StatCardView.swift`

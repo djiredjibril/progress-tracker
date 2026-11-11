@@ -20,7 +20,7 @@ Fond d'écran (dégradé + taches floues), `CircleIconButton` (recherche, notifi
 - **Concepts :** `VStack` / `HStack` / `ZStack`, `Spacer`, `alignment`, `padding`, `frame`, `clipShape`, `overlay` vs `background`, ordre des modifiers, `Image(systemName:)`, `Image("Asset")`, `Button`, `.accessibilityLabel`
 - **Fini quand :** le header ressemble à la maquette sur la capture.
 
-## [ ] Étape 3 — Cartes de stats
+## [x] Étape 3 — Cartes de stats
 `StatCardView` réutilisable, modifier `.glassCard()`, trois cartes dans un `HStack` de même largeur, valeur « 6h 24m » en typo mixte, chevauchement de l'avatar.
 - **Concepts :** composant paramétré (≈ props), `ViewModifier` et extension `View` (≈ HOC ou composant wrapper), `.ultraThinMaterial`, `frame(maxWidth: .infinity)`, concaténation de `Text` ou `AttributedString`, `zIndex` et offset
 - **Fini quand :** les trois cartes sont égales, l'effet verre est visible et l'avatar chevauche correctement.

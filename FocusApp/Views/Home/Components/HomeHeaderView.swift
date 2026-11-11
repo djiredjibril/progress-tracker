@@ -63,6 +63,9 @@ struct HomeHeaderView: View {
             // ⚛️ React : `clipShape(Circle())` ≈ `borderRadius: size / 2` + `overflow: 'hidden'`.
             // Important : le `frame` est posé AVANT le clip, sinon on découperait l'image non redimensionnée.
             .clipShape(Circle())
+            // ⚛️ React : `offset` ≈ `transform: [{ translateY }]` : il déplace le dessin SANS changer la place
+            // réservée dans la mise en page. L'avatar déborde donc sur les cartes de stats (voir `zIndex` dans HomeView).
+            .offset(y: Size.avatarOverlap)
             // Décoratif : VoiceOver l'ignore.
             .accessibilityHidden(true)
     }

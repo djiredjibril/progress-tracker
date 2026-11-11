@@ -34,6 +34,10 @@ extension Color {
     static let backgroundBottom = Color(hex: 0xF3F1FC)
     static let glassFill = Color.white.opacity(0.55)
     static let glassStroke = Color.white.opacity(0.70)
+    static let cardShadow = Color.appPrimary.opacity(0.08)
+
+    // Texte et icônes posés sur un fond coloré (puces de stats, carte objectif)
+    static let textOnAccent = Color.white
 
     // MARK: - Carte objectif (dégradé du bas-gauche vers le haut-droite)
 

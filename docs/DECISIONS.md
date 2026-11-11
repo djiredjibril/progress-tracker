@@ -95,3 +95,11 @@ Toutes les icônes utilisent SF Symbols.
 - Le sous-titre du header utilise un saut de ligne explicite pour reproduire la coupe en 2 lignes de la maquette.
 - Le point de notification est piloté par `hasUnreadNotifications`, fixé à `true` dans `HomeView` : le modèle `User` n'a pas ce champ.
 - Les boutons ronds n'ont ni matériau ni ombre pour l'instant : l'effet verre arrive avec `.glassCard()` à l'étape 3.
+
+### D-023 · Étape 3 : cartes de stats
+**Choix :**
+- `StatCardView` reçoit `value: AttributedString` (plutôt que des `Text`) et `iconColors: [Color]`. Le formatage « 6h 24m » est un helper `AttributedString.stat(_:)`, couvert par `StatValueFormattingTests`. `Text + Text` est évité car déprécié dans les SDK récents.
+- `.glassCard(cornerRadius:)` prend le rayon en paramètre (défaut `Radius.card`) : les cartes de stats passent `Radius.stat`.
+- Tokens ajoutés : `Color.cardShadow`, `Color.textOnAccent`, `Font.appStatIcon`, `Size.avatarOverlap` (24) et `enum Shadow` (rayon 20, y 8).
+- Le chevauchement de l'avatar est un `offset` dans `HomeHeaderView` plus un `zIndex(1)` sur le header dans `HomeView`.
+- Les boutons ronds du header gardent leur fond simple : `glassCard` est un modifier à coins arrondis, pas un cercle.

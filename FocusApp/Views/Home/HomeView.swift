@@ -63,12 +63,33 @@ struct HomeView: View {
                 onSearch: {},                   // actions mock : rien à brancher pour l'instant
                 onNotifications: {}
             )
+            // ⚛️ React : `zIndex` ≈ `zIndex` de RN. Dans un VStack, les vues suivantes se dessinent par-dessus les
+            // précédentes ; sans `zIndex(1)`, les cartes de stats masqueraient le bas de l'avatar qui déborde.
+            .zIndex(1)
+
+            // ⚛️ React : un `HStack` dont chaque enfant a `frame(maxWidth: .infinity)` ≈ trois enfants `flex: 1`.
+            HStack(spacing: Spacing.m) {
+                StatCardView(
+                    icon: "chart.bar.fill",
+                    iconColors: [Color.statTasksLight, Color.statTasksDark],
+                    value: .stat([(data.stats.tasksDone, "")]),
+                    label: "Tasks Done"
+                )
+                StatCardView(
+                    icon: "clock",
+                    iconColors: [Color.statFocusLight, Color.statFocusDark],
+                    value: .stat([(data.stats.focusHours, "h"), (data.stats.focusMinutes, "m")]),
+                    label: "Focus Time"
+                )
+                StatCardView(
+                    icon: "flame.fill",
+                    iconColors: [Color.statStreakLight, Color.statStreakDark],
+                    value: .stat([(data.stats.streakDays, "")]),
+                    label: "Day Streak"
+                )
+            }
 
             // ⚛️ React : `\(...)` dans une chaîne ≈ un template literal `${...}`.
-            Text("\(data.stats.tasksDone) Tasks Done")
-            Text("\(data.stats.focusHours)h \(data.stats.focusMinutes)m Focus Time")
-            Text("\(data.stats.streakDays) Day Streak")
-
             Text("\(data.goal.title) You're \(data.goal.progressPercent)% closer to your goal.")
                 .font(.appCardBody)
                 .padding(.top, Spacing.s)
