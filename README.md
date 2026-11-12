@@ -79,7 +79,7 @@ Les données restent **sur l'appareil** (SwiftData). Au premier lancement l'app 
 
 ```bash
 brew install xcodegen xcbeautify     # xcbeautify est optionnel (logs lisibles)
-git clone <url-du-repo> && cd ProgressTracker
+git clone https://github.com/djiredjibril/progress-tracker && cd ProgressTracker
 xcodegen generate                    # génère ProgressTracker.xcodeproj
 open ProgressTracker.xcodeproj              # puis ⌘R dans Xcode
 ```
